@@ -66,18 +66,18 @@ public class Graph {
 		int minVertex = source;
 		int countVisited = 1;
 		while (countVisited != countRoads){
+			visited[minVertex] = true;
 			int minDistance = Integer.MAX_VALUE;
 			int index = -1;
 			for (int i = 0; i < countRoads; i++) {
 				if (areConnected(minVertex, i) && !visited[i] ){
 					distances[i] = Math.min(distances[i], distances[minVertex] + getEdgeLength(minVertex, i));
-					if (minDistance > distances[i]){
-						minDistance = distances[i];
-						index = i;
-					}
 				}					
+				if (!visited[i] && minDistance > distances[i]){
+					minDistance = distances[i];
+					index = i;
+				}
 			}
-			visited[minVertex] = true;
 			countVisited++;
 			minVertex = index;
 		}
