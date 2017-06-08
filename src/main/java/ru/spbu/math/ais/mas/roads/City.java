@@ -44,7 +44,8 @@ public class City extends Agent {
 			String carSrc  = carParts.get(1);
 			String carDst  = carParts.get(2);
 			try {
-				AgentController carController = container.createNewAgent(carName, "ru.spbu.math.ais.mas.roads.Car", 
+				AgentController carController = container.createNewAgent(carName, 
+						Car.class.getCanonicalName(), 
 						new Object[] {carSrc, carDst});
 				carController.start();
 			} catch (ControllerException e) {
