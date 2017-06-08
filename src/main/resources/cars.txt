@@ -1,5 +1,5 @@
 #Driving strategy:
-@ strategy=dummy
+@strategy=dummy
 #Cars:
 audi	2	8
 lada	2	6

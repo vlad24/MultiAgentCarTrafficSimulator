@@ -9,20 +9,20 @@ import jade.core.behaviours.Behaviour;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.core.behaviours.SequentialBehaviour;
 import jade.lang.acl.ACLMessage;
+import ru.spbu.math.ais.mas.roads.communication.ShortestWayRequest;
 
 @SuppressWarnings("serial")
 public class Car extends Agent {
+	private static final Logger log = LoggerFactory.getLogger(Car.class);
+	private static final long serialVersionUID = 1L;
 
 	private String city;
 	private int src;
 	private int dst;
 	private int current;
 	private long startTime;
-	private long finishTime;
+	private long spentTime;
 	private DrivingStrategy strategy;
-
-	private static final Logger log = LoggerFactory.getLogger(Car.class);
-	private static final long serialVersionUID = 1L;
 
 	@Override
 	protected void setup() {
@@ -52,56 +52,55 @@ public class Car extends Agent {
 	 *	Car figures out its shortest way and keeps sticking to it regardless traffic conditions
 	 */
 	private class DummyDrivingBehaviour extends SequentialBehaviour{
+
+		//WAY CALCULATION STAGE
 		public DummyDrivingBehaviour(Car car) {
 			super(car);
 			// Figuring out where we should drive
 			this.addSubBehaviour(new OneShotBehaviour(car) {
 				@Override
 				public void action() {
-					log.debug("Car {} is estimating its way.", getLocalName());
-					ACLMessage wayRequest = new ACLMessage(ACLMessage.REQUEST);
-					wayRequest.addReceiver(new AID(city, AID.ISLOCALNAME));
-					wayRequest.setConversationId("WAY ESTIMATION");
-					wayRequest.setContent(src + "," + dst);
-					send(wayRequest);
-					log.debug("Car {} has asked the city.", getLocalName());
-					ACLMessage wayResponse = myAgent.receive();
-					if (wayResponse != null) {
-						log.debug("Car {} has got a response.", getLocalName());
+					try {
+						log.debug("Car {} is estimating its way.", getLocalName());
+						ACLMessage wayRequest = new ACLMessage(ACLMessage.REQUEST);
+						wayRequest.addReceiver(new AID(city, AID.ISLOCALNAME));
+						wayRequest.setConversationId("WAY ESTIMATION");
+						wayRequest.setContentObject(new ShortestWayRequest(src, dst));
+						send(wayRequest);
+						log.debug("Car {} has asked the city for the shortest way. Waiting...", getLocalName());
+						ACLMessage wayResponse = myAgent.blockingReceive();
+						assert (wayResponse != null);
+						log.debug("Car {} has got a response!", getLocalName());
 						startTime = 0;
-						//TODO start driving up from here
+					} catch (Exception e) {
+						log.error("Error while getting initial way {}", e);
 					}
-					else {
-						log.debug("Car {} has NOT got a response.", getLocalName());
-						block();
-						log.debug("Car {} should wait.", getLocalName());
-						//TODO implement receiving message
-					} 
 				}
 			});
-			//Actual silent
+
+			//DRIVING STAGE
 			this.addSubBehaviour(new Behaviour(car) {
 				@Override
 				public void action() {
 					//FIXME dummy driving
 					log.debug("Car {} is driving. It is now at {} cross", getLocalName(), current);
 					if (current == src) {
-						current = dst - 2;
+						current = dst - 100;
 					}else {
 						current++;
 					}
-					finishTime += 1;
+					spentTime += 1;
 				}
-
 				@Override
 				public boolean done() {
 					return current == dst;
 				}
 			});
 		}
+
 		@Override
 		public int onEnd() {
-			log.debug("Car {} has reached its destination spending {} s.", getLocalName(), finishTime);
+			log.debug("Car {} has reached its destination spending {} s.", getLocalName(), spentTime);
 			myAgent.doDelete();
 			log.debug("Car {} is shut down.", getLocalName());
 			return 0;

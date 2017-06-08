@@ -10,6 +10,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import jade.core.Agent;
+import jade.core.behaviours.Behaviour;
+import jade.core.behaviours.CyclicBehaviour;
 import jade.wrapper.AgentController;
 import jade.wrapper.ControllerException;
 import jade.wrapper.PlatformController;
@@ -32,7 +34,7 @@ public class City extends Agent {
 		entityParser = new Parser();
 		setupRoads(roadsFilePath.toFile());
 		setupCars(carsFilePath.toFile());
-		log.debug("Min distances {}", cityGraph.getMinDistances(1));
+		addBehaviour(new MonitoringBehaviour());
 	}
 	
 	private void setupRoads(File fileWithRoads) {
@@ -62,7 +64,15 @@ public class City extends Agent {
 				log.error("Error while creating agent: {}", e);
 			}   
 		}
-		
+	}
+	
+	
+	private class MonitoringBehaviour extends CyclicBehaviour{
+		@Override
+		public void action() {
+			
+		}
+
 	}
 
 }
