@@ -9,6 +9,7 @@ import jade.core.behaviours.Behaviour;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.core.behaviours.SequentialBehaviour;
 import jade.lang.acl.ACLMessage;
+import ru.spbu.math.ais.mas.roads.City;
 import ru.spbu.math.ais.mas.roads.communication.ShortestWayRequest;
 
 @SuppressWarnings("serial")
@@ -64,7 +65,7 @@ public class Car extends Agent {
 						log.debug("Car {} is estimating its way.", getLocalName());
 						ACLMessage wayRequest = new ACLMessage(ACLMessage.REQUEST);
 						wayRequest.addReceiver(new AID(city, AID.ISLOCALNAME));
-						wayRequest.setConversationId("WAY ESTIMATION");
+						wayRequest.setConversationId(City.SHORTEST_WAY_CONVERSATION);
 						wayRequest.setContentObject(new ShortestWayRequest(src, dst));
 						send(wayRequest);
 						log.debug("Car {} has asked the city for the shortest way. Waiting...", getLocalName());
