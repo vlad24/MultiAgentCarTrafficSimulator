@@ -39,6 +39,7 @@ public class City extends Agent {
 		setupRoads(roadsFilePath.toFile());
 		setupCars(carsFilePath.toFile());
 		addBehaviour(new MonitoringBehaviour(this));
+		//log.debug("Min distances {}", cityGraph.getMinDistances(1,7));
 	}
 	
 	private void setupRoads(File fileWithRoads) {
