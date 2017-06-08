@@ -93,7 +93,7 @@ public class City extends Agent {
 					reply.setContentObject(response);
 					send(reply);
 				}else if(ROAD_UPDATE_CONVERSATION.equalsIgnoreCase(message.getConversationId())){
-					//TODO add road update
+					
 				}
 			} catch (Exception e) {
 				log.error("Error in big city life: {}", e);

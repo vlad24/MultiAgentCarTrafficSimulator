@@ -10,6 +10,7 @@ import jade.core.behaviours.OneShotBehaviour;
 import jade.core.behaviours.SequentialBehaviour;
 import jade.lang.acl.ACLMessage;
 import ru.spbu.math.ais.mas.roads.City;
+import ru.spbu.math.ais.mas.roads.wrappers.communication.Pair;
 import ru.spbu.math.ais.mas.roads.wrappers.communication.ShortestWayRequest;
 
 @SuppressWarnings("serial")
@@ -20,7 +21,8 @@ public class Car extends Agent {
 	private String city;
 	private int src;
 	private int dst;
-	private int current;
+	private Pair currentRoad;
+	private int lastVertex;
 	private long startTime;
 	private long spentTime;
 	private DrivingStrategy strategy;
@@ -84,17 +86,13 @@ public class Car extends Agent {
 				@Override
 				public void action() {
 					//FIXME dummy driving
-					log.debug("Car {} is driving. It is now at {} cross", getLocalName(), current);
-					if (current == src) {
-						current = dst - 100;
-					}else {
-						current++;
-					}
+					log.debug("Car {} is driving. It is now at {} cross", getLocalName(), currentRoad);
+					lastVertex = dst;
 					spentTime += 1;
 				}
 				@Override
 				public boolean done() {
-					return current == dst;
+					return lastVertex == dst;
 				}
 			});
 		}
