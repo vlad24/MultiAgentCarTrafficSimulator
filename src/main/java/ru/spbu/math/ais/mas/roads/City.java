@@ -29,7 +29,7 @@ public class City extends Agent {
 		entityParser = new Parser();
 		setupRoads(roadsFilePath.toFile());
 		setupCars(carsFilePath.toFile());
-		log.debug("minDistances {}", cityGraph.getMinDistances(1));
+		log.debug("Min distances {}", cityGraph.getMinDistances(1));
 	}
 	
 	private void setupRoads(File fileWithRoads) {
@@ -48,7 +48,7 @@ public class City extends Agent {
 						new Object[] {carSrc, carDst});
 				carController.start();
 			} catch (ControllerException e) {
-				log.error("Error: {}", e);
+				log.error("Error while creating agent: {}", e);
 			}   
 		}
 		

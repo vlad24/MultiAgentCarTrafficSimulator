@@ -18,7 +18,7 @@ public class Car extends Agent {
 	@SuppressWarnings("serial")
 	@Override
 	protected void setup() {
-		log.info("{} inited. Got args: {}", getLocalName(), getArguments());
+		log.info("Car {} inited. Got args: {}", getLocalName(), getArguments());
 		
 //		addBehaviour(new CyclicBehaviour() {
 //			@Override
