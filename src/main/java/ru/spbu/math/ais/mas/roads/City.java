@@ -1,13 +1,9 @@
 package ru.spbu.math.ais.mas.roads;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,7 +23,7 @@ public class City extends Agent {
 	
 	@Override
 	protected void setup() {
-		log.debug("{} is ready. Got args:{}", getLocalName(), getArguments());
+		log.info("{} is ready. Got args:{}", getLocalName(), getArguments());
 		Path carsFilePath  = Paths.get("src", "main", "resources", String.valueOf(getArguments()[0]));
 		Path roadsFilePath = Paths.get("src", "main", "resources", String.valueOf(getArguments()[1]));
 		entityParser = new Parser();
