@@ -4,6 +4,7 @@ import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,6 +13,8 @@ import jade.core.Agent;
 import jade.wrapper.AgentController;
 import jade.wrapper.ControllerException;
 import jade.wrapper.PlatformController;
+import ru.spbu.math.ais.mas.roads.cars.Car;
+import ru.spbu.math.ais.mas.roads.cars.DrivingStrategy;
 import ru.spbu.math.ais.mas.roads.wrappers.Graph;
 
 public class City extends Agent {
@@ -39,14 +42,21 @@ public class City extends Agent {
 	
 	private void setupCars(File fileWithCars) {
 		PlatformController container = getContainerController();
-		for (ArrayList<String> carParts: this.entityParser.parseCarParts(fileWithCars)) {
+		Map<String, Object> carConfig = this.entityParser.parseCarFile(fileWithCars);
+		for (ArrayList<String> carParts: (ArrayList<ArrayList<String>>)carConfig.get(Parser.CAR_ITEMS_KEY)) {
 			String carName = carParts.get(0);
 			String carSrc  = carParts.get(1);
 			String carDst  = carParts.get(2);
 			try {
 				AgentController carController = container.createNewAgent(carName, 
 						Car.class.getCanonicalName(), 
-						new Object[] {carSrc, carDst});
+						new Object[] {
+							getLocalName(),
+							carSrc,
+							carDst,
+							carConfig.getOrDefault(Parser.CAR_DRIVING_STRATEGY_KEY, DrivingStrategy.DUMMY) 
+						}
+				);
 				carController.start();
 			} catch (ControllerException e) {
 				log.error("Error while creating agent: {}", e);

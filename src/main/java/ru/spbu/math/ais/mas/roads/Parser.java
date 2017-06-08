@@ -6,6 +6,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,18 +16,24 @@ import jade.lang.acl.ParseException;
 import ru.spbu.math.ais.mas.roads.wrappers.Graph;
 
 public class Parser {
+
 	private static final Logger log = LoggerFactory.getLogger(Parser.class);
 
-	private static final String SEPARATOR = "\t";
-	private static final String COMMENT = "#";
+	private static final String COMMENT_INDICATOR = "#";
+	private static final String CONFIG_INDICATOR  = "@";
+	private static final String INNER_SEPARATOR   = "\t";
+	private static final String PROP_SEPEARATOR   = "=";
+
+	public static final String CAR_ITEMS_KEY            = "carItems";
+	public static final String CAR_DRIVING_STRATEGY_KEY = "strategy";
 
 	public Graph parseGraph(File file) {
 		ArrayList<ArrayList<Integer>> adjMatrix = new ArrayList<ArrayList<Integer>>();
 		try(BufferedReader reader = new BufferedReader(new FileReader(file))){
 			String currentLine;
 			while ((currentLine = reader.readLine()) != null) {
-				if (!currentLine.startsWith(COMMENT) && !currentLine.isEmpty()){
-					String[] elements =  currentLine.split(SEPARATOR);
+				if (!currentLine.startsWith(COMMENT_INDICATOR) && !currentLine.isEmpty()){
+					String[] elements =  currentLine.split(INNER_SEPARATOR);
 					ArrayList<Integer> matrixLine = new ArrayList<Integer>();
 					for (String el : elements) {
 						matrixLine.add(Integer.parseInt(el));
@@ -41,19 +49,24 @@ public class Parser {
 		return new Graph(adjMatrix);
 	}
 	
-	public ArrayList<ArrayList<String>> parseCarParts(File file) {
+	public Map<String, Object> parseCarFile(File file) {
+		Map<String, Object> result = new HashMap<String, Object>();
 		ArrayList<ArrayList<String>> carParts = new ArrayList<ArrayList<String>>();
 		try(BufferedReader reader = new BufferedReader(new FileReader(file))){
 			String currentLine;
 			while ((currentLine = reader.readLine()) != null) {
-				if (!currentLine.startsWith(COMMENT) && !currentLine.isEmpty()){
-					String[] elements =  currentLine.split(SEPARATOR);
+				if (currentLine.startsWith(CONFIG_INDICATOR)) {
+					String[] configKV = currentLine.trim().replace(" ", "").split(PROP_SEPEARATOR);
+					result.put(configKV[0], configKV[1]);
+				}else if (!currentLine.startsWith(COMMENT_INDICATOR) && !currentLine.isEmpty()){
+					String[] elements =  currentLine.split(INNER_SEPARATOR);
 					if (elements.length != 3) {
 						throw new ParseException("Incorrect number of car args at line");
 					}
 					carParts.add(new ArrayList<String>(Arrays.asList(elements)));
 				}
 			}
+			result.put(CAR_ITEMS_KEY, carParts);
 		}
 		catch (ParseException pexc) {
 			log.error("Error while parsing cars: {}", pexc);
@@ -61,6 +74,6 @@ public class Parser {
 		catch (IOException exc) {
 			log.error("Error with cars file: {} ({})", file.getAbsolutePath(), exc);
 		}
-		return carParts;
+		return result;
 	}
 }
