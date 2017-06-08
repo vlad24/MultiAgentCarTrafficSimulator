@@ -10,18 +10,22 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import jade.core.Agent;
-import jade.core.behaviours.Behaviour;
 import jade.core.behaviours.CyclicBehaviour;
+import jade.lang.acl.ACLMessage;
 import jade.wrapper.AgentController;
 import jade.wrapper.ControllerException;
 import jade.wrapper.PlatformController;
 import ru.spbu.math.ais.mas.roads.cars.Car;
 import ru.spbu.math.ais.mas.roads.cars.DrivingStrategy;
+import ru.spbu.math.ais.mas.roads.communication.ShortestWayResponse;
 import ru.spbu.math.ais.mas.roads.wrappers.Graph;
 
 public class City extends Agent {
 	private static final long serialVersionUID = 1L;
 	private static final Logger log = LoggerFactory.getLogger(City.class);
+	
+	public static final String SHORTEST_WAY_CONVERSATION = "shortestWayConversation";
+	public static final String ROAD_UPDATE_CONVERSATION   = "roadUpdateConversation";
 	
 	private Parser entityParser;
 	private Graph cityGraph;
@@ -34,7 +38,7 @@ public class City extends Agent {
 		entityParser = new Parser();
 		setupRoads(roadsFilePath.toFile());
 		setupCars(carsFilePath.toFile());
-		addBehaviour(new MonitoringBehaviour());
+		addBehaviour(new MonitoringBehaviour(this));
 	}
 	
 	private void setupRoads(File fileWithRoads) {
@@ -67,10 +71,28 @@ public class City extends Agent {
 	}
 	
 	
+	@SuppressWarnings("serial")
 	private class MonitoringBehaviour extends CyclicBehaviour{
+		public MonitoringBehaviour(City city) {
+			super(city);
+		}
+
 		@Override
 		public void action() {
-			
+			try {
+				ACLMessage message = myAgent.blockingReceive();
+				if (SHORTEST_WAY_CONVERSATION.equalsIgnoreCase(message.getConversationId())){
+					//FIXME
+					ShortestWayResponse response = new ShortestWayResponse(null);
+					ACLMessage reply = message.createReply();
+					reply.setContentObject(response);
+					send(reply);
+				}else if(ROAD_UPDATE_CONVERSATION.equalsIgnoreCase(message.getConversationId())){
+					//TODO add road update
+				}
+			} catch (Exception e) {
+				log.error("Error in big city life: {}", e);
+			}
 		}
 
 	}
