@@ -19,6 +19,7 @@ import org.slf4j.LoggerFactory;
 import ru.spbu.math.ais.mas.roads.cars.Car;
 import ru.spbu.math.ais.mas.roads.cars.DrivingStrategy;
 import ru.spbu.math.ais.mas.roads.wrappers.Graph;
+import ru.spbu.math.ais.mas.roads.wrappers.communication.RoadsUpdateRequest;
 import ru.spbu.math.ais.mas.roads.wrappers.communication.ShortestWayRequest;
 import ru.spbu.math.ais.mas.roads.wrappers.communication.ShortestWayResponse;
 
@@ -93,7 +94,8 @@ public class City extends Agent {
 					reply.setContentObject(response);
 					send(reply);
 				}else if(ROAD_UPDATE_CONVERSATION.equalsIgnoreCase(message.getConversationId())){
-					
+					RoadsUpdateRequest request = (RoadsUpdateRequest)message.getContentObject();
+					//TODO
 				}
 			} catch (Exception e) {
 				log.error("Error in big city life: {}", e);
