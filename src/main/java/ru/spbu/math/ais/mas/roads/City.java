@@ -25,7 +25,7 @@ public class City extends Agent {
 	private static final Logger log = LoggerFactory.getLogger(City.class);
 	
 	public static final String SHORTEST_WAY_CONVERSATION = "shortestWayConversation";
-	public static final String ROAD_UPDATE_CONVERSATION   = "roadUpdateConversation";
+	public static final String ROAD_UPDATE_CONVERSATION  = "roadUpdateConversation";
 	
 	private Parser entityParser;
 	private Graph cityGraph;
