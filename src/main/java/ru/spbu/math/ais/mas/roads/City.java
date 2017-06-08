@@ -1,5 +1,12 @@
 package ru.spbu.math.ais.mas.roads;
 
+import jade.core.Agent;
+import jade.core.behaviours.CyclicBehaviour;
+import jade.lang.acl.ACLMessage;
+import jade.wrapper.AgentController;
+import jade.wrapper.ControllerException;
+import jade.wrapper.PlatformController;
+
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -9,15 +16,10 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import jade.core.Agent;
-import jade.core.behaviours.CyclicBehaviour;
-import jade.lang.acl.ACLMessage;
-import jade.wrapper.AgentController;
-import jade.wrapper.ControllerException;
-import jade.wrapper.PlatformController;
 import ru.spbu.math.ais.mas.roads.cars.Car;
 import ru.spbu.math.ais.mas.roads.cars.DrivingStrategy;
 import ru.spbu.math.ais.mas.roads.wrappers.Graph;
+import ru.spbu.math.ais.mas.roads.wrappers.communication.ShortestWayRequest;
 import ru.spbu.math.ais.mas.roads.wrappers.communication.ShortestWayResponse;
 
 public class City extends Agent {
@@ -84,7 +86,9 @@ public class City extends Agent {
 				ACLMessage message = myAgent.blockingReceive();
 				if (SHORTEST_WAY_CONVERSATION.equalsIgnoreCase(message.getConversationId())){
 					//FIXME
-					ShortestWayResponse response = new ShortestWayResponse(null);
+					ShortestWayRequest request = (ShortestWayRequest)message.getContentObject();
+					Map<String, Object> wayInfo = cityGraph.getMinDistances(request.getFrom(), request.getTo());
+					ShortestWayResponse response = new ShortestWayResponse(wayInfo);
 					ACLMessage reply = message.createReply();
 					reply.setContentObject(response);
 					send(reply);
