@@ -1,6 +1,8 @@
 package ru.spbu.math.ais.mas.roads.wrappers;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +13,10 @@ import org.slf4j.LoggerFactory;
  * Graph stores all the data in adjacency matrix form. For simplicity
  */
 public class Graph {
+	
+	private static final String DISTANCE_KEY = "distance_to_destination";
+	private static final String ALL_DISTANCES_KEY = "all_distances";
+	private static final String PATH_KEY = "path";
 	
 	private static final Logger log = LoggerFactory.getLogger(Graph.class);
 	private int countRoads;
@@ -26,10 +32,11 @@ public class Graph {
 	public String toString() {
 		return "Graph [adjMatrix=" + adjMatrix + "]";
 	}
-	public int[] getMinDistances(int source, int destination){
+	public Map<String, Object> getMinDistances(int source, int destination){
 		boolean[] visited = new boolean[countRoads];
 		int[] ancestor = new int[countRoads];
 		int[] distances = new int[countRoads];
+		Map<String, Object> distanceInfo = new HashMap<String, Object>();
 		for (int i = 0; i < countRoads; i++) {
 			visited[i] = false;
 			distances[i] = Integer.MAX_VALUE;
@@ -58,9 +65,11 @@ public class Graph {
 			countVisited++;
 			minVertex = index;
 		}
-		ArrayList<Integer> path = getPathToDestination(ancestor, source, destination);
-		log.debug("Path to destination: {}", path );
-		return distances;
+		distanceInfo.put(ALL_DISTANCES_KEY, distances);
+		distanceInfo.put(DISTANCE_KEY, distances[destination]);
+		distanceInfo.put(PATH_KEY, getPathToDestination(ancestor, source, destination));
+		log.debug("distance information: {}", distanceInfo);
+		return distanceInfo;
 	}
 	private ArrayList<Integer> getPathToDestination(int[] ancestors, int source, int destination){
 		log.debug("ancestors: {}", ancestors);
