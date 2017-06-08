@@ -13,20 +13,22 @@ import org.slf4j.LoggerFactory;
 public class Graph {
 	
 	private static final Logger log = LoggerFactory.getLogger(Graph.class);
+	private int countRoads;
 
 	private ArrayList<ArrayList<Integer>> adjMatrix;
 	
 	public Graph(ArrayList<ArrayList<Integer>> matrix) {
 		adjMatrix = matrix;
+		countRoads = adjMatrix.size();
 	}
 	
 	@Override
 	public String toString() {
 		return "Graph [adjMatrix=" + adjMatrix + "]";
 	}
-	public int[] getMinDistances(int source){
-		int countRoads = adjMatrix.size();
+	public int[] getMinDistances(int source, int destination){
 		boolean[] visited = new boolean[countRoads];
+		int[] ancestor = new int[countRoads];
 		int[] distances = new int[countRoads];
 		for (int i = 0; i < countRoads; i++) {
 			visited[i] = false;
@@ -42,7 +44,11 @@ public class Graph {
 			int index = -1;
 			for (int i = 0; i < countRoads; i++) {
 				if (areConnected(minVertex, i) && !visited[i] ){
-					distances[i] = Math.min(distances[i], distances[minVertex] + getEdgeLength(minVertex, i));
+					int newDistance = distances[minVertex] + getEdgeLength(minVertex, i);
+					if (distances[i] > newDistance){
+						distances[i] = newDistance;
+						ancestor[i] = minVertex;						
+					}
 				}					
 				if (!visited[i] && minDistance > distances[i]){
 					minDistance = distances[i];
@@ -52,7 +58,22 @@ public class Graph {
 			countVisited++;
 			minVertex = index;
 		}
+		ArrayList<Integer> path = getPathToDestination(ancestor, source, destination);
+		log.debug("Path to destination: {}", path );
 		return distances;
+	}
+	private ArrayList<Integer> getPathToDestination(int[] ancestors, int source, int destination){
+		log.debug("ancestors: {}", ancestors);
+		log.debug("Find path from {} to {} ", source, destination);
+		ArrayList<Integer> path = new ArrayList<Integer>();
+		int v = ancestors[destination];
+		path.add(destination);
+		while (v != source){
+			path.add(v);
+			v = ancestors[v];
+		}
+		path.add(source);
+		return path;
 	}
 
 	private Integer getEdgeLength(int i, int j) {

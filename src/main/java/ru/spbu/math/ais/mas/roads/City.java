@@ -29,7 +29,7 @@ public class City extends Agent {
 		entityParser = new Parser();
 		setupRoads(roadsFilePath.toFile());
 		setupCars(carsFilePath.toFile());
-		log.debug("Min distances {}", cityGraph.getMinDistances(1));
+		log.debug("Min distances {}", cityGraph.getMinDistances(1,7));
 	}
 	
 	private void setupRoads(File fileWithRoads) {
