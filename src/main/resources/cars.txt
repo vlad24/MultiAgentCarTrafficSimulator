@@ -1,5 +1,5 @@
 #Cars:
 
-bmw
-audi
-lada
+audi	2	8
+lada	2	6
+volvo	3	7

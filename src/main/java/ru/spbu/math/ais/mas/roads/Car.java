@@ -9,15 +9,17 @@ import jade.lang.acl.ACLMessage;
 
 public class Car extends Agent {
 
+	private int src;
+	private int dst;
 
 	private static final Logger log = LoggerFactory.getLogger(Car.class);
-
 	private static final long serialVersionUID = 1L;
-
+	
 	@SuppressWarnings("serial")
 	@Override
 	protected void setup() {
 		log.info("{} inited. Got args: {}", getLocalName(), getArguments());
+		
 //		addBehaviour(new CyclicBehaviour() {
 //			@Override
 //			public void action() {
