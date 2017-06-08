@@ -1,4 +1,4 @@
-package ru.spbu.math.ais.mas.roads.communication;
+package ru.spbu.math.ais.mas.roads.wrappers.communication;
 
 import java.io.Serializable;
 import java.util.Map;

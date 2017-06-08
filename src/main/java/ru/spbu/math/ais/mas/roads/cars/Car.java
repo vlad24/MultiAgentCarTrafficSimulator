@@ -10,7 +10,7 @@ import jade.core.behaviours.OneShotBehaviour;
 import jade.core.behaviours.SequentialBehaviour;
 import jade.lang.acl.ACLMessage;
 import ru.spbu.math.ais.mas.roads.City;
-import ru.spbu.math.ais.mas.roads.communication.ShortestWayRequest;
+import ru.spbu.math.ais.mas.roads.wrappers.communication.ShortestWayRequest;
 
 @SuppressWarnings("serial")
 public class Car extends Agent {

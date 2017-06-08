@@ -17,8 +17,8 @@ import jade.wrapper.ControllerException;
 import jade.wrapper.PlatformController;
 import ru.spbu.math.ais.mas.roads.cars.Car;
 import ru.spbu.math.ais.mas.roads.cars.DrivingStrategy;
-import ru.spbu.math.ais.mas.roads.communication.ShortestWayResponse;
 import ru.spbu.math.ais.mas.roads.wrappers.Graph;
+import ru.spbu.math.ais.mas.roads.wrappers.communication.ShortestWayResponse;
 
 public class City extends Agent {
 	private static final long serialVersionUID = 1L;
