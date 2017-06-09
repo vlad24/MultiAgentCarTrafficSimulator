@@ -23,6 +23,7 @@ import ru.spbu.math.ais.mas.roads.wrappers.communication.ShortestWayResponse;
 public class City extends Agent {
 	private static final long serialVersionUID = 1L;
 	private static final Logger log = LoggerFactory.getLogger(City.class);
+	private static final Path dataFolder = Paths.get("src", "main", "resources", "data");
 	
 	public static final String SHORTEST_WAY_CONVERSATION = "shortestWayConversation";
 	public static final String ROAD_UPDATE_CONVERSATION  = "roadUpdateConversation";
@@ -33,8 +34,8 @@ public class City extends Agent {
 	@Override
 	protected void setup() {
 		log.info("{} is ready. Got args:{}", getLocalName(), getArguments());
-		Path carsFilePath  = Paths.get("src", "main", "resources", String.valueOf(getArguments()[0]));
-		Path roadsFilePath = Paths.get("src", "main", "resources", String.valueOf(getArguments()[1]));
+		Path carsFilePath  = Paths.get(dataFolder.toString(), String.valueOf(getArguments()[0]));
+		Path roadsFilePath = Paths.get(dataFolder.toString(), String.valueOf(getArguments()[1]));
 		entityParser = new Parser();
 		setupRoads(roadsFilePath.toFile());
 		setupCars(carsFilePath.toFile());
