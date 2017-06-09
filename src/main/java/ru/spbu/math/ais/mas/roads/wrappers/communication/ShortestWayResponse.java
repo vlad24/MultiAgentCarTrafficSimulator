@@ -21,4 +21,9 @@ public class ShortestWayResponse implements Serializable{
 		this.wayInfo = wayInfo;
 	}
 
+	@Override
+	public String toString() {
+		return "ShortestWayResponse [wayInfo=" + wayInfo + "]";
+	}
+
 }
