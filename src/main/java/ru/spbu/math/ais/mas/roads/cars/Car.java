@@ -2,7 +2,6 @@ package ru.spbu.math.ais.mas.roads.cars;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Queue;
 import java.util.concurrent.TimeUnit;
 
