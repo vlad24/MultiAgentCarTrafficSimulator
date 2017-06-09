@@ -2,7 +2,9 @@ package ru.spbu.math.ais.mas.roads.wrappers;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
+import java.util.Queue;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,9 +16,9 @@ import org.slf4j.LoggerFactory;
  */
 public class Graph {
 	
-	private static final String DISTANCE_KEY = "distance_to_destination";
-	private static final String ALL_DISTANCES_KEY = "all_distances";
-	private static final String PATH_KEY = "path";
+	public static final String DISTANCE_KEY = "distance_to_destination";
+	public static final String ALL_DISTANCES_KEY = "all_distances";
+	public static final String PATH_KEY = "path";
 	
 	private static final Logger log = LoggerFactory.getLogger(Graph.class);
 	private int countRoads;
@@ -71,10 +73,10 @@ public class Graph {
 		log.debug("distance information: {}", distanceInfo);
 		return distanceInfo;
 	}
-	private ArrayList<Integer> getPathToDestination(int[] ancestors, int source, int destination){
+	private Queue<Integer> getPathToDestination(int[] ancestors, int source, int destination){
 		log.debug("ancestors: {}", ancestors);
 		log.debug("Find path from {} to {} ", source, destination);
-		ArrayList<Integer> path = new ArrayList<Integer>();
+		Queue<Integer> path = new LinkedList<Integer>();
 		int v = ancestors[destination];
 		path.add(destination);
 		while (v != source){
