@@ -1,7 +1,8 @@
-package ru.spbu.math.ais.mas.roads.cars;
+package ru.spbu.math.ais.mas.roads.car;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.Map;
 import java.util.Queue;
 import java.util.concurrent.TimeUnit;
 
@@ -11,10 +12,10 @@ import org.slf4j.LoggerFactory;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.Behaviour;
-import jade.core.behaviours.OneShotBehaviour;
-import jade.core.behaviours.SequentialBehaviour;
 import jade.lang.acl.ACLMessage;
-import ru.spbu.math.ais.mas.roads.City;
+import jade.lang.acl.UnreadableException;
+import ru.spbu.math.ais.mas.roads.Configurator;
+import ru.spbu.math.ais.mas.roads.city.City;
 import ru.spbu.math.ais.mas.roads.wrappers.Graph;
 import ru.spbu.math.ais.mas.roads.wrappers.communication.Pair;
 import ru.spbu.math.ais.mas.roads.wrappers.communication.RoadsUpdateRequest;
@@ -27,120 +28,146 @@ public class Car extends Agent {
 	private static final Logger log = LoggerFactory.getLogger(Car.class);
 	private static final long serialVersionUID = 1L;
 
-	private String city;
-	private int src;
-	private int dst;
-	private Pair currentRoad;
-	private int lastVertex;
-	private long spentTime;
+	private String carName;
 	private DrivingStrategy strategy;
 
 	@Override
+	@SuppressWarnings("unchecked")
 	protected void setup() {
-		log.info("Car {} inited. Got args: {}", getLocalName(), getArguments());
-		city = String.valueOf(getArguments()[0]);
-		src  = Integer.parseInt(getArguments()[1].toString());
-		dst  = Integer.parseInt(getArguments()[2].toString());
-		strategy = DrivingStrategy.valueOf(getArguments()[3].toString());
+		carName          = getLocalName();
+		String cityName  = String.valueOf(getArguments()[0]);
+		int source       = Integer.parseInt(getArguments()[1].toString());
+		int destination  = Integer.parseInt(getArguments()[2].toString());
+		strategy         = DrivingStrategy.valueOf(getArguments()[3].toString());
+		Map<String, Object> strategyParams = (Map<String, Object>) getArguments()[4];
+		log.info("Car {} inited.", carName , getArguments());
 		switch (strategy) {
 		case DUMMY:
-			addBehaviour(new DummyDrivingBehaviour(this));
+			addBehaviour(new BasicDrivingBehaviour(this, cityName, source, destination, null));
 			break;
 		case ITERATIVE:
-			throw new UnsupportedOperationException();
+			int refreshPeriod = Integer.parseInt(strategyParams.get(Configurator.CAR_REFRESH_KEY).toString());
+			addBehaviour(new BasicDrivingBehaviour(this, cityName, source, destination, refreshPeriod));
+			break;
 		case INTELLIGENT:
 			throw new UnsupportedOperationException();
 		default:
-			addBehaviour(new DummyDrivingBehaviour(this));
+			addBehaviour(new BasicDrivingBehaviour(this, cityName, source, destination, null));
 			break;
 		}
 	}
 
 	/**
 	 * @author vlad, polina
-	 *
-	 *	Class representing dummy driving behaviour:
-	 *	Car figures out its shortest way and keeps sticking to it regardless traffic conditions
+	 * <br>
+	 *	Class representing basic driving behavior:
+	 *	Car figures out its shortest way and keeps sticking to it.
+	 *  A car can update the information about current city traffic state with some fixed period (if provided).
 	 */
-	private class DummyDrivingBehaviour extends SequentialBehaviour{
-		
-		protected Queue<Integer> path;
-		
-		public DummyDrivingBehaviour(Car car) {
-			super(car);
-			//WAY CALCULATION STAGE (Figuring out where we should drive)
-			this.addSubBehaviour(new OneShotBehaviour(car) {
-				@Override
-				public void action() {
-					try {
-						log.debug("Car {} is estimating its way.", getLocalName());
-						send(constructMessageForCity(
-								City.SHORTEST_WAY_CONVERSATION,
-								new ShortestWayRequest(src, dst))
-						);
-						log.debug("Car {} has asked the city for the shortest way. Waiting...", getLocalName());
-						ShortestWayResponse response = (ShortestWayResponse) myAgent.blockingReceive().getContentObject();
-						log.debug("Car {} has got a response : {}", getLocalName(), response.toString());
-						DummyDrivingBehaviour.this.path = (Queue<Integer>)response.getWayInfo().get(Graph.PATH_KEY);
-						assert (path.size() > 1);
-						lastVertex = src;
-						path.remove(); // get rid of the first src vertex
-					} catch (Exception e) {
-						log.error("Error while getting initial way {}", e);
-					}
-				}
+	private class BasicDrivingBehaviour extends Behaviour{
+		private String cityName;
+		private int source;
+		private int destination;
+		private Pair currentRoad;
+		private int lastReachedVertex;
+		private long spentTime;
+		private int roadsPassed;
+		int refreshPeriod;
+		protected Queue<Integer> optimalRoute;
 
-			});
-			//DRIVING STAGE(actual driving simulation)
-			this.addSubBehaviour(new Behaviour(car) {
-				@Override
-				public void action() {
-					try {
-						Integer nextVertex = path.remove();
-						Pair nextRoad = new Pair(lastVertex, nextVertex);
-						log.debug("Car {} wants to turn on {}.", getLocalName(), nextRoad);
-						send(constructMessageForCity(
-								City.SHORTEST_WAY_CONVERSATION,
-								new RoadsUpdateRequest(currentRoad, nextRoad))
+		public BasicDrivingBehaviour(Car car, String cityName, int src, int dst, Integer refreshPeriod) {
+			super(car);
+			this.refreshPeriod = (refreshPeriod == null)? Integer.MAX_VALUE : refreshPeriod;
+			this.source = src;
+			this.destination = dst;
+			this.lastReachedVertex = src;
+			this.roadsPassed = 0;
+			this.spentTime = 0;
+			this.cityName = cityName;
+		}
+		@Override
+		public void action() {
+			try {
+				if (roadsPassed % refreshPeriod == 0) {
+					updateRoute();
+				}
+				Integer nextVertex = optimalRoute.remove();
+				Pair targetRoad = new Pair(lastReachedVertex, nextVertex);
+				log.debug("Car {} wants to turn on road {}.", carName, targetRoad);
+				send(constructMessageForCity(
+						ACLMessage.REQUEST,
+						City.ROADS_UPDATE_CONVERSATION,
+						new RoadsUpdateRequest(currentRoad, targetRoad))
 						);
-						log.debug("Car {} is waiting for city response...", getLocalName());
-						RoadsUpdateResonse response = (RoadsUpdateResonse) myAgent.blockingReceive().getContentObject();
-						int timeOnNewRoad = response.getNewRoadWorkload();
-						currentRoad = nextRoad;
-						log.debug("Car {} is driving at {} for {} sec.", getLocalName(), currentRoad, timeOnNewRoad);
-						TimeUnit.SECONDS.sleep(timeOnNewRoad);
-						log.debug("Car {} has drived the road.", getLocalName());
-						lastVertex = currentRoad.getSecond();
-						spentTime += timeOnNewRoad;
-					} catch (Exception e) {
-						log.error("Car {} has crashed.", getLocalName());
-					}
-				}
-				@Override
-				public boolean done() {
-					return lastVertex == dst;
-				}
-			});
+				log.debug("Car {} is waiting for city response...", carName);
+				RoadsUpdateResonse response = (RoadsUpdateResonse) myAgent.blockingReceive().getContentObject();
+				int timeOnTargetRoad = response.getNewRoadWorkload();
+				currentRoad = targetRoad;
+				log.debug("Car {} is driving at road {} for {} sec.", carName, currentRoad, timeOnTargetRoad);
+				TimeUnit.SECONDS.sleep(timeOnTargetRoad);
+				log.debug("Car {} has driven the road.", carName);
+				lastReachedVertex = nextVertex;
+				spentTime += timeOnTargetRoad;
+				roadsPassed++;
+			} catch (Exception e) {
+				log.error("Car {} has crashed:{}", carName, e);
+				e.printStackTrace();
+				doDelete();
+			}
 		}
 
+		@Override
+		public boolean done() {
+			return lastReachedVertex == destination;
+		}
 
 		@Override
 		public int onEnd() {
-			log.debug("Car {} has reached its destination spending {} s.", getLocalName(), spentTime);
-			myAgent.doDelete();
-			log.debug("Car {} is shut down.", getLocalName());
-			return 0;
+			try {
+				log.debug("Car {} has reached its destination and spent {} sec in total", carName, spentTime);
+				send(constructMessageForCity(ACLMessage.INFORM, City.FINISH_TRIP_CONVERSATION, spentTime));
+				log.debug("Car {} has sent its report.", carName);
+				myAgent.doDelete();
+				log.debug("Car {} is shut down.", carName);
+				return 0;
+			} catch (IOException e) {
+				e.printStackTrace();
+				return 1;
+			}
 		}
-		// HELPER METHODS
-		private ACLMessage constructMessageForCity(String subject, Serializable content) throws IOException {
-			ACLMessage msg = new ACLMessage(ACLMessage.REQUEST);
-			msg.addReceiver(new AID(city, AID.ISLOCALNAME));
-			msg.setConversationId(subject);
+
+		/*
+		 * Helper methods
+		 */
+		@SuppressWarnings("unchecked")
+		private void updateRoute() {
+			log.debug("Car {} is estimating its way.", carName);
+			try {
+				send(constructMessageForCity(
+						ACLMessage.REQUEST,
+						City.SHORTEST_WAY_CONVERSATION,
+						new ShortestWayRequest(lastReachedVertex, destination))
+						);
+				log.debug("Car {} has asked the city for the shortest way. Waiting...", carName);
+				ShortestWayResponse response = (ShortestWayResponse) myAgent.blockingReceive().getContentObject();
+				log.debug("Car {} has got a response : {}", carName, response.toString());
+				BasicDrivingBehaviour.this.optimalRoute = (Queue<Integer>)response.getWayInfo().get(Graph.PATH_KEY);
+				assert (optimalRoute.size() > 1);
+				lastReachedVertex = source;
+				optimalRoute.remove(); // get rid of the first 'source'-vertex
+			} catch (IOException | UnreadableException e) {
+				log.error("Error rebuilding route : {}", e);
+			}
+		}
+
+		private ACLMessage constructMessageForCity(int performative, String conversationTopic, Serializable content) throws IOException {
+			ACLMessage msg = new ACLMessage(performative);
+			msg.addReceiver(new AID(cityName, AID.ISLOCALNAME));
+			msg.setConversationId(conversationTopic);
 			msg.setContentObject(content);
 			return msg;
 		}
-		
+
 	}	
-	
 
 }
