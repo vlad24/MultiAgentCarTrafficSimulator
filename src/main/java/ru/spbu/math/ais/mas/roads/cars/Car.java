@@ -84,7 +84,10 @@ public class Car extends Agent {
 						ShortestWayResponse response = (ShortestWayResponse) myAgent.blockingReceive().getContentObject();
 						log.debug("Car {} has got a response : {}", getLocalName(), response.toString());
 						DummyDrivingBehaviour.this.path = (Queue<Integer>)response.getWayInfo().get(Graph.PATH_KEY);
+						assert (path.size() > 1);
 						startTime = 0;
+						lastVertex = src;
+						path.remove(); // get rid of the first src vertex
 					} catch (Exception e) {
 						log.error("Error while getting initial way {}", e);
 					}
@@ -98,6 +101,7 @@ public class Car extends Agent {
 					try {
 						Integer nextVertex = path.remove();
 						Pair nextRoad = new Pair(lastVertex, nextVertex);
+						log.debug("Car {} wants to turn on {}.", getLocalName(), nextRoad);
 						send(constructMessageForCity(
 								City.SHORTEST_WAY_CONVERSATION,
 								new RoadsUpdateRequest(currentRoad, nextRoad))
