@@ -1,6 +1,8 @@
 package ru.spbu.math.ais.mas.roads.wrappers.communication;
 
-public class Pair {
+import java.io.Serializable;
+
+public class Pair implements Serializable{
 	int first;
 	int second;
 	public Pair(int first, int second) {

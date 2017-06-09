@@ -1,5 +1,6 @@
 package ru.spbu.math.ais.mas.roads.wrappers;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -14,7 +15,8 @@ import org.slf4j.LoggerFactory;
  * Graph implementation.
  * Graph stores all the data in adjacency matrix form. For simplicity
  */
-public class Graph {
+@SuppressWarnings("serial")
+public class Graph implements Serializable{
 	
 	public static final String DISTANCE_KEY = "distance_to_destination";
 	public static final String ALL_DISTANCES_KEY = "all_distances";
