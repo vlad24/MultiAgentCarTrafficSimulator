@@ -26,6 +26,7 @@ public class Parser {
 
 	public static final String CAR_ITEMS_KEY            = "carItems";
 	public static final String CAR_DRIVING_STRATEGY_KEY = "strategy";
+	public static final String CAR_REFRESH_KEY = "refresh";
 
 	public Graph parseGraph(File file) {
 		ArrayList<ArrayList<Integer>> adjMatrix = new ArrayList<ArrayList<Integer>>();
