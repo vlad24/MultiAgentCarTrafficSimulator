@@ -1,6 +1,8 @@
 package ru.spbu.math.ais.mas.roads.wrappers.communication;
 
-public class RoadsUpdateRequest {
+import java.io.Serializable;
+
+public class RoadsUpdateRequest implements Serializable{
 	Pair roadLleft;
 	Pair roadOccupied;
 	public Pair getRoadLleft() {

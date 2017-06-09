@@ -1,5 +1,11 @@
 package ru.spbu.math.ais.mas.roads.cars;
 
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Queue;
+import java.util.concurrent.TimeUnit;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -10,8 +16,12 @@ import jade.core.behaviours.OneShotBehaviour;
 import jade.core.behaviours.SequentialBehaviour;
 import jade.lang.acl.ACLMessage;
 import ru.spbu.math.ais.mas.roads.City;
+import ru.spbu.math.ais.mas.roads.wrappers.Graph;
 import ru.spbu.math.ais.mas.roads.wrappers.communication.Pair;
+import ru.spbu.math.ais.mas.roads.wrappers.communication.RoadsUpdateRequest;
+import ru.spbu.math.ais.mas.roads.wrappers.communication.RoadsUpdateResonse;
 import ru.spbu.math.ais.mas.roads.wrappers.communication.ShortestWayRequest;
+import ru.spbu.math.ais.mas.roads.wrappers.communication.ShortestWayResponse;
 
 @SuppressWarnings("serial")
 public class Car extends Agent {
@@ -55,40 +65,54 @@ public class Car extends Agent {
 	 *	Car figures out its shortest way and keeps sticking to it regardless traffic conditions
 	 */
 	private class DummyDrivingBehaviour extends SequentialBehaviour{
-
-		//WAY CALCULATION STAGE
+		
+		protected Queue<Integer> path;
+		
 		public DummyDrivingBehaviour(Car car) {
 			super(car);
-			// Figuring out where we should drive
+			//WAY CALCULATION STAGE (Figuring out where we should drive)
 			this.addSubBehaviour(new OneShotBehaviour(car) {
 				@Override
 				public void action() {
 					try {
 						log.debug("Car {} is estimating its way.", getLocalName());
-						ACLMessage wayRequest = new ACLMessage(ACLMessage.REQUEST);
-						wayRequest.addReceiver(new AID(city, AID.ISLOCALNAME));
-						wayRequest.setConversationId(City.SHORTEST_WAY_CONVERSATION);
-						wayRequest.setContentObject(new ShortestWayRequest(src, dst));
-						send(wayRequest);
+						send(constructMessageForCity(
+								City.SHORTEST_WAY_CONVERSATION,
+								new ShortestWayRequest(src, dst))
+						);
 						log.debug("Car {} has asked the city for the shortest way. Waiting...", getLocalName());
-						ACLMessage wayResponse = myAgent.blockingReceive();
-						assert (wayResponse != null);
-						log.debug("Car {} has got a response!", getLocalName());
+						ShortestWayResponse response = (ShortestWayResponse) myAgent.blockingReceive().getContentObject();
+						log.debug("Car {} has got a response : {}", getLocalName(), response.toString());
+						DummyDrivingBehaviour.this.path = (Queue<Integer>)response.getWayInfo().get(Graph.PATH_KEY);
 						startTime = 0;
 					} catch (Exception e) {
 						log.error("Error while getting initial way {}", e);
 					}
 				}
-			});
 
-			//DRIVING STAGE
+			});
+			//DRIVING STAGE(actual driving simulation)
 			this.addSubBehaviour(new Behaviour(car) {
 				@Override
 				public void action() {
-					//FIXME dummy driving
-					log.debug("Car {} is driving. It is now at {} cross", getLocalName(), currentRoad);
-					lastVertex = dst;
-					spentTime += 1;
+					try {
+						Integer nextVertex = path.remove();
+						Pair nextRoad = new Pair(lastVertex, nextVertex);
+						send(constructMessageForCity(
+								City.SHORTEST_WAY_CONVERSATION,
+								new RoadsUpdateRequest(currentRoad, nextRoad))
+						);
+						RoadsUpdateResonse response = (RoadsUpdateResonse) myAgent.blockingReceive().getContentObject();
+						int timeOnNewRoad = response.getNewRoadWorkload();
+						currentRoad = nextRoad;
+						log.debug("Car {} is driving at {} for {} sec.", getLocalName(), currentRoad, timeOnNewRoad);
+						TimeUnit.SECONDS.sleep(timeOnNewRoad);
+						log.debug("Car {} has drived the road.", getLocalName());
+						lastVertex = currentRoad.getSecond();
+						spentTime += timeOnNewRoad;
+					} catch (Exception e) {
+						log.error("Car {} has crashed.", getLocalName());
+					}
 				}
 				@Override
 				public boolean done() {
@@ -97,6 +121,7 @@ public class Car extends Agent {
 			});
 		}
 
+
 		@Override
 		public int onEnd() {
 			log.debug("Car {} has reached its destination spending {} s.", getLocalName(), spentTime);
@@ -104,6 +129,16 @@ public class Car extends Agent {
 			log.debug("Car {} is shut down.", getLocalName());
 			return 0;
 		}
-	}
+		// HELPER METHODS
+		private ACLMessage constructMessageForCity(String subject, Serializable content) throws IOException {
+			ACLMessage msg = new ACLMessage(ACLMessage.REQUEST);
+			msg.addReceiver(new AID(city, AID.ISLOCALNAME));
+			msg.setConversationId(subject);
+			msg.setContentObject(content);
+			return msg;
+		}
+		
+	}	
+	
 
 }
