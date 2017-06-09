@@ -32,7 +32,6 @@ public class Car extends Agent {
 	private int dst;
 	private Pair currentRoad;
 	private int lastVertex;
-	private long startTime;
 	private long spentTime;
 	private DrivingStrategy strategy;
 
@@ -84,7 +83,6 @@ public class Car extends Agent {
 						log.debug("Car {} has got a response : {}", getLocalName(), response.toString());
 						DummyDrivingBehaviour.this.path = (Queue<Integer>)response.getWayInfo().get(Graph.PATH_KEY);
 						assert (path.size() > 1);
-						startTime = 0;
 						lastVertex = src;
 						path.remove(); // get rid of the first src vertex
 					} catch (Exception e) {
@@ -105,6 +103,7 @@ public class Car extends Agent {
 								City.SHORTEST_WAY_CONVERSATION,
 								new RoadsUpdateRequest(currentRoad, nextRoad))
 						);
+						log.debug("Car {} is waiting for city response...", getLocalName());
 						RoadsUpdateResonse response = (RoadsUpdateResonse) myAgent.blockingReceive().getContentObject();
 						int timeOnNewRoad = response.getNewRoadWorkload();
 						currentRoad = nextRoad;
