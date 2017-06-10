@@ -1,0 +1,41 @@
+276  [configurator] INFO  r.s.math.ais.mas.roads.Configurator - Configuring app with configs taken from (cars)src/main/resources/data/cars_small.txt, (city)src/main/resources/data/perm.txt
+285  [configurator] INFO  r.s.math.ais.mas.roads.Configurator - Configuring city Perm with 21 vertices and 49 edges. Workload delta=10
+292  [configurator] INFO  r.s.math.ais.mas.roads.Configurator - Configuring 3 cars that drive DUMMY with params {}
+293  [Perm] INFO  r.spbu.math.ais.mas.roads.city.City - Perm is ready. Got args:[Graph [adjMatrix=[[3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 1, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 5], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 7, 1, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 5, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 11, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 3, 3, 0, 0, 3, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 5, 0], [0, 0, 0, 3, 3, 0, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 0, 0, 0, 11, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 3, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 7, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 5, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 3, 3, 0, 0, 5, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 5, 0, 0, 2, 1, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 2, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 3, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 1, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]], 10]
+303  [audi] INFO  ru.spbu.math.ais.mas.roads.car.Car - Car audi inited.
+305  [audi] DEBUG ru.spbu.math.ais.mas.roads.car.Car - Car audi is registering in city.
+308  [lada] INFO  ru.spbu.math.ais.mas.roads.car.Car - Car lada inited.
+308  [lada] DEBUG ru.spbu.math.ais.mas.roads.car.Car - Car lada is registering in city.
+311  [volvo] INFO  ru.spbu.math.ais.mas.roads.car.Car - Car volvo inited.
+311  [volvo] DEBUG ru.spbu.math.ais.mas.roads.car.Car - Car volvo is registering in city.
+443  [lada] DEBUG ru.spbu.math.ais.mas.roads.car.Car - Car lada is building its route.
+443  [audi] DEBUG ru.spbu.math.ais.mas.roads.car.Car - Car audi is building its route.
+443  [volvo] DEBUG ru.spbu.math.ais.mas.roads.car.Car - Car volvo is building its route.
+455  [audi] DEBUG ru.spbu.math.ais.mas.roads.car.Car - Car audi has set its new route: [1, 14, 7].
+456  [volvo] DEBUG ru.spbu.math.ais.mas.roads.car.Car - Car volvo has set its new route: [2, 16, 5, 10, 7].
+457  [lada] DEBUG ru.spbu.math.ais.mas.roads.car.Car - Car lada has set its new route: [1, 14, 7].
+463  [volvo] DEBUG ru.spbu.math.ais.mas.roads.car.Car - Car volvo is driving at road (2, 16) for 11 sec.
+464  [lada] DEBUG ru.spbu.math.ais.mas.roads.car.Car - Car lada is driving at road (1, 14) for 15 sec.
+466  [audi] DEBUG ru.spbu.math.ais.mas.roads.car.Car - Car audi is driving at road (1, 14) for 25 sec.
+11463 [volvo] DEBUG ru.spbu.math.ais.mas.roads.car.Car - Car volvo has already passed 1 roads.
+11466 [volvo] DEBUG ru.spbu.math.ais.mas.roads.car.Car - Car volvo is driving at road (16, 5) for 13 sec.
+15465 [lada] DEBUG ru.spbu.math.ais.mas.roads.car.Car - Car lada has already passed 1 roads.
+15468 [lada] DEBUG ru.spbu.math.ais.mas.roads.car.Car - Car lada is driving at road (14, 7) for 17 sec.
+24466 [volvo] DEBUG ru.spbu.math.ais.mas.roads.car.Car - Car volvo has already passed 2 roads.
+24468 [volvo] DEBUG ru.spbu.math.ais.mas.roads.car.Car - Car volvo is driving at road (5, 10) for 13 sec.
+25466 [audi] DEBUG ru.spbu.math.ais.mas.roads.car.Car - Car audi has already passed 1 roads.
+25469 [audi] DEBUG ru.spbu.math.ais.mas.roads.car.Car - Car audi is driving at road (14, 7) for 27 sec.
+32468 [lada] DEBUG ru.spbu.math.ais.mas.roads.car.Car - Car lada has already passed 2 roads.
+32469 [lada] INFO  ru.spbu.math.ais.mas.roads.car.Car - Car lada has reached its destination and spent 32 sec in total
+32472 [lada] DEBUG ru.spbu.math.ais.mas.roads.car.Car - Car lada is shut down.
+37469 [volvo] DEBUG ru.spbu.math.ais.mas.roads.car.Car - Car volvo has already passed 3 roads.
+37471 [volvo] DEBUG ru.spbu.math.ais.mas.roads.car.Car - Car volvo is driving at road (10, 7) for 17 sec.
+52469 [audi] DEBUG ru.spbu.math.ais.mas.roads.car.Car - Car audi has already passed 2 roads.
+52469 [audi] INFO  ru.spbu.math.ais.mas.roads.car.Car - Car audi has reached its destination and spent 52 sec in total
+52470 [audi] DEBUG ru.spbu.math.ais.mas.roads.car.Car - Car audi is shut down.
+54471 [volvo] DEBUG ru.spbu.math.ais.mas.roads.car.Car - Car volvo has already passed 4 roads.
+54472 [volvo] INFO  ru.spbu.math.ais.mas.roads.car.Car - Car volvo has reached its destination and spent 54 sec in total
+54472 [volvo] DEBUG ru.spbu.math.ais.mas.roads.car.Car - Car volvo is shut down.
+54473 [Perm] INFO  r.spbu.math.ais.mas.roads.city.City - City is destroyed
+54473 [Perm] INFO  r.spbu.math.ais.mas.roads.city.City - City has finished successfully. Car stats:
+Statistics [count=3, sum=138, max=54, avg=46.0]
