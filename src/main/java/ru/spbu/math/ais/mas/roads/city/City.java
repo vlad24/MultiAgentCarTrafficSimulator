@@ -1,5 +1,9 @@
 package ru.spbu.math.ais.mas.roads.city;
 
+import jade.core.Agent;
+import jade.core.behaviours.Behaviour;
+import jade.lang.acl.ACLMessage;
+
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.Map;
@@ -7,10 +11,6 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import jade.core.Agent;
-import jade.core.behaviours.Behaviour;
-import jade.core.behaviours.CyclicBehaviour;
-import jade.lang.acl.ACLMessage;
 import ru.spbu.math.ais.mas.roads.wrappers.Graph;
 import ru.spbu.math.ais.mas.roads.wrappers.communication.RoadsUpdateRequest;
 import ru.spbu.math.ais.mas.roads.wrappers.communication.RoadsUpdateResonse;
@@ -18,7 +18,6 @@ import ru.spbu.math.ais.mas.roads.wrappers.communication.ShortestWayRequest;
 import ru.spbu.math.ais.mas.roads.wrappers.communication.ShortestWayResponse;
 import ru.spbu.math.ais.mas.roads.wrappers.communication.Statistics;
 import ru.spbu.math.ais.mas.roads.wrappers.communication.TripFinishReport;
-import ru.spbu.math.ais.mas.roads.wrappers.communication.TripStartRequest;
 import ru.spbu.math.ais.mas.roads.wrappers.communication.TripStartResponse;
 
 public class City extends Agent {
@@ -32,10 +31,7 @@ public class City extends Agent {
 	private Graph cityGraph;
 	private Statistics carStats;
 	private int workloadDelta;
-	private int activeCars;
-	
-	
-	
+	private int activeCarsAmount;
 	
 	@Override
 	protected void setup() {
@@ -45,7 +41,7 @@ public class City extends Agent {
 		addBehaviour(new ServerBehaviour(this));
 		log.trace("Min distances {}", cityGraph.getMinDistances(1,7));
 		carStats = new Statistics();
-		activeCars = 0;
+		activeCarsAmount = 0;
 	}
 	
 	@SuppressWarnings("serial")
@@ -59,11 +55,10 @@ public class City extends Agent {
 		public void action() {
 			try {
 				ACLMessage message = myAgent.blockingReceive();
-				log.debug("City has received a message! {}", message);
 				if (START_TRIP_CONVERSATION.equalsIgnoreCase(message.getConversationId())) {
-					TripStartRequest request = (TripStartRequest)message.getContentObject();
+					//TripStartRequest request = (TripStartRequest)message.getContentObject();
 					carStats.increaseCount();	
-					activeCars++;
+					activeCarsAmount++;
 					replyWithContent(message, new TripStartResponse(true));
 				}else if (SHORTEST_WAY_CONVERSATION.equalsIgnoreCase(message.getConversationId())){
 					ShortestWayRequest request = (ShortestWayRequest)message.getContentObject();
@@ -71,7 +66,6 @@ public class City extends Agent {
 					replyWithContent(message, new ShortestWayResponse(wayInfo));
 				}else if(ROADS_UPDATE_CONVERSATION.equalsIgnoreCase(message.getConversationId())){
 					RoadsUpdateRequest request = (RoadsUpdateRequest)message.getContentObject();
-					log.debug("City has received {}", request);
 					if (request.getRoadLeft() != null){
 						cityGraph.decreaseEdgeLength(request.getRoadLeft().getFirst(),
 								request.getRoadLeft().getSecond(), workloadDelta);						
@@ -85,7 +79,7 @@ public class City extends Agent {
 							request.getStopRoad().getSecond(), workloadDelta);
 					carStats.increaseSum(request.getSpentTime());
 					carStats.updateMax(request.getSpentTime());
-					activeCars--;
+					activeCarsAmount--;
 				}
 			} catch (Exception e) {
 				log.error("Error in big city life!", e);
@@ -94,13 +88,13 @@ public class City extends Agent {
 		
 		@Override
 		public boolean done() {
-			return activeCars == 0;
+			return activeCarsAmount == 0;
 		}
 		
 		@Override
 		public int onEnd() {
 			log.info("City is destroyed");
-			if (activeCars != 0){
+			if (activeCarsAmount != 0){
 				log.error("City has driving cars =(");
 				return 1;
 			}else{
@@ -114,7 +108,6 @@ public class City extends Agent {
 			reply.setContentObject(response);
 			send(reply);
 		}
-
 
 	}
 

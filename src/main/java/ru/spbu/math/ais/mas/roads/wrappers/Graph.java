@@ -31,6 +31,7 @@ public class Graph implements Serializable{
 	public Graph(ArrayList<ArrayList<Integer>> matrix) {
 		adjMatrix = matrix;
 		countRoads = adjMatrix.size();
+		log.trace("Graph has been constructed");
 	}
 	
 	@Override
@@ -73,12 +74,9 @@ public class Graph implements Serializable{
 		distanceInfo.put(ALL_DISTANCES_KEY, distances);
 		distanceInfo.put(DISTANCE_KEY, distances[destination]);
 		distanceInfo.put(PATH_KEY, getPathToDestination(ancestor, source, destination));
-		log.debug("distance information: {}", distanceInfo);
 		return distanceInfo;
 	}
 	private Queue<Integer> getPathToDestination(int[] ancestors, int source, int destination){
-		log.debug("ancestors: {}", ancestors);
-		log.debug("Find path from {} to {} ", source, destination);
 		Deque<Integer> path = new LinkedList<Integer>();
 		int v = ancestors[destination];
 		path.addFirst(destination);

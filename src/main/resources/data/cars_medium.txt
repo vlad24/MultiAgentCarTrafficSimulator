@@ -1,0 +1,10 @@
+#Driving strategy:
+@strategy=iterative
+@refresh=2
+#Cars:
+audi	2	8
+lada	2	7
+volvo	2	6
+skoda	2	7
+dodge	2	6
+mini	2	8

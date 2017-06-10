@@ -100,25 +100,25 @@ public class Car extends Agent {
 				}
 				Integer nextVertex = optimalRoute.remove();
 				Pair targetRoad = new Pair(lastReachedVertex, nextVertex);
-				log.debug("Car {} wants to turn on road {}.", carName, targetRoad);
+				log.trace("Car {} wants to turn on road {}.", carName, targetRoad);
 				send(constructMessageForCity(
 						ACLMessage.REQUEST,
 						City.ROADS_UPDATE_CONVERSATION,
 						new RoadsUpdateRequest(currentRoad, targetRoad))
 						);
-				log.debug("Car {} is waiting for city response...", carName);
+				log.trace("Car {} is waiting for city response...", carName);
 				RoadsUpdateResonse response = (RoadsUpdateResonse) myAgent.blockingReceive().getContentObject();
 				int timeOnTargetRoad = response.getNewRoadWorkload();
 				currentRoad = targetRoad;
 				log.debug("Car {} is driving at road {} for {} sec.", carName, currentRoad, timeOnTargetRoad);
 				TimeUnit.SECONDS.sleep(timeOnTargetRoad);
-				log.debug("Car {} has driven the road.", carName);
+				log.trace("Car {} has driven the road.", carName);
 				lastReachedVertex = nextVertex;
 				spentTime += timeOnTargetRoad;
 				roadsPassed++;
+				log.debug("Car {} has already passed {} roads.", carName, roadsPassed);
 			} catch (Exception e) {
 				log.error("Car {} has crashed:{}", carName, e);
-				e.printStackTrace();
 				doDelete();
 			}
 		}
@@ -131,11 +131,11 @@ public class Car extends Agent {
 		@Override
 		public int onEnd() {
 			try {
-				log.debug("Car {} has reached its destination and spent {} sec in total", carName, spentTime);
+				log.info("Car {} has reached its destination and spent {} sec in total", carName, spentTime);
 				send(constructMessageForCity(
 						ACLMessage.INFORM, City.FINISH_TRIP_CONVERSATION, 
 						new TripFinishReport(carName, spentTime, currentRoad)));
-				log.debug("Car {} has sent its report.", carName);
+				log.trace("Car {} has sent its report.", carName);
 				myAgent.doDelete();
 				log.debug("Car {} is shut down.", carName);
 				return 0;
@@ -166,17 +166,18 @@ public class Car extends Agent {
 		
 		@SuppressWarnings("unchecked")
 		private void updateRoute() {
-			log.debug("Car {} is estimating its way.", carName);
+			log.debug("Car {} is building its route.", carName);
 			try {
 				send(constructMessageForCity(
 						ACLMessage.REQUEST,	City.SHORTEST_WAY_CONVERSATION,
 						new ShortestWayRequest(lastReachedVertex, destination))
 					);
-				log.debug("Car {} has asked the city for the shortest way from {} to {}. Waiting...", carName, source, destination);
+				log.trace("Car {} has asked the city for the shortest way from {} to {}. Waiting...", carName, source, destination);
 				ShortestWayResponse response = (ShortestWayResponse) myAgent.blockingReceive().getContentObject();
-				log.debug("Car {} has got a response for shortest way request: {}", carName, response.toString());
+				log.trace("Car {} has got a response.", carName);
 				BasicDrivingBehaviour.this.optimalRoute = (Queue<Integer>)response.getWayInfo().get(Graph.PATH_KEY);
 				assert (optimalRoute.size() > 1);
+				log.debug("Car {} has set its new route: {}.", carName, optimalRoute);
 				lastReachedVertex = source;
 				optimalRoute.remove(); // get rid of the first 'source'-vertex
 			} catch (IOException | UnreadableException e) {
