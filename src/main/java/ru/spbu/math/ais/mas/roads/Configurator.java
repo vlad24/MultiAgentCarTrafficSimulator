@@ -1,5 +1,10 @@
 package ru.spbu.math.ais.mas.roads;
 
+import jade.core.Agent;
+import jade.wrapper.AgentController;
+import jade.wrapper.ControllerException;
+import jade.wrapper.PlatformController;
+
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -10,10 +15,6 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import jade.core.Agent;
-import jade.wrapper.AgentController;
-import jade.wrapper.ControllerException;
-import jade.wrapper.PlatformController;
 import ru.spbu.math.ais.mas.roads.car.Car;
 import ru.spbu.math.ais.mas.roads.car.DrivingStrategy;
 import ru.spbu.math.ais.mas.roads.city.City;
@@ -21,6 +22,8 @@ import ru.spbu.math.ais.mas.roads.wrappers.Graph;
 
 @SuppressWarnings("serial")
 public class Configurator extends Agent{
+	
+	private static final String dataFolder = Paths.get("src", "main", "resources", "data").toAbsolutePath().toString();
 	
 	public static final String CITY_GRAPH_KEY           = "cityGraph";
 	public static final String CITY_NAME_KEY            = "cityName";
@@ -37,8 +40,8 @@ public class Configurator extends Agent{
 
 	@Override
 	protected void setup() {
-		Path carsFilePath  = Paths.get("src", "main", "resources", String.valueOf(getArguments()[0]));
-		Path roadsFilePath = Paths.get("src", "main", "resources", String.valueOf(getArguments()[1]));
+		Path carsFilePath  = Paths.get(dataFolder, String.valueOf(getArguments()[0]));
+		Path roadsFilePath = Paths.get(dataFolder, String.valueOf(getArguments()[1]));
 		parser = new Parser();
 		container = getContainerController();
 		setupCity(roadsFilePath.toFile());
@@ -78,7 +81,7 @@ public class Configurator extends Agent{
 		Map<String, Object> parseResults = parser.parseGraphFile(fileWithRoads);
 		cityName = (String) parseResults.get(CITY_NAME_KEY);
 		Graph cityGraph = (Graph) parseResults.get(CITY_GRAPH_KEY);
-		int workloadDelta = (Integer)parseResults.get(CITY_WORKLOAD_KEY);
+		int workloadDelta = Integer.parseInt(parseResults.get(CITY_WORKLOAD_KEY).toString());
 		try {
 			AgentController cityController = container.createNewAgent(
 					cityName,

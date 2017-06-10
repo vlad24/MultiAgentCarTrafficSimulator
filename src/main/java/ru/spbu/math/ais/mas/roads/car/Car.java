@@ -23,6 +23,8 @@ import ru.spbu.math.ais.mas.roads.wrappers.communication.RoadsUpdateResonse;
 import ru.spbu.math.ais.mas.roads.wrappers.communication.ShortestWayRequest;
 import ru.spbu.math.ais.mas.roads.wrappers.communication.ShortestWayResponse;
 import ru.spbu.math.ais.mas.roads.wrappers.communication.TripFinishReport;
+import ru.spbu.math.ais.mas.roads.wrappers.communication.TripStartRequest;
+import ru.spbu.math.ais.mas.roads.wrappers.communication.TripStartResponse;
 
 @SuppressWarnings("serial")
 public class Car extends Agent {
@@ -73,8 +75,9 @@ public class Car extends Agent {
 		private int lastReachedVertex;
 		private int spentTime;
 		private int roadsPassed;
-		int refreshPeriod;
+		private int refreshPeriod;
 		protected Queue<Integer> optimalRoute;
+		private boolean carRegistered;
 
 		public BasicDrivingBehaviour(Car car, String cityName, int src, int dst, Integer refreshPeriod) {
 			super(car);
@@ -89,6 +92,9 @@ public class Car extends Agent {
 		@Override
 		public void action() {
 			try {
+				if (!carRegistered){
+					register();
+				}
 				if (roadsPassed % refreshPeriod == 0) {
 					updateRoute();
 				}
@@ -142,6 +148,22 @@ public class Car extends Agent {
 		/*
 		 * Helper methods
 		 */
+		private void register() {
+			log.debug("Car {} is registering in city.", carName);
+			try {
+				send(constructMessageForCity(
+							ACLMessage.REQUEST,	City.START_TRIP_CONVERSATION,
+							new TripStartRequest(carName)
+					));
+				TripStartResponse response = (TripStartResponse) myAgent.blockingReceive().getContentObject();
+				this.carRegistered = response.isPermitted();
+			} catch (IOException | UnreadableException e) {
+				log.error("Error registering : {}", e);
+				e.printStackTrace();
+			}
+			
+		}
+		
 		@SuppressWarnings("unchecked")
 		private void updateRoute() {
 			log.debug("Car {} is estimating its way.", carName);
@@ -150,9 +172,9 @@ public class Car extends Agent {
 						ACLMessage.REQUEST,	City.SHORTEST_WAY_CONVERSATION,
 						new ShortestWayRequest(lastReachedVertex, destination))
 					);
-				log.debug("Car {} has asked the city for the shortest way. Waiting...", carName);
+				log.debug("Car {} has asked the city for the shortest way from {} to {}. Waiting...", carName, source, destination);
 				ShortestWayResponse response = (ShortestWayResponse) myAgent.blockingReceive().getContentObject();
-				log.debug("Car {} has got a response : {}", carName, response.toString());
+				log.debug("Car {} has got a response for shortest way request: {}", carName, response.toString());
 				BasicDrivingBehaviour.this.optimalRoute = (Queue<Integer>)response.getWayInfo().get(Graph.PATH_KEY);
 				assert (optimalRoute.size() > 1);
 				lastReachedVertex = source;

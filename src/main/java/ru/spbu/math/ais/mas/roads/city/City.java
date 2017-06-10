@@ -59,7 +59,7 @@ public class City extends Agent {
 		public void action() {
 			try {
 				ACLMessage message = myAgent.blockingReceive();
-				
+				log.debug("City has received a message! {}", message);
 				if (START_TRIP_CONVERSATION.equalsIgnoreCase(message.getConversationId())) {
 					TripStartRequest request = (TripStartRequest)message.getContentObject();
 					carStats.increaseCount();	
@@ -71,6 +71,7 @@ public class City extends Agent {
 					replyWithContent(message, new ShortestWayResponse(wayInfo));
 				}else if(ROADS_UPDATE_CONVERSATION.equalsIgnoreCase(message.getConversationId())){
 					RoadsUpdateRequest request = (RoadsUpdateRequest)message.getContentObject();
+					log.debug("City has received {}", request);
 					if (request.getRoadLeft() != null){
 						cityGraph.decreaseEdgeLength(request.getRoadLeft().getFirst(),
 								request.getRoadLeft().getSecond(), workloadDelta);						
@@ -94,6 +95,18 @@ public class City extends Agent {
 		@Override
 		public boolean done() {
 			return activeCars == 0;
+		}
+		
+		@Override
+		public int onEnd() {
+			log.info("City is destroyed");
+			if (activeCars != 0){
+				log.error("City has driving cars =(");
+				return 1;
+			}else{
+				log.info("City has finished successfully. Car stats:\n{}", carStats);
+				return 0;
+			}
 		}
 
 		private void replyWithContent(ACLMessage message, Serializable response) throws IOException {

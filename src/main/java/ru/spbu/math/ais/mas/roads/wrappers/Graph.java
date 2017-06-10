@@ -2,6 +2,7 @@ package ru.spbu.math.ais.mas.roads.wrappers;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Deque;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -78,14 +79,14 @@ public class Graph implements Serializable{
 	private Queue<Integer> getPathToDestination(int[] ancestors, int source, int destination){
 		log.debug("ancestors: {}", ancestors);
 		log.debug("Find path from {} to {} ", source, destination);
-		Queue<Integer> path = new LinkedList<Integer>();
+		Deque<Integer> path = new LinkedList<Integer>();
 		int v = ancestors[destination];
-		path.add(destination);
+		path.addFirst(destination);
 		while (v != source){
-			path.add(v);
+			path.addFirst(v);
 			v = ancestors[v];
 		}
-		path.add(source);
+		path.addFirst(source);
 		return path;
 	}
 	public int increaseEdgeLength(int i, int j, int delta){

@@ -23,4 +23,9 @@ public class RoadsUpdateRequest implements Serializable{
 		this.roadLeft = roadLleft;
 		this.roadOccupied = roadOccupied;
 	}
+	@Override
+	public String toString() {
+		return "RoadsUpdateRequest [roadLeft=" + roadLeft + ", roadOccupied="
+				+ roadOccupied + "]";
+	}
 }

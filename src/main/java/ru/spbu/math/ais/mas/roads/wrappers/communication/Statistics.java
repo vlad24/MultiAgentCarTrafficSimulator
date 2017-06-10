@@ -11,6 +11,11 @@ public class Statistics {
 		max = Integer.MIN_VALUE;
 	}
 
+	@Override
+	public String toString() {
+		return "Statistics [count=" + count + ", sum=" + sum + ", max=" + max + ", avg=" + getAvg() + "]";
+	}
+
 	public int getCount() {
 		return count;
 	}
