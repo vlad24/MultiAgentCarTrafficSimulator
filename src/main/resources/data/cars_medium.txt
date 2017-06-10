@@ -2,9 +2,9 @@
 @strategy=iterative
 @refresh=2
 #Cars:
-audi	2	8
-lada	2	7
-volvo	2	6
-skoda	2	7
-dodge	2	6
-mini	2	8
+audi	1	7
+lada	1	7
+volvo	1	7
+skoda	1	7
+dodge	1	7
+mini	1	7
