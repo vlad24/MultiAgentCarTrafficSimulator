@@ -175,8 +175,12 @@ public class Car extends Agent {
 				log.trace("Car {} has asked the city for the shortest way from {} to {}. Waiting...", carName, source, destination);
 				ShortestWayResponse response = (ShortestWayResponse) myAgent.blockingReceive().getContentObject();
 				log.trace("Car {} has got a response.", carName);
-				BasicDrivingBehaviour.this.optimalRoute = (Queue<Integer>)response.getWayInfo().get(Graph.PATH_KEY);
+				Queue<Integer> newRoute = (Queue<Integer>)response.getWayInfo().get(Graph.PATH_KEY);
+				if (optimalRoute != null && !newRoute.equals(this.optimalRoute)){
+					log.debug("Car {} has changed its previous optimal way !!!", carName);
+				}
 				assert (optimalRoute.size() > 1);
+				this.optimalRoute = newRoute;
 				log.debug("Car {} has set its new route: {}.", carName, optimalRoute);
 				lastReachedVertex = source;
 				optimalRoute.remove(); // get rid of the first 'source'-vertex

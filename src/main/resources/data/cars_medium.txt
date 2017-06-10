@@ -3,8 +3,8 @@
 @refresh=2
 #Cars:
 audi	1	7
-lada	1	7
-volvo	1	7
+lada	3	7
+volvo	4	7
 skoda	1	7
-dodge	1	7
-mini	1	7
+dodge	3	7
+mini	4	7
