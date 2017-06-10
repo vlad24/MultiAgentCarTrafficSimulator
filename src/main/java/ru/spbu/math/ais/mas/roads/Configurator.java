@@ -23,7 +23,7 @@ import ru.spbu.math.ais.mas.roads.wrappers.Graph;
 @SuppressWarnings("serial")
 public class Configurator extends Agent{
 	
-	private static final String dataFolder = Paths.get("src", "main", "resources", "data").toAbsolutePath().toString();
+	private static final String dataFolder = Paths.get("src", "main", "resources", "data").toString();
 	
 	public static final String CITY_GRAPH_KEY           = "cityGraph";
 	public static final String CITY_NAME_KEY            = "cityName";
@@ -42,6 +42,7 @@ public class Configurator extends Agent{
 	protected void setup() {
 		Path carsFilePath  = Paths.get(dataFolder, String.valueOf(getArguments()[0]));
 		Path roadsFilePath = Paths.get(dataFolder, String.valueOf(getArguments()[1]));
+		log.info("Configuring app with configs taken from (cars){}, (city){}", carsFilePath.toString(), roadsFilePath.toString());
 		parser = new Parser();
 		container = getContainerController();
 		setupCity(roadsFilePath.toFile());
@@ -58,12 +59,12 @@ public class Configurator extends Agent{
 					carConfig.getOrDefault(CAR_DRIVING_STRATEGY_KEY, DrivingStrategy.DUMMY).toString().toUpperCase()
 				);
 		Map<String, Object> strategyParams = new HashMap<String, Object>();
-		
 		if (strategy.equals(DrivingStrategy.ITERATIVE)) {
 			strategyParams.put(CAR_REFRESH_KEY, carConfig.get(CAR_REFRESH_KEY));
 		}
-		
-		for (ArrayList<String> carParts: (ArrayList<ArrayList<String>>)carConfig.get(CAR_ITEMS_KEY)) {
+		ArrayList<ArrayList<String>> carItems = (ArrayList<ArrayList<String>>)carConfig.get(CAR_ITEMS_KEY);
+		log.info("Configuring {} cars that drive {} with params {}", carItems.size(), strategy, strategyParams);
+		for (ArrayList<String> carParts: carItems) {
 			String carName = carParts.get(0);
 			String carSrc  = carParts.get(1);
 			String carDst  = carParts.get(2);
@@ -82,6 +83,8 @@ public class Configurator extends Agent{
 		cityName = (String) parseResults.get(CITY_NAME_KEY);
 		Graph cityGraph = (Graph) parseResults.get(CITY_GRAPH_KEY);
 		int workloadDelta = Integer.parseInt(parseResults.get(CITY_WORKLOAD_KEY).toString());
+		log.info("Configuring city {} with {} vertices and {} edges. Workload delta={}",
+				cityName, cityGraph.getVerticesAmount(), cityGraph.getEdgesAmount(), workloadDelta);
 		try {
 			AgentController cityController = container.createNewAgent(
 					cityName,

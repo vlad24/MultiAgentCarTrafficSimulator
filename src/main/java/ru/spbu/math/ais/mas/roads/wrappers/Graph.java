@@ -107,4 +107,20 @@ public class Graph implements Serializable{
 		return getEdgeLength(i, j) != 0;
 	}
 	
+	public int getVerticesAmount(){
+		return adjMatrix.size();
+	}
+	
+	public int getEdgesAmount(){
+		int result = 0;
+		for (int i = 0; i < adjMatrix.size(); i++) {
+			for (int j = i; j < adjMatrix.get(i).size(); j++) {
+				if (areConnected(i, j)){
+					result++;
+				}
+			}
+		}
+		return result;
+	}
+	
 }
