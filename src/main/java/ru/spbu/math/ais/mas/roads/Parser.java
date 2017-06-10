@@ -24,15 +24,16 @@ public class Parser {
 	private static final String INNER_SEPARATOR   = "\t";
 	private static final String PROP_SEPEARATOR   = "=";
 
-	public static final String CAR_ITEMS_KEY            = "carItems";
-	public static final String CAR_DRIVING_STRATEGY_KEY = "strategy";
-
-	public Graph parseGraph(File file) {
+	public Map<String, Object> parseGraphFile(File file) {
+		Map<String, Object> result = new HashMap<String, Object>();
 		ArrayList<ArrayList<Integer>> adjMatrix = new ArrayList<ArrayList<Integer>>();
 		try(BufferedReader reader = new BufferedReader(new FileReader(file))){
 			String currentLine;
 			while ((currentLine = reader.readLine()) != null) {
-				if (!currentLine.startsWith(COMMENT_INDICATOR) && !currentLine.isEmpty()){
+				if (currentLine.startsWith(CONFIG_INDICATOR)) {
+					String[] configKV = currentLine.substring(1).trim().replace(" ", "").split(PROP_SEPEARATOR);
+					result.put(configKV[0], configKV[1]);
+				}else if (!currentLine.startsWith(COMMENT_INDICATOR) && !currentLine.isEmpty()){
 					String[] elements =  currentLine.split(INNER_SEPARATOR);
 					ArrayList<Integer> matrixLine = new ArrayList<Integer>();
 					for (String el : elements) {
@@ -41,14 +42,15 @@ public class Parser {
 					adjMatrix.add(matrixLine);
 				}
 			}
+			result.put(Configurator.CITY_GRAPH_KEY, new Graph(adjMatrix));
 		}catch (IOException readerExceprion) {
 			readerExceprion.printStackTrace();
 		}catch (NumberFormatException wrongNumberException) {
 			log.error("Wrong number {}", wrongNumberException);
 		}
-		return new Graph(adjMatrix);
+		return result;
 	}
-	
+
 	public Map<String, Object> parseCarFile(File file) {
 		Map<String, Object> result = new HashMap<String, Object>();
 		ArrayList<ArrayList<String>> carParts = new ArrayList<ArrayList<String>>();
@@ -56,7 +58,7 @@ public class Parser {
 			String currentLine;
 			while ((currentLine = reader.readLine()) != null) {
 				if (currentLine.startsWith(CONFIG_INDICATOR)) {
-					String[] configKV = currentLine.trim().replace(" ", "").split(PROP_SEPEARATOR);
+					String[] configKV = currentLine.substring(1).trim().replace(" ", "").split(PROP_SEPEARATOR);
 					result.put(configKV[0], configKV[1]);
 				}else if (!currentLine.startsWith(COMMENT_INDICATOR) && !currentLine.isEmpty()){
 					String[] elements =  currentLine.split(INNER_SEPARATOR);
@@ -66,7 +68,7 @@ public class Parser {
 					carParts.add(new ArrayList<String>(Arrays.asList(elements)));
 				}
 			}
-			result.put(CAR_ITEMS_KEY, carParts);
+			result.put(Configurator.CAR_ITEMS_KEY, carParts);
 		}
 		catch (ParseException pexc) {
 			log.error("Error while parsing cars: {}", pexc);

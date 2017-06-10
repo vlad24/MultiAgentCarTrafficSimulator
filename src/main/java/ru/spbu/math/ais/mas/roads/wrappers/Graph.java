@@ -1,8 +1,11 @@
 package ru.spbu.math.ais.mas.roads.wrappers;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
+import java.util.Queue;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,11 +15,12 @@ import org.slf4j.LoggerFactory;
  * Graph implementation.
  * Graph stores all the data in adjacency matrix form. For simplicity
  */
-public class Graph {
+@SuppressWarnings("serial")
+public class Graph implements Serializable{
 	
-	private static final String DISTANCE_KEY = "distance_to_destination";
-	private static final String ALL_DISTANCES_KEY = "all_distances";
-	private static final String PATH_KEY = "path";
+	public static final String DISTANCE_KEY = "distance_to_destination";
+	public static final String ALL_DISTANCES_KEY = "all_distances";
+	public static final String PATH_KEY = "path";
 	
 	private static final Logger log = LoggerFactory.getLogger(Graph.class);
 	private int countRoads;
@@ -71,10 +75,10 @@ public class Graph {
 		log.debug("distance information: {}", distanceInfo);
 		return distanceInfo;
 	}
-	private ArrayList<Integer> getPathToDestination(int[] ancestors, int source, int destination){
+	private Queue<Integer> getPathToDestination(int[] ancestors, int source, int destination){
 		log.debug("ancestors: {}", ancestors);
 		log.debug("Find path from {} to {} ", source, destination);
-		ArrayList<Integer> path = new ArrayList<Integer>();
+		Queue<Integer> path = new LinkedList<Integer>();
 		int v = ancestors[destination];
 		path.add(destination);
 		while (v != source){
@@ -84,7 +88,18 @@ public class Graph {
 		path.add(source);
 		return path;
 	}
-
+	public int increaseEdgeLength(int i, int j, int delta){
+		int currentWorkload = adjMatrix.get(i).get(j);
+		adjMatrix.get(i).set(j, currentWorkload + delta);
+		adjMatrix.get(j).set(i, currentWorkload + delta);
+		return adjMatrix.get(i).get(j);
+	}
+	public int decreaseEdgeLength(int i, int j, int delta){
+		int currentWorkload = adjMatrix.get(i).get(j);
+		adjMatrix.get(i).set(j, currentWorkload - delta);
+		adjMatrix.get(j).set(i, currentWorkload - delta);
+		return adjMatrix.get(i).get(j);
+	}
 	private Integer getEdgeLength(int i, int j) {
 		return adjMatrix.get(i).get(j);
 	}
