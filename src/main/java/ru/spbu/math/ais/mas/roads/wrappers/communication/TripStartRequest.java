@@ -6,13 +6,13 @@ import java.io.Serializable;
 public class TripStartRequest implements Serializable{
 	String carName;
 	int src;
+	int dst;
 	public TripStartRequest(String carName, int src, int dst) {
 		super();
 		this.carName = carName;
 		this.src = src;
 		this.dst = dst;
 	}
-	int dst;
 	public String getCarName() {
 		return carName;
 	}

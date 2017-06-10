@@ -3,32 +3,35 @@ package ru.spbu.math.ais.mas.roads.wrappers.communication;
 import java.io.Serializable;
 
 public class TripFinishReport implements Serializable{
-	String carName;
-	int src;
-	public TripFinishReport(String carName, int src, int dst) {
+	private String carName;
+	private Pair stopRoad;
+	private int spentTime;
+
+	public TripFinishReport(String carName, int spentTime, Pair stopRoad) {
 		super();
 		this.carName = carName;
-		this.src = src;
-		this.dst = dst;
+		this.spentTime = spentTime;
+		this.stopRoad = stopRoad;
 	}
-	int dst;
+	
+	public Pair getStopRoad() {
+		return stopRoad;
+	}
+
+	public void setStopRoad(Pair stopRoad) {
+		this.stopRoad = stopRoad;
+	}
+
 	public String getCarName() {
 		return carName;
 	}
 	public void setCarName(String carName) {
 		this.carName = carName;
 	}
-	public int getSrc() {
-		return src;
+	public int getSpentTime() {
+		return spentTime;
 	}
-	public void setSrc(int src) {
-		this.src = src;
+	public void setSpentTime(int spentTime) {
+		this.spentTime = spentTime;
 	}
-	public int getDst() {
-		return dst;
-	}
-	public void setDst(int dst) {
-		this.dst = dst;
-	}
-
 }

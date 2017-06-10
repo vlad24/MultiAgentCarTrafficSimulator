@@ -22,6 +22,7 @@ import ru.spbu.math.ais.mas.roads.wrappers.communication.RoadsUpdateRequest;
 import ru.spbu.math.ais.mas.roads.wrappers.communication.RoadsUpdateResonse;
 import ru.spbu.math.ais.mas.roads.wrappers.communication.ShortestWayRequest;
 import ru.spbu.math.ais.mas.roads.wrappers.communication.ShortestWayResponse;
+import ru.spbu.math.ais.mas.roads.wrappers.communication.TripFinishReport;
 
 @SuppressWarnings("serial")
 public class Car extends Agent {
@@ -70,7 +71,7 @@ public class Car extends Agent {
 		private int destination;
 		private Pair currentRoad;
 		private int lastReachedVertex;
-		private long spentTime;
+		private int spentTime;
 		private int roadsPassed;
 		int refreshPeriod;
 		protected Queue<Integer> optimalRoute;
@@ -125,7 +126,9 @@ public class Car extends Agent {
 		public int onEnd() {
 			try {
 				log.debug("Car {} has reached its destination and spent {} sec in total", carName, spentTime);
-				send(constructMessageForCity(ACLMessage.INFORM, City.FINISH_TRIP_CONVERSATION, spentTime));
+				send(constructMessageForCity(
+						ACLMessage.INFORM, City.FINISH_TRIP_CONVERSATION, 
+						new TripFinishReport(carName, spentTime, currentRoad)));
 				log.debug("Car {} has sent its report.", carName);
 				myAgent.doDelete();
 				log.debug("Car {} is shut down.", carName);
@@ -144,10 +147,9 @@ public class Car extends Agent {
 			log.debug("Car {} is estimating its way.", carName);
 			try {
 				send(constructMessageForCity(
-						ACLMessage.REQUEST,
-						City.SHORTEST_WAY_CONVERSATION,
+						ACLMessage.REQUEST,	City.SHORTEST_WAY_CONVERSATION,
 						new ShortestWayRequest(lastReachedVertex, destination))
-						);
+					);
 				log.debug("Car {} has asked the city for the shortest way. Waiting...", carName);
 				ShortestWayResponse response = (ShortestWayResponse) myAgent.blockingReceive().getContentObject();
 				log.debug("Car {} has got a response : {}", carName, response.toString());

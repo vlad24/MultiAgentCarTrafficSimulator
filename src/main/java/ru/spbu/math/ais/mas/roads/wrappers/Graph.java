@@ -88,7 +88,18 @@ public class Graph implements Serializable{
 		path.add(source);
 		return path;
 	}
-
+	public int increaseEdgeLength(int i, int j, int delta){
+		int currentWorkload = adjMatrix.get(i).get(j);
+		adjMatrix.get(i).set(j, currentWorkload + delta);
+		adjMatrix.get(j).set(i, currentWorkload + delta);
+		return adjMatrix.get(i).get(j);
+	}
+	public int decreaseEdgeLength(int i, int j, int delta){
+		int currentWorkload = adjMatrix.get(i).get(j);
+		adjMatrix.get(i).set(j, currentWorkload - delta);
+		adjMatrix.get(j).set(i, currentWorkload - delta);
+		return adjMatrix.get(i).get(j);
+	}
 	private Integer getEdgeLength(int i, int j) {
 		return adjMatrix.get(i).get(j);
 	}
