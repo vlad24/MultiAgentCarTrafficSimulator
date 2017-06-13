@@ -1,4 +1,4 @@
-package ru.spbu.math.ais.mas.roads;
+package ru.spbu.math.ais.mas.citycars;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -13,7 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import jade.lang.acl.ParseException;
-import ru.spbu.math.ais.mas.roads.wrappers.Graph;
+import ru.spbu.math.ais.mas.citycars.wrappers.Graph;
 
 public class Parser {
 

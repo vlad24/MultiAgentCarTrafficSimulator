@@ -1,4 +1,4 @@
-package ru.spbu.math.ais.mas.roads.wrappers.communication;
+package ru.spbu.math.ais.mas.citycars.wrappers;
 
 public class Statistics {
 	private int count;

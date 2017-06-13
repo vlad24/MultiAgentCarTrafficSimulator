@@ -1,26 +1,27 @@
-package ru.spbu.math.ais.mas.roads;
-
-import jade.core.Agent;
-import jade.wrapper.AgentController;
-import jade.wrapper.ControllerException;
-import jade.wrapper.PlatformController;
+package ru.spbu.math.ais.mas.citycars;
 
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import ru.spbu.math.ais.mas.roads.car.Car;
-import ru.spbu.math.ais.mas.roads.car.DrivingStrategy;
-import ru.spbu.math.ais.mas.roads.city.City;
-import ru.spbu.math.ais.mas.roads.wrappers.Graph;
+import jade.core.Agent;
+import jade.wrapper.AgentController;
+import jade.wrapper.ControllerException;
+import jade.wrapper.PlatformController;
+import lombok.extern.slf4j.Slf4j;
+import ru.spbu.math.ais.mas.citycars.cars.Car;
+import ru.spbu.math.ais.mas.citycars.cars.DrivingStrategy;
+import ru.spbu.math.ais.mas.citycars.roads.Road;
+import ru.spbu.math.ais.mas.citycars.wrappers.Graph;
+import ru.spbu.math.ais.mas.citycars.wrappers.Pair;
 
 @SuppressWarnings("serial")
+@Slf4j
 public class Configurator extends Agent{
 	
 	private static final String dataFolder = Paths.get("src", "main", "resources", "data").toString();
@@ -33,10 +34,14 @@ public class Configurator extends Agent{
 	public static final String CAR_REFRESH_KEY          = "refresh";
 	
 	
-	private static final Logger log = LoggerFactory.getLogger(Configurator.class);
 	private Parser parser;
 	private PlatformController container;
+	
 	private String cityName;
+	private Graph cityGraph;
+	private int workloadDelta;
+	
+	private Set<String> carIds;
 
 	@Override
 	protected void setup() {
@@ -45,13 +50,14 @@ public class Configurator extends Agent{
 		log.info("Configuring app with configs taken from (cars){}, (city){}", carsFilePath.toString(), roadsFilePath.toString());
 		parser = new Parser();
 		container = getContainerController();
-		setupCity(roadsFilePath.toFile());
+		setupGraph(roadsFilePath.toFile());
+		setupRoads();
 		setupCars(carsFilePath.toFile());
 	}
 
 	@SuppressWarnings("unchecked")
 	private void setupCars(File fileWithCars) {
-		if (cityName == null) {
+		if (cityGraph == null) {
 			throw new IllegalStateException("Creating car without creating city");
 		}
 		Map<String, Object> carConfig = this.parser.parseCarFile(fileWithCars);
@@ -63,38 +69,59 @@ public class Configurator extends Agent{
 			strategyParams.put(CAR_REFRESH_KEY, carConfig.get(CAR_REFRESH_KEY));
 		}
 		ArrayList<ArrayList<String>> carItems = (ArrayList<ArrayList<String>>)carConfig.get(CAR_ITEMS_KEY);
+		carIds = new HashSet<>();
 		log.info("Configuring {} cars that drive {} with params {}", carItems.size(), strategy, strategyParams);
 		for (ArrayList<String> carParts: carItems) {
 			String carName = carParts.get(0);
 			String carSrc  = carParts.get(1);
 			String carDst  = carParts.get(2);
-			Object[] args = new Object[] {cityName, carSrc, carDst, strategy, strategyParams};
+			Object[] args = new Object[] {cityGraph, carSrc, carDst, strategy, strategyParams};
 			try {
 				AgentController carController = container.createNewAgent(carName, Car.class.getCanonicalName(), args);
 				carController.start();
+				carIds.add(carName);
 			} catch (ControllerException e) {
 				log.error("Error while creating car: {}", e);
 			}   
 		}
 	}
 	
-	private void setupCity(File fileWithRoads) {
+	private void setupRoads() {
+		log.info("Configuring roads {} with {} vertices and {} edges. Workload delta={}", 
+				cityName, cityGraph.getVerticesAmount(), cityGraph.getEdgesAmount(), workloadDelta);
+		for (Pair edge : cityGraph.getEdges()) {
+			try {
+				String roadName = Road.nameOf(edge);
+				AgentController roadController = container.createNewAgent(
+						roadName,
+						Road.class.getCanonicalName(),
+						new Object[] {cityName, edge, cityGraph.getEdgeLength(edge), carIds}
+				);
+//				DFAgentDescription agentDesc = new DFAgentDescription();
+//				agentDesc.setName(new AID(roadName, AID.ISLOCALNAME));
+//				ServiceDescription upperServiceDesc = new ServiceDescription();
+//				upperServiceDesc.setName(Road.class.getSimpleName());
+//				upperServiceDesc.setType(String.valueOf(edge.getFirst()));
+//				upperServiceDesc.addLanguages(FIPANames.ContentLanguage.FIPA_SL);
+//				ServiceDescription lowerServiceDesc = new ServiceDescription();
+//				lowerServiceDesc.setName(Road.class.getSimpleName());
+//				lowerServiceDesc.setType(String.valueOf(edge.getSecond()));
+//				lowerServiceDesc.addLanguages(FIPANames.ContentLanguage.FIPA_SL);
+//				agentDesc.addServices(upperServiceDesc);
+//				agentDesc.addServices(lowerServiceDesc);
+//				DFService.register(this, agentDesc);
+				roadController.start();
+			} catch (ControllerException e) {
+				log.error("Error while creating road agent: {}", e);
+			}
+		}
+	}
+
+	private void setupGraph(File fileWithRoads) {
 		Map<String, Object> parseResults = parser.parseGraphFile(fileWithRoads);
 		cityName = (String) parseResults.get(CITY_NAME_KEY);
-		Graph cityGraph = (Graph) parseResults.get(CITY_GRAPH_KEY);
-		int workloadDelta = Integer.parseInt(parseResults.get(CITY_WORKLOAD_KEY).toString());
-		log.info("Configuring city {} with {} vertices and {} edges. Workload delta={}",
-				cityName, cityGraph.getVerticesAmount(), cityGraph.getEdgesAmount(), workloadDelta);
-		try {
-			AgentController cityController = container.createNewAgent(
-					cityName,
-					City.class.getCanonicalName(),
-					new Object[] {cityGraph, workloadDelta}
-			);
-			cityController.start();
-		} catch (ControllerException e) {
-			log.error("Error while creating city: {}", e);
-		}
+		cityGraph  = (Graph) parseResults.get(CITY_GRAPH_KEY);
+		workloadDelta = Integer.parseInt(parseResults.get(CITY_WORKLOAD_KEY).toString());
 	}
 	
 }

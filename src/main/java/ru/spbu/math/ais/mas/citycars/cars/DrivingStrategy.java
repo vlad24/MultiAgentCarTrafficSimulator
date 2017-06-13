@@ -1,4 +1,4 @@
-package ru.spbu.math.ais.mas.roads.car;
+package ru.spbu.math.ais.mas.citycars.cars;
 
 public enum DrivingStrategy {
 	DUMMY,
