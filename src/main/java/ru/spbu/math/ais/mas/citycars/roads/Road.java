@@ -1,6 +1,9 @@
 package ru.spbu.math.ais.mas.citycars.roads;
 
+import java.util.Date;
 import java.util.Set;
+
+import org.omg.CORBA.INTERNAL;
 
 import com.google.gson.Gson;
 
@@ -68,8 +71,16 @@ public class Road extends Agent{
 				switch (unit.getSubject()) {
 				case ROADS_OCCUPATION:
 					RoadOccupyRequest roadOccRequest = gson.fromJson(msg.getContent(), RoadOccupyRequest.class); 
-					if(bounds.equals(roadOccRequest.getRoadWished()) && roadOccRequest.getRoadLeft().getSecond() == bounds.getFirst()) {
-						
+					if(bounds.equals(roadOccRequest.getRoadWished()) && 
+							roadOccRequest.getRoadLeft().getSecond() == bounds.getFirst()) {
+						ACLMessage reqToAnotherRoad = new ACLMessage(ACLMessage.REQUEST);
+						reqToAnotherRoad.addReceiver(new AID(Road.nameOf(roadOccRequest.getRoadWished()), AID.ISLOCALNAME));
+						reqToAnotherRoad.setContent(gson.toJson(new CarMoveRequest(roadOccRequest.getCarName(), new Date(), bounds)));
+						send(reqToAnotherRoad);
+					} else {
+						ACLMessage reply = msg.createReply();
+						reply.setContent(gson.toJson(new RoadOccupyPermission(bounds, false, Integer.MAX_VALUE)));
+						send(reply);						
 					}
 					log.debug("wanna be occupied");
 					break;
@@ -80,15 +91,17 @@ public class Road extends Agent{
 					break;
 				case CAR_MOVE_RESPONSE:
 					CarMoveResponse carMoveResponse = gson.fromJson(msg.getContent(), CarMoveResponse.class);
-					ACLMessage reply = new ACLMessage(ACLMessage.CONFIRM);
-					reply.addReceiver(new AID(carMoveResponse.getCarId(), AID.ISLOCALNAME));
 					if (carMoveResponse.isPermitted()){
+						ACLMessage reply = new ACLMessage(ACLMessage.CONFIRM);
+						reply.addReceiver(new AID(carMoveResponse.getCarId(), AID.ISLOCALNAME));
 						workLoad += workloadDelta;
 						reply.setContent(gson.toJson(new RoadOccupyPermission(bounds, carMoveResponse.isPermitted(), workLoad)));
 						send(reply);
 						broadcast(workloadDelta);
 					} else {
-						reply.setContent(gson.toJson(new RoadOccupyPermission(bounds, carMoveResponse.isPermitted(), workLoad)));
+						ACLMessage reply = new ACLMessage(ACLMessage.DISCONFIRM);
+						reply.addReceiver(new AID(carMoveResponse.getCarId(), AID.ISLOCALNAME));
+						reply.setContent(gson.toJson(new RoadOccupyPermission(bounds, carMoveResponse.isPermitted(), Integer.MAX_VALUE)));
 						send(reply);
 					}
 					break;

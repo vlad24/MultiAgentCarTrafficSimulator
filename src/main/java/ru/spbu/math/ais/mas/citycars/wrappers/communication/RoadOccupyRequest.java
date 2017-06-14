@@ -12,6 +12,7 @@ import ru.spbu.math.ais.mas.citycars.wrappers.Pair;
 @ToString
 @Getter
 public class RoadOccupyRequest implements CityCommunicationUnit{
+	private String carName;
 	private Pair roadLeft;
 	private Pair roadWished;
 	
