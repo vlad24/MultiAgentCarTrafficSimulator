@@ -33,13 +33,13 @@ public class Road extends Agent{
 	
 
 	public static String nameOf(Pair edge) {
-		StringBuilder builder = new StringBuilder();
-		builder.append("(");
-		builder.append(edge.getFirst());
-		builder.append(",");
-		builder.append(edge.getSecond());
-		builder.append(")");
-		return builder.toString();
+		return new StringBuilder()
+		.append("(")
+			.append(edge.getFirst())
+			.append(",")
+			.append(edge.getSecond())
+		.append(")")
+		.toString();
 	}
 
 	@SuppressWarnings("unchecked")
