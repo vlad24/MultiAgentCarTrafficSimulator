@@ -3,4 +3,3 @@
 #Cars:
 audi	1	7
 lada	1	7
-volvo	2	7
