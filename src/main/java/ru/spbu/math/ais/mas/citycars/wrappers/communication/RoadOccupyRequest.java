@@ -4,18 +4,19 @@ import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
+import ru.spbu.math.ais.mas.citycars.wrappers.Pair;
 
 @SuppressWarnings("serial")
 @AllArgsConstructor
 @EqualsAndHashCode
 @ToString
 @Getter
-public class TripFinishReport implements CityCommunicationUnit{
-	private String carName;
-	private int spentTime;
+public class RoadOccupyRequest implements CityCommunicationUnit{
+	private Pair roadLeft;
+	private Pair roadWished;
 	
 	@Override
 	public CityMessageSubject getSubject() {
-		return CityMessageSubject.CAR_STATS_REPORT;
+		return CityMessageSubject.ROADS_OCCUPATION;
 	}
 }

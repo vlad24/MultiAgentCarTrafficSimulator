@@ -4,14 +4,18 @@ import java.util.Set;
 
 import com.google.gson.Gson;
 
+import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 import lombok.extern.slf4j.Slf4j;
 import ru.spbu.math.ais.mas.citycars.wrappers.Pair;
-import ru.spbu.math.ais.mas.citycars.wrappers.communication.CarCheckRequest;
+import ru.spbu.math.ais.mas.citycars.wrappers.communication.CarMoveRequest;
+import ru.spbu.math.ais.mas.citycars.wrappers.communication.CarMoveResponse;
 import ru.spbu.math.ais.mas.citycars.wrappers.communication.CityCommunicationUnit;
-import ru.spbu.math.ais.mas.citycars.wrappers.communication.RoadsUpdateRequest;
+import ru.spbu.math.ais.mas.citycars.wrappers.communication.RoadOccupyPermission;
+import ru.spbu.math.ais.mas.citycars.wrappers.communication.RoadOccupyRequest;
+import ru.spbu.math.ais.mas.citycars.wrappers.communication.RoadStatusChange;
 
 @SuppressWarnings("serial")
 @Slf4j
@@ -42,6 +46,7 @@ public class Road extends Agent{
 		cityName      = String.valueOf(getArguments()[argPos++]);
 		bounds        = (Pair)(getArguments()[argPos++]);
 		workloadDelta = Integer.parseInt(getArguments()[argPos++].toString());
+		//for broadcasting 
 		carIds        = (Set<String>) getArguments()[argPos++];
 		addBehaviour(new RoadBehaviour());
 
@@ -62,14 +67,30 @@ public class Road extends Agent{
 				CityCommunicationUnit unit = gson.fromJson(msg.getContent(), CityCommunicationUnit.class); 
 				switch (unit.getSubject()) {
 				case ROADS_OCCUPATION:
-					RoadsUpdateRequest roadOccRequest = gson.fromJson(msg.getContent(), RoadsUpdateRequest.class); 
-					//TODO go on
+					RoadOccupyRequest roadOccRequest = gson.fromJson(msg.getContent(), RoadOccupyRequest.class); 
+					if(bounds.equals(roadOccRequest.getRoadWished()) && roadOccRequest.getRoadLeft().getSecond() == bounds.getFirst()) {
+						
+					}
 					log.debug("wanna be occupied");
 					break;
-				case CAR_CHECK:
-					CarCheckRequest carCheckRequest = gson.fromJson(msg.getContent(), CarCheckRequest.class);
+				case CAR_MOVE_REQUEST:
+					CarMoveRequest carMoveRequest = gson.fromJson(msg.getContent(), CarMoveRequest.class);
 					//TODO go on
 					log.debug("wanna check car");
+					break;
+				case CAR_MOVE_RESPONSE:
+					CarMoveResponse carMoveResponse = gson.fromJson(msg.getContent(), CarMoveResponse.class);
+					ACLMessage reply = new ACLMessage(ACLMessage.CONFIRM);
+					reply.addReceiver(new AID(carMoveResponse.getCarId(), AID.ISLOCALNAME));
+					if (carMoveResponse.isPermitted()){
+						workLoad += workloadDelta;
+						reply.setContent(gson.toJson(new RoadOccupyPermission(bounds, carMoveResponse.isPermitted(), workLoad)));
+						send(reply);
+						broadcast(workloadDelta);
+					} else {
+						reply.setContent(gson.toJson(new RoadOccupyPermission(bounds, carMoveResponse.isPermitted(), workLoad)));
+						send(reply);
+					}
 					break;
 				default:
 					break;
@@ -77,6 +98,15 @@ public class Road extends Agent{
 			}else {
 				block();
 			}
+		}
+
+		private void broadcast(int delta) {
+			ACLMessage broadcast = new ACLMessage(ACLMessage.INFORM);
+			for (String id : carIds) {
+				broadcast.addReceiver(new AID(id, AID.ISLOCALNAME));
+			}
+			broadcast.setContent(gson.toJson(new RoadStatusChange(bounds, delta)));
+			send(broadcast);
 		}
 
 

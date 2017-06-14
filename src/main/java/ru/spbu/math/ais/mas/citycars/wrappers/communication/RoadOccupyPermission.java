@@ -9,11 +9,12 @@ import ru.spbu.math.ais.mas.citycars.wrappers.Pair;
 @SuppressWarnings("serial")
 @AllArgsConstructor
 @EqualsAndHashCode
-@ToString
+@ToString(doNotUseGetters=false)
 @Getter
-public class RoadsUpdateRequest implements CityCommunicationUnit{
-	private Pair roadLeft;
-	private Pair roadOccupied;
+public class RoadOccupyPermission implements CityCommunicationUnit{
+	private Pair road;
+	private boolean permitted;
+	private int newRoadWorkload;
 	
 	@Override
 	public CityMessageSubject getSubject() {

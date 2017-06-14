@@ -1,23 +1,26 @@
 package ru.spbu.math.ais.mas.citycars.wrappers.communication;
 
+import java.util.Date;
+
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 import ru.spbu.math.ais.mas.citycars.wrappers.Pair;
 
-@SuppressWarnings("serial")
+
 @AllArgsConstructor
 @EqualsAndHashCode
-@ToString(doNotUseGetters=false)
 @Getter
-public class RoadsOccupyPermission implements CityCommunicationUnit{
-	private Pair road;
-	private boolean permitted;
-	private int newRoadWorkload;
+@ToString
+public class CarMoveResponse implements CityCommunicationUnit{
+	
+	String carId;
+	boolean permitted;
 	
 	@Override
 	public CityMessageSubject getSubject() {
-		return CityMessageSubject.ROADS_OCCUPATION;
+		return CityMessageSubject.CAR_MOVE_REQUEST;
 	}
+
 }

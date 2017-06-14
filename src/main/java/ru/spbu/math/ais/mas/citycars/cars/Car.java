@@ -17,8 +17,8 @@ import ru.spbu.math.ais.mas.citycars.wrappers.Graph;
 import ru.spbu.math.ais.mas.citycars.wrappers.Pair;
 import ru.spbu.math.ais.mas.citycars.wrappers.communication.CityCommunicationUnit;
 import ru.spbu.math.ais.mas.citycars.wrappers.communication.RoadStatusChange;
-import ru.spbu.math.ais.mas.citycars.wrappers.communication.RoadsOccupyPermission;
-import ru.spbu.math.ais.mas.citycars.wrappers.communication.RoadsUpdateRequest;
+import ru.spbu.math.ais.mas.citycars.wrappers.communication.RoadOccupyPermission;
+import ru.spbu.math.ais.mas.citycars.wrappers.communication.RoadOccupyRequest;
 import ru.spbu.math.ais.mas.citycars.wrappers.communication.TripFinishReport;
 import ru.spbu.math.ais.mas.citycars.wrappers.communication.TripStartRequest;
 
@@ -116,13 +116,13 @@ public class Car extends Agent {
 				Pair desiredRoad = new Pair(lastReachedVertex, nextVertex);
 				ACLMessage outMessage = new ACLMessage(ACLMessage.REQUEST);
 				outMessage.addReceiver(new AID(Road.nameOf(desiredRoad), AID.ISLOCALNAME));
-				outMessage.setContent(gson.toJson(new RoadsUpdateRequest(currentRoad, desiredRoad)));
+				outMessage.setContent(gson.toJson(new RoadOccupyRequest(currentRoad, desiredRoad)));
 				ACLMessage reply = receive();
 				if (reply != null) {
 					CityCommunicationUnit unit = gson.fromJson(reply.getContent(), CityCommunicationUnit.class);
 					switch (unit.getSubject()) {
 					case ROADS_OCCUPATION:
-						RoadsOccupyPermission roadOccPermission = gson.fromJson(reply.getContent(), RoadsOccupyPermission.class);
+						RoadOccupyPermission roadOccPermission = gson.fromJson(reply.getContent(), RoadOccupyPermission.class);
 						if (roadOccPermission.isPermitted() && roadOccPermission.getRoad().equals(desiredRoad)) {
 							currentRoad = roadOccPermission.getRoad();
 							// If the car does not sleep the next road will not let the car occupy it
@@ -133,7 +133,7 @@ public class Car extends Agent {
 							lastReachedVertex = currentOptimalRoute.remove();
 						}
 						break;
-					case ROAD_STATUS_CHANGE:
+					case ROAD_STATUS_CHANGE_NOTIFICATION:
 						RoadStatusChange roadChange = gson.fromJson(reply.getContent(), RoadStatusChange.class);
 						log.debug("Road {} has changed its workload. Memorized...", roadChange.getRoad());
 						roadChanges.add(roadChange);
@@ -165,7 +165,7 @@ public class Car extends Agent {
 			msg.addReceiver(new AID(cityName, AID.ISLOCALNAME));
 			ACLMessage outMessage = new ACLMessage(ACLMessage.REQUEST);
 			outMessage.addReceiver(new AID(Road.nameOf(currentRoad), AID.ISLOCALNAME));
-			outMessage.setContent(gson.toJson(new RoadsUpdateRequest(currentRoad, null)));
+			outMessage.setContent(gson.toJson(new RoadOccupyRequest(currentRoad, null)));
 			//report stats
 			msg.setContent(gson.toJson(new TripFinishReport(carName, spentTime)));
 			log.trace("Car {} has sent its report.", carName);

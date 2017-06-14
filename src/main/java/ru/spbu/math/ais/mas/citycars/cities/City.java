@@ -44,7 +44,7 @@ public class City extends Agent {
 					carStats.increaseCount();	
 					activeCarsAmount++;
 					break;
-				case CAR_STATS:
+				case CAR_STATS_REPORT:
 					TripFinishReport request = gson.fromJson(message.getContent(), TripFinishReport.class);
 					carStats.increaseSum(request.getSpentTime());
 					carStats.updateMax(request.getSpentTime());

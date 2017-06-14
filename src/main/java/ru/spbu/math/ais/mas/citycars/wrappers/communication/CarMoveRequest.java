@@ -1,21 +1,27 @@
 package ru.spbu.math.ais.mas.citycars.wrappers.communication;
 
+import java.util.Date;
+
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
+import ru.spbu.math.ais.mas.citycars.wrappers.Pair;
 
-@SuppressWarnings("serial")
+
 @AllArgsConstructor
 @EqualsAndHashCode
-@ToString
 @Getter
-public class TripFinishReport implements CityCommunicationUnit{
-	private String carName;
-	private int spentTime;
+@ToString
+public class CarMoveRequest implements CityCommunicationUnit{
+	
+	String carId;
+	Date requestTime;
+	Pair requestedRoad;
 	
 	@Override
 	public CityMessageSubject getSubject() {
-		return CityMessageSubject.CAR_STATS_REPORT;
+		return CityMessageSubject.CAR_MOVE_REQUEST;
 	}
+
 }
