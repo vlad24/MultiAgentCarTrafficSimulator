@@ -1,10 +1,13 @@
-#Driving strategy:
+#
+# CAN BE USED ONLY WITH: SPB, PERM, TULA
+# BEST WITH: TULA
+#
+
 @strategy=iterative
-@refresh=2
+@refresh=1
+
 #Cars:
-AUDI	1	7
-LADA	3	7
-VOLVO	4	7
-SKODA	1	7
-DODGE	3	7
-MINI	4	7
+AUDI	0	8
+LADA	7	1
+VOLVO	1	2
+DODGE	1	6
