@@ -1,5 +1,6 @@
 package ru.spbu.math.ais.mas.citycars.cars;
 
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.Queue;
 import java.util.concurrent.TimeUnit;
@@ -15,10 +16,10 @@ import ru.spbu.math.ais.mas.citycars.Configurator;
 import ru.spbu.math.ais.mas.citycars.roads.Road;
 import ru.spbu.math.ais.mas.citycars.wrappers.Graph;
 import ru.spbu.math.ais.mas.citycars.wrappers.Pair;
-import ru.spbu.math.ais.mas.citycars.wrappers.communication.CityCommunicationUnit;
-import ru.spbu.math.ais.mas.citycars.wrappers.communication.RoadStatusChange;
+import ru.spbu.math.ais.mas.citycars.wrappers.communication.CityMessageType;
 import ru.spbu.math.ais.mas.citycars.wrappers.communication.RoadOccupyPermission;
 import ru.spbu.math.ais.mas.citycars.wrappers.communication.RoadOccupyRequest;
+import ru.spbu.math.ais.mas.citycars.wrappers.communication.RoadStatusChange;
 import ru.spbu.math.ais.mas.citycars.wrappers.communication.TripFinishReport;
 import ru.spbu.math.ais.mas.citycars.wrappers.communication.TripStartRequest;
 
@@ -33,11 +34,12 @@ public class Car extends Agent {
 	@SuppressWarnings("unchecked")
 	protected void setup() {
 		carName          = getLocalName();
-		String cityName  = String.valueOf(getArguments()[0]);
-		Graph cityGraph  = (Graph)(getArguments()[1]);
-		int source       = Integer.parseInt(getArguments()[2].toString());
-		int destination  = Integer.parseInt(getArguments()[3].toString());
-		strategy         = DrivingStrategy.valueOf(getArguments()[4].toString());
+		int argPos = 0;
+		String cityName  = String.valueOf(getArguments()[argPos++]);
+		Graph cityGraph  = (Graph)(getArguments()[argPos++]);
+		int source       = Integer.parseInt(getArguments()[argPos++].toString());
+		int destination  = Integer.parseInt(getArguments()[argPos++].toString());
+		strategy         = DrivingStrategy.valueOf(getArguments()[argPos++].toString());
 		Map<String, Object> strategyParams = (Map<String, Object>) getArguments()[5];
 		log.info("Inited.");
 		switch (strategy) {
@@ -68,6 +70,7 @@ public class Car extends Agent {
 		private int source;
 		private int destination;
 		private Pair currentRoad;
+		private Pair wishedRoad;
 		private int lastReachedVertex;
 		private int spentTime;
 		private int roadsPassed;
@@ -75,6 +78,7 @@ public class Car extends Agent {
 		private Queue<Integer> currentOptimalRoute;
 		private int refreshCount; 
 		private Gson gson;
+		private boolean isTurning;
 
 
 		public BasicDrivingBehaviour(Car car, String cityName, Graph cityGraph, int src, int dst, int refresh) {
@@ -83,10 +87,14 @@ public class Car extends Agent {
 			this.cityGraph = cityGraph;
 			this.source = src;
 			this.destination = dst;
+			this.currentRoad = null;
+			this.wishedRoad = null;
 			this.lastReachedVertex = src;
 			this.refreshCount = refresh;
 			this.spentTime = 0;
 			this.roadsPassed = 0;
+			this.roadChanges = new LinkedList<>();
+			this.isTurning = false;
 			this.gson = new Gson();
 		}
 
@@ -103,35 +111,46 @@ public class Car extends Agent {
 		@Override
 		public void action() {
 			try {
-				if (roadsPassed % refreshCount == 0) {
-					log.info("Passed {} roads. Time to build new route...");
-					for (RoadStatusChange change: this.roadChanges) {
-						log.debug("Applying changes to city graph {}", change);
-						cityGraph.changeEdgeLength(change.getRoad().getFirst(), change.getRoad().getSecond(), change.getDelta());
+				if (!isTurning) {
+					if (roadsPassed % refreshCount == 0) {
+						log.info("Passed {} roads. Time to build new route...", roadsPassed);
+						for (RoadStatusChange change: this.roadChanges) {
+							log.debug("Applying changes to city graph {}", change);
+							cityGraph.changeEdgeLength(change.getRoad().getFirst(), change.getRoad().getSecond(), change.getDelta());
+						}
+						currentOptimalRoute = (Queue<Integer>) cityGraph.getMinDistances(source, destination).get(Graph.PATH_KEY);
+						currentOptimalRoute.remove();//remove first
+						log.debug("Optimal route built: {}", currentOptimalRoute);
 					}
-					currentOptimalRoute = (Queue<Integer>) cityGraph.getMinDistances(source, destination).get(Graph.PATH_KEY);
-					log.debug("Optimal route built: {}", currentOptimalRoute);
+					int nextVertex = currentOptimalRoute.element();
+					wishedRoad = new Pair(lastReachedVertex, nextVertex);
+					log.debug("Sending occupy request to road {}", wishedRoad);
+					ACLMessage outMessage = new ACLMessage(ACLMessage.REQUEST);
+					outMessage.addReceiver(new AID(Road.nameOf(wishedRoad), AID.ISLOCALNAME));
+					outMessage.setOntology(CityMessageType.ROADS_OCCUPATION.toString());
+					String json = gson.toJson(new RoadOccupyRequest(carName, currentRoad, wishedRoad));
+					outMessage.setContent(json);
+					send(outMessage);
+					isTurning = true;
 				}
-				int nextVertex = currentOptimalRoute.element();
-				Pair desiredRoad = new Pair(lastReachedVertex, nextVertex);
-				ACLMessage outMessage = new ACLMessage(ACLMessage.REQUEST);
-				outMessage.addReceiver(new AID(Road.nameOf(desiredRoad), AID.ISLOCALNAME));
-				outMessage.setContent(gson.toJson(new RoadOccupyRequest(carName, currentRoad, desiredRoad)));
 				ACLMessage reply = receive();
 				if (reply != null) {
-					CityCommunicationUnit unit = gson.fromJson(reply.getContent(), CityCommunicationUnit.class);
-					switch (unit.getSubject()) {
+					log.debug("*** Got json:{}", reply.getContent());
+					CityMessageType messageType = CityMessageType.valueOf(reply.getOntology());
+					switch (messageType) {
 					case ROADS_OCCUPATION:
 						RoadOccupyPermission roadOccPermission = gson.fromJson(reply.getContent(), RoadOccupyPermission.class);
-						if (roadOccPermission.isPermitted() && roadOccPermission.getRoad().equals(desiredRoad)) {
-							log.debug("Driving at new road {}", desiredRoad);
-							currentRoad = roadOccPermission.getRoad();
+						if (roadOccPermission.isPermitted() && roadOccPermission.getRoad().equals(wishedRoad)) {
+							isTurning = false;
+							currentRoad = wishedRoad;
+							log.debug("Driving at new road {} for {} secs", currentRoad, roadOccPermission.getNewRoadWorkload());
 							// If the car does not sleep the next road will not let the car occupy it
 							TimeUnit.SECONDS.sleep(roadOccPermission.getNewRoadWorkload());
 							spentTime  += roadOccPermission.getNewRoadWorkload();
 							log.debug("Road {} passed!", currentRoad);
 							roadsPassed++;
 							lastReachedVertex = currentOptimalRoute.remove();
+							log.debug("Reached:{}", lastReachedVertex);
 						}
 						break;
 					case ROAD_STATUS_CHANGE_NOTIFICATION:

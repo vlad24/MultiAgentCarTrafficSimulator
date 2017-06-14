@@ -9,17 +9,12 @@ import ru.spbu.math.ais.mas.citycars.wrappers.Pair;
 
 @AllArgsConstructor
 @EqualsAndHashCode
-@Getter
 @ToString
-public class CarMoveRequest implements CityCommunicationUnit{
+@Getter
+public class CarMoveRequest{
 	
 	String carName;
 	Long requestTime;
 	Pair requestedRoad;
 	
-	@Override
-	public CityMessageSubject getSubject() {
-		return CityMessageSubject.CAR_MOVE_REQUEST;
-	}
-
 }

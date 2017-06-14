@@ -40,7 +40,6 @@ public class Configurator extends Agent{
 	private String cityName;
 	private Graph cityGraph;
 	private int workloadDelta;
-	
 	private Set<String> carIds;
 
 	@Override
@@ -51,8 +50,8 @@ public class Configurator extends Agent{
 		parser = new Parser();
 		container = getContainerController();
 		setupGraph(roadsFilePath.toFile());
-		setupRoads();
 		setupCars(carsFilePath.toFile());
+		setupRoads();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -75,7 +74,7 @@ public class Configurator extends Agent{
 			String carName = carParts.get(0);
 			String carSrc  = carParts.get(1);
 			String carDst  = carParts.get(2);
-			Object[] args = new Object[] {cityGraph, carSrc, carDst, strategy, strategyParams};
+			Object[] args = new Object[] {cityName, cityGraph, carSrc, carDst, strategy, strategyParams};
 			try {
 				AgentController carController = container.createNewAgent(carName, Car.class.getCanonicalName(), args);
 				carController.start();
@@ -95,21 +94,8 @@ public class Configurator extends Agent{
 				AgentController roadController = container.createNewAgent(
 						roadName,
 						Road.class.getCanonicalName(),
-						new Object[] {cityName, edge, cityGraph.getEdgeLength(edge), carIds}
+						new Object[] {cityName, edge, cityGraph.getEdgeLength(edge), workloadDelta, carIds}
 				);
-//				DFAgentDescription agentDesc = new DFAgentDescription();
-//				agentDesc.setName(new AID(roadName, AID.ISLOCALNAME));
-//				ServiceDescription upperServiceDesc = new ServiceDescription();
-//				upperServiceDesc.setName(Road.class.getSimpleName());
-//				upperServiceDesc.setType(String.valueOf(edge.getFirst()));
-//				upperServiceDesc.addLanguages(FIPANames.ContentLanguage.FIPA_SL);
-//				ServiceDescription lowerServiceDesc = new ServiceDescription();
-//				lowerServiceDesc.setName(Road.class.getSimpleName());
-//				lowerServiceDesc.setType(String.valueOf(edge.getSecond()));
-//				lowerServiceDesc.addLanguages(FIPANames.ContentLanguage.FIPA_SL);
-//				agentDesc.addServices(upperServiceDesc);
-//				agentDesc.addServices(lowerServiceDesc);
-//				DFService.register(this, agentDesc);
 				roadController.start();
 			} catch (ControllerException e) {
 				log.error("Error while creating road agent: {}", e);

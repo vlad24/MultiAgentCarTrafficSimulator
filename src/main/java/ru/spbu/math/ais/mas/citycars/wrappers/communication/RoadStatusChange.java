@@ -9,14 +9,9 @@ import ru.spbu.math.ais.mas.citycars.wrappers.Pair;
 @AllArgsConstructor
 @ToString
 @Getter
-public class RoadStatusChange implements CityCommunicationUnit{
+public class RoadStatusChange{
 
 	private Pair road;
 	private int delta;
 	
-	@Override
-	public CityMessageSubject getSubject() {
-		return CityMessageSubject.ROADS_OCCUPATION;
-	}
-
 }

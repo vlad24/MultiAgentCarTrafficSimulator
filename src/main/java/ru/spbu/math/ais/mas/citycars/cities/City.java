@@ -7,7 +7,7 @@ import jade.core.behaviours.Behaviour;
 import jade.lang.acl.ACLMessage;
 import lombok.extern.slf4j.Slf4j;
 import ru.spbu.math.ais.mas.citycars.wrappers.Statistics;
-import ru.spbu.math.ais.mas.citycars.wrappers.communication.CityCommunicationUnit;
+import ru.spbu.math.ais.mas.citycars.wrappers.communication.CityMessageType;
 import ru.spbu.math.ais.mas.citycars.wrappers.communication.TripFinishReport;
 
 @Slf4j
@@ -38,8 +38,8 @@ public class City extends Agent {
 		public void action() {
 			ACLMessage message = myAgent.receive();
 			if (message != null) {
-				CityCommunicationUnit unit = gson.fromJson(message.getContent(), CityCommunicationUnit.class);
-				switch (unit.getSubject()) {
+				CityMessageType messageType = CityMessageType.valueOf(message.getOntology());
+				switch (messageType) {
 				case CAR_REGISTER:
 					carStats.increaseCount();	
 					activeCarsAmount++;

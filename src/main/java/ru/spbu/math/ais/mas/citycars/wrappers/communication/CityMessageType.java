@@ -1,6 +1,6 @@
 package ru.spbu.math.ais.mas.citycars.wrappers.communication;
 
-public enum CityMessageSubject {
+public enum CityMessageType {
 	ROADS_OCCUPATION,
 	ROAD_STATUS_CHANGE_NOTIFICATION,
 	CAR_REGISTER,
