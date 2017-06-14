@@ -4,7 +4,7 @@
 #
 
 @strategy=iterative
-@refresh=1
+@refresh=2
 
 #Cars:
 AUDI	0	8

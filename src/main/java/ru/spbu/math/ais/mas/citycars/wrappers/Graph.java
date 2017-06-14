@@ -98,8 +98,16 @@ public class Graph implements Serializable{
 		return adjMatrix.get(i).get(j);
 	}
 
-	private boolean areConnected(int i, int j) {
+	public boolean areConnected(int i, int j) {
 		return getEdgeLength(i, j) != 0;
+	}
+	
+	public boolean areIncident(Pair e1, Pair e2) {
+		return exists(e1) && exists(e2) && (e1.getFirst() == e2.getFirst()) || (e2.getSecond() == e1.getSecond());
+	}
+
+	private boolean exists(Pair e1) {
+		return getEdgeLength(e1) != 0;
 	}
 	
 	public int getVerticesAmount(){
