@@ -1,7 +1,5 @@
 package ru.spbu.math.ais.mas.citycars.wrappers.communication;
 
-import java.util.Date;
-
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -15,8 +13,8 @@ import ru.spbu.math.ais.mas.citycars.wrappers.Pair;
 @ToString
 public class CarMoveRequest implements CityCommunicationUnit{
 	
-	String carId;
-	Date requestTime;
+	String carName;
+	Long requestTime;
 	Pair requestedRoad;
 	
 	@Override

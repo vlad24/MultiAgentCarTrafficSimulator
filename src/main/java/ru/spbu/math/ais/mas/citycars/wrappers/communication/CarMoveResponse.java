@@ -15,7 +15,7 @@ import ru.spbu.math.ais.mas.citycars.wrappers.Pair;
 @ToString
 public class CarMoveResponse implements CityCommunicationUnit{
 	
-	String carId;
+	String carName;
 	boolean permitted;
 	
 	@Override
