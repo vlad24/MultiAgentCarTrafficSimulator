@@ -1,17 +1,16 @@
 package ru.spbu.math.ais.mas.citycars.roads;
 
-import jade.core.AID;
-import jade.core.Agent;
-import jade.core.behaviours.CyclicBehaviour;
-import jade.lang.acl.ACLMessage;
-
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
+import com.google.gson.Gson;
+
+import jade.core.AID;
+import jade.core.Agent;
+import jade.core.behaviours.CyclicBehaviour;
+import jade.lang.acl.ACLMessage;
 import lombok.extern.slf4j.Slf4j;
 import ru.spbu.math.ais.mas.citycars.wrappers.Pair;
 import ru.spbu.math.ais.mas.citycars.wrappers.communication.CarMoveRequest;
@@ -20,8 +19,6 @@ import ru.spbu.math.ais.mas.citycars.wrappers.communication.CityMessageType;
 import ru.spbu.math.ais.mas.citycars.wrappers.communication.RoadOccupyPermission;
 import ru.spbu.math.ais.mas.citycars.wrappers.communication.RoadOccupyRequest;
 import ru.spbu.math.ais.mas.citycars.wrappers.communication.RoadStatusChange;
-
-import com.google.gson.Gson;
 
 @SuppressWarnings("serial")
 @Slf4j

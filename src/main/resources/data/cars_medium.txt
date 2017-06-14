@@ -3,8 +3,8 @@
 # BEST WITH: TULA
 #
 
-@strategy=iterative
-@refresh=2
+@strategy=dummy
+#@refresh=2
 
 #Cars:
 AUDI	0	8
