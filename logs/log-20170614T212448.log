@@ -186,3 +186,16 @@
 77550 [(5,7)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Sending broadcast to all cars with workload delta: 10
 77550 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - *** Got json:{"road":{"first":5,"second":7},"permitted":true,"newRoadWorkload":11}
 77551 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - Driving at new road Pair(first=5, second=7) for 11 secs
+88551 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - Road Pair(first=5, second=7) passed!
+88551 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - Reached:7
+88551 [LADA] INFO  r.s.math.ais.mas.citycars.cars.Car - Car LADA has reached its destination and spent 88 sec in total.
+88551 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - Releasing last road...
+88552 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - Sending stats report to city stats agent...
+88553 [(5,7)] DEBUG r.s.m.ais.mas.citycars.roads.Road - /// Got json message: {"carName":"LADA","roadLeft":{"first":5,"second":7}}
+88553 [(5,7)] DEBUG r.s.m.ais.mas.citycars.roads.Road - LAST Occupy request from car LADA got.
+88553 [(5,7)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Sending broadcast to all cars with workload delta: -10
+88554 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - Car LADA has sent its report.
+88555 [Tula] DEBUG r.s.m.ais.mas.citycars.cities.City - Got report. Current active cars:0
+88555 [Tula] INFO  r.s.m.ais.mas.citycars.cities.City - City is destroyed
+88556 [Tula] INFO  r.s.m.ais.mas.citycars.cities.City - City agent cannot see any active cars. Driving finished successfully. Car stats:
+Statistics [count=2, sum=146, max=88, avg=73.0]
