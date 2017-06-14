@@ -5,7 +5,6 @@ import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -78,8 +77,10 @@ public class Road extends Agent{
 					RoadOccupyRequest roadOccRequest = gson.fromJson(msg.getContent(), RoadOccupyRequest.class);
 					if (roadOccRequest.getRoadLeft() != null &&
 							roadOccRequest.getRoadWished() != null){
+						log.trace("RoadLeft and RoadWished: {} {}", roadOccRequest.getRoadLeft(), roadOccRequest.getRoadWished());
 						if(bounds.equals(roadOccRequest.getRoadWished()) && 
 								roadOccRequest.getRoadLeft().getSecond() == bounds.getFirst()) {
+							log.debug("Asking road ");
 							ACLMessage reqToAnotherRoad = new ACLMessage(ACLMessage.REQUEST);
 							reqToAnotherRoad.addReceiver(new AID(Road.nameOf(roadOccRequest.getRoadWished()), AID.ISLOCALNAME));
 							reqToAnotherRoad.setContent(gson.toJson(new CarMoveRequest(roadOccRequest.getCarName(), System.currentTimeMillis(), bounds)));
@@ -157,9 +158,6 @@ public class Road extends Agent{
 		private Long addSecondsToNow(int seconds) {
 			return System.currentTimeMillis() + TimeUnit.SECONDS.toMillis(seconds);
 		}
-
-
-
 	}
 
 }
