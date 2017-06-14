@@ -1,15 +1,16 @@
 package ru.spbu.math.ais.mas.citycars.roads;
 
-import jade.core.AID;
-import jade.core.Agent;
-import jade.core.behaviours.CyclicBehaviour;
-import jade.lang.acl.ACLMessage;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
+import com.google.gson.Gson;
+
+import jade.core.AID;
+import jade.core.Agent;
+import jade.core.behaviours.CyclicBehaviour;
+import jade.lang.acl.ACLMessage;
 import lombok.extern.slf4j.Slf4j;
 import ru.spbu.math.ais.mas.citycars.wrappers.Pair;
 import ru.spbu.math.ais.mas.citycars.wrappers.communication.CarMoveRequest;
@@ -18,8 +19,6 @@ import ru.spbu.math.ais.mas.citycars.wrappers.communication.CityMessageType;
 import ru.spbu.math.ais.mas.citycars.wrappers.communication.RoadOccupyPermission;
 import ru.spbu.math.ais.mas.citycars.wrappers.communication.RoadOccupyRequest;
 import ru.spbu.math.ais.mas.citycars.wrappers.communication.RoadStatusChange;
-
-import com.google.gson.Gson;
 
 @SuppressWarnings("serial")
 @Slf4j
@@ -35,9 +34,9 @@ public class Road extends Agent{
 	public static String nameOf(Pair edge) {
 		return new StringBuilder()
 		.append("(")
-			.append(edge.getFirst())
+			.append(Math.min(edge.getFirst(), edge.getSecond()))
 			.append(",")
-			.append(edge.getSecond())
+			.append(Math.max(edge.getFirst(), edge.getSecond()))
 		.append(")")
 		.toString();
 	}
@@ -78,9 +77,11 @@ public class Road extends Agent{
 					RoadOccupyRequest roadOccRequest = gson.fromJson(message.getContent(), RoadOccupyRequest.class);
 					if (roadOccRequest.getRoadLeft() != null && roadOccRequest.getRoadWished() != null){
 						log.debug("Occupy request got. Road left:{}. Road wished: {}", roadOccRequest.getRoadLeft(), roadOccRequest.getRoadWished());
-						if(bounds.equals(roadOccRequest.getRoadWished()) && roadOccRequest.getRoadLeft().getSecond() == bounds.getFirst()) {
+						if(bounds.equals(roadOccRequest.getRoadWished()) && isIncident(roadOccRequest.getRoadLeft())) {
 							checkRequestWithAnotherRoad(roadOccRequest);
 						} else {
+							log.debug("Eq: {}", bounds.equals(roadOccRequest.getRoadWished()));
+							log.debug("Incident:{}", isIncident(roadOccRequest.getRoadLeft()));
 							sendOccupyReject(roadOccRequest.getCarName());
 						}						
 					} else if (roadOccRequest.getRoadLeft() == null){ //first standing
@@ -128,6 +129,13 @@ public class Road extends Agent{
 			}else {
 				block();
 			}
+		}
+
+		private boolean isIncident(Pair anotherRoad) {
+			return 	anotherRoad.getFirst()  == bounds.getSecond() ||
+					anotherRoad.getFirst()  == bounds.getFirst()  ||
+					anotherRoad.getSecond() == bounds.getSecond() ||
+					anotherRoad.getSecond()  == bounds.getFirst();
 		}
 
 		private void respondHavingCarChecked(CarMoveRequest carMoveRequest, boolean isPermitted) {

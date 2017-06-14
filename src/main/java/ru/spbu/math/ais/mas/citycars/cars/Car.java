@@ -120,9 +120,11 @@ public class Car extends Agent {
 							log.debug("Applying changes to city graph {}", change);
 							cityGraph.changeEdgeLength(change.getRoad().getFirst(), change.getRoad().getSecond(), change.getDelta());
 						}
-						currentOptimalRoute = (Queue<Integer>) cityGraph.getMinDistances(source, destination).get(Graph.PATH_KEY);
+						log.debug("Build route from {} to {}...", lastReachedVertex, destination);
+						currentOptimalRoute = (Queue<Integer>) cityGraph.getMinDistances(lastReachedVertex, destination).get(Graph.PATH_KEY);
+						log.debug("Got : {}", currentOptimalRoute);
 						currentOptimalRoute.remove();//remove first src
-						log.debug("Optimal route built: {}", currentOptimalRoute);
+						log.debug("Now we need  to visit: {}", currentOptimalRoute);
 					}
 					int nextVertex = currentOptimalRoute.element();
 					wishedRoad = new Pair(lastReachedVertex, nextVertex);
@@ -165,7 +167,7 @@ public class Car extends Agent {
 						break;
 					}
 				} else {
-					log.debug("Blocking and waiting for some message ...");
+					log.debug("Standing at crossroads...");
 					block();
 				}	
 			}catch (InterruptedException crashedDuringDriving) {
