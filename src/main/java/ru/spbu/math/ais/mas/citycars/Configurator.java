@@ -6,6 +6,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -13,6 +14,7 @@ import jade.core.Agent;
 import jade.wrapper.AgentController;
 import jade.wrapper.ControllerException;
 import jade.wrapper.PlatformController;
+import jade.wrapper.StaleProxyException;
 import lombok.extern.slf4j.Slf4j;
 import ru.spbu.math.ais.mas.citycars.cars.Car;
 import ru.spbu.math.ais.mas.citycars.cars.DrivingStrategy;
@@ -50,23 +52,27 @@ public class Configurator extends Agent{
 		log.info("Configuring app with configs taken from (cars){}, (city){}", carsFilePath.toString(), roadsFilePath.toString());
 		parser = new Parser();
 		container = getContainerController();
-		setupRoadsGraph(roadsFilePath.toFile());
-		setupCityAgent(cityName);
-		setupCars(carsFilePath.toFile());
-		setupRoadsAgents();
+		createRoadsGraph(roadsFilePath.toFile());
+		startCityAgent(cityName);
+		List<AgentController> cars = prepareCarAgents(carsFilePath.toFile());
+		List<AgentController> roads = prepareRoadsAgents();
+		startAgents(roads);
+		startAgents(cars);
+		
 	}
 
-	private void setupCityAgent(String cityName) {
-		try {
-			AgentController cityController = container.createNewAgent(cityName, City.class.getCanonicalName(), null);
-			cityController.start();
-		} catch (ControllerException e) {
-			log.error("Error while creating city agent: {}", e);
+	private void startAgents(List<AgentController> agents) {
+		for (AgentController agent : agents) {
+			try {
+				agent.start();
+			} catch (StaleProxyException e) {
+				log.error("Error while starting agent", e);;
+			}
 		}
 	}
 
 	@SuppressWarnings("unchecked")
-	private void setupCars(File fileWithCars) {
+	private List<AgentController> prepareCarAgents(File fileWithCars) {
 		if (cityGraph == null) {
 			throw new IllegalStateException("Creating car without creating city");
 		}
@@ -81,6 +87,7 @@ public class Configurator extends Agent{
 		ArrayList<ArrayList<String>> carItems = (ArrayList<ArrayList<String>>)carConfig.get(CAR_ITEMS_KEY);
 		carIds = new HashSet<>();
 		log.info("Configuring {} cars that drive {} with params {}", carItems.size(), strategy, strategyParams);
+		List<AgentController> result = new ArrayList<AgentController>(carItems.size());
 		for (ArrayList<String> carParts: carItems) {
 			String carName = carParts.get(0);
 			String carSrc  = carParts.get(1);
@@ -88,17 +95,19 @@ public class Configurator extends Agent{
 			Object[] args = new Object[] {cityName, cityGraph, carSrc, carDst, strategy, strategyParams};
 			try {
 				AgentController carController = container.createNewAgent(carName, Car.class.getCanonicalName(), args);
-				carController.start();
+				result.add(carController);
 				carIds.add(carName);
 			} catch (ControllerException e) {
 				log.error("Error while creating car: {}", e);
 			}   
 		}
+		return result;
 	}
 	
-	private void setupRoadsAgents() {
+	private List<AgentController> prepareRoadsAgents() {
 		log.info("Configuring roads {} with {} vertices and {} edges. Workload delta={}", 
 				cityName, cityGraph.getVerticesAmount(), cityGraph.getEdgesAmount(), workloadDelta);
+		List<AgentController> result = new ArrayList<>();
 		for (Pair edge : cityGraph.getEdges()) {
 			try {
 				String roadName = Road.nameOf(edge);
@@ -107,18 +116,28 @@ public class Configurator extends Agent{
 						Road.class.getCanonicalName(),
 						new Object[] {cityName, edge, cityGraph.getEdgeLength(edge), workloadDelta, carIds}
 				);
-				roadController.start();
+				result.add(roadController);
 			} catch (ControllerException e) {
 				log.error("Error while creating road agent: {}", e);
 			}
 		}
+		return result;
 	}
 
-	private void setupRoadsGraph(File fileWithRoads) {
+	private void createRoadsGraph(File fileWithRoads) {
 		Map<String, Object> parseResults = parser.parseGraphFile(fileWithRoads);
 		cityName = (String) parseResults.get(CITY_NAME_KEY);
 		cityGraph  = (Graph) parseResults.get(CITY_GRAPH_KEY);
 		workloadDelta = Integer.parseInt(parseResults.get(CITY_WORKLOAD_KEY).toString());
+	}
+	
+	private void startCityAgent(String cityName) {
+		try {
+			AgentController cityController = container.createNewAgent(cityName, City.class.getCanonicalName(), null);
+			cityController.start();
+		} catch (ControllerException e) {
+			log.error("Error while creating city agent: {}", e);
+		}
 	}
 	
 }
