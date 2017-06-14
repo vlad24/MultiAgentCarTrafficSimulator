@@ -104,7 +104,7 @@ public class Car extends Agent {
 		public void action() {
 			try {
 				if (roadsPassed % refreshCount == 0) {
-					log.info("Building optimal route...");
+					log.info("Passed {} roads. Time to build new route...");
 					for (RoadStatusChange change: this.roadChanges) {
 						log.debug("Applying changes to city graph {}", change);
 						cityGraph.changeEdgeLength(change.getRoad().getFirst(), change.getRoad().getSecond(), change.getDelta());
@@ -124,11 +124,12 @@ public class Car extends Agent {
 					case ROADS_OCCUPATION:
 						RoadOccupyPermission roadOccPermission = gson.fromJson(reply.getContent(), RoadOccupyPermission.class);
 						if (roadOccPermission.isPermitted() && roadOccPermission.getRoad().equals(desiredRoad)) {
+							log.debug("Driving at new road {}", desiredRoad);
 							currentRoad = roadOccPermission.getRoad();
 							// If the car does not sleep the next road will not let the car occupy it
 							TimeUnit.SECONDS.sleep(roadOccPermission.getNewRoadWorkload());
 							spentTime  += roadOccPermission.getNewRoadWorkload();
-							log.debug("Road {} passed!", nextVertex);
+							log.debug("Road {} passed!", currentRoad);
 							roadsPassed++;
 							lastReachedVertex = currentOptimalRoute.remove();
 						}
