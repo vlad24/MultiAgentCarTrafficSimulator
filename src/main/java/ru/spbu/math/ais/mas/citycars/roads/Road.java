@@ -53,6 +53,7 @@ public class Road extends Agent{
 		workloadDelta = Integer.parseInt(getArguments()[argPos++].toString());
 		//for broadcasting 
 		carIds        = (Set<String>) getArguments()[argPos++];
+		log.info("Road {} in {} is on", getLocalName(), cityName);
 		addBehaviour(new RoadBehaviour());
 
 	}
@@ -71,24 +72,26 @@ public class Road extends Agent{
 		public void action() {
 			ACLMessage msg = receive();
 			if (msg != null) {
-				CityCommunicationUnit unit = gson.fromJson(msg.getContent(), CityCommunicationUnit.class); 
+				log.trace("///Got message:", msg.getContent());
+				CityCommunicationUnit unit = gson.fromJson(msg.getContent(), CityCommunicationUnit.class);
 				switch (unit.getSubject()) {
 				case ROADS_OCCUPATION:
 					RoadOccupyRequest roadOccRequest = gson.fromJson(msg.getContent(), RoadOccupyRequest.class);
 					if (roadOccRequest.getRoadLeft() != null &&
 							roadOccRequest.getRoadWished() != null){
-						log.trace("RoadLeft and RoadWished: {} {}", roadOccRequest.getRoadLeft(), roadOccRequest.getRoadWished());
-						if(bounds.equals(roadOccRequest.getRoadWished()) && 
-								roadOccRequest.getRoadLeft().getSecond() == bounds.getFirst()) {
-							log.debug("Asking road ");
-							ACLMessage reqToAnotherRoad = new ACLMessage(ACLMessage.REQUEST);
-							reqToAnotherRoad.addReceiver(new AID(Road.nameOf(roadOccRequest.getRoadWished()), AID.ISLOCALNAME));
-							reqToAnotherRoad.setContent(gson.toJson(new CarMoveRequest(roadOccRequest.getCarName(), System.currentTimeMillis(), bounds)));
-							send(reqToAnotherRoad);
+						log.debug("Occupy request got. Road left:{}. Road wished: {}", roadOccRequest.getRoadLeft(), roadOccRequest.getRoadWished());
+						if(bounds.equals(roadOccRequest.getRoadWished()) && roadOccRequest.getRoadLeft().getSecond() == bounds.getFirst()) {
+							log.debug("Ask road {} about car {}", roadOccRequest.getRoadWished(), roadOccRequest.getCarName());
+							ACLMessage requestToAnotherRoad = new ACLMessage(ACLMessage.REQUEST);
+							requestToAnotherRoad.addReceiver(new AID(Road.nameOf(roadOccRequest.getRoadWished()), AID.ISLOCALNAME));
+							requestToAnotherRoad.setContent(gson.toJson(new CarMoveRequest(roadOccRequest.getCarName(), System.currentTimeMillis(), bounds)));
+							log.debug("Move request to road {} sent", roadOccRequest.getRoadWished());
+							send(requestToAnotherRoad);
 						} else {
 							sendOccupyReject(roadOccRequest.getCarName());
 						}						
 					} else if (roadOccRequest.getRoadLeft() == null){ //first standing
+						log.debug("FIRST Occupy request from car {} got.", roadOccRequest.getCarName());
 						if (!carLeavingTime.containsKey(roadOccRequest.getCarName())){
 							workload += workloadDelta;
 							carLeavingTime.put(roadOccRequest.getCarName(), addSecondsToNow(workload));
@@ -98,26 +101,30 @@ public class Road extends Agent{
 							sendOccupyReject(roadOccRequest.getCarName());
 						}
 					} else if (roadOccRequest.getRoadWished() == null){ //leaving
+						log.debug("LAST Occupy request from car {} got.", roadOccRequest.getCarName());
 						workload -= workloadDelta;
 						broadcast(-workloadDelta);
 						carLeavingTime.remove(roadOccRequest.getCarName());
 					}
-					log.debug("wanna be occupied");
 					break;
 				case CAR_MOVE_REQUEST:
 					CarMoveRequest carMoveRequest = gson.fromJson(msg.getContent(), CarMoveRequest.class);
 					String carName = carMoveRequest.getCarName();
+					log.debug("Move request got. Sombody wants to check if car {} has left me", carName);
 					ACLMessage reply = msg.createReply();
 					boolean permitted = carLeavingTime.containsKey(carName) && carLeavingTime.get(carName) < carMoveRequest.getRequestTime();
+					log.debug("Car has left me: {}", permitted);
 					reply.setContent(gson.toJson(new CarMoveResponse(carName, permitted)));
 					send(reply);
-					log.debug("wanna check car");
 					break;
 				case CAR_MOVE_RESPONSE:
 					CarMoveResponse carMoveResponse = gson.fromJson(msg.getContent(), CarMoveResponse.class);
+					log.debug("Move response got. We can decide if car {} can ride here", carMoveResponse.getCarName());
 					if (carMoveResponse.isPermitted()){
 						workload += workloadDelta;
-						carLeavingTime.put(carMoveResponse.getCarName(), addSecondsToNow(workload));
+						long timeBound = addSecondsToNow(workload);
+						carLeavingTime.put(carMoveResponse.getCarName(), timeBound);
+						log.debug("All good. New workload: {}. Car leaves me not earlier than {}", workload, timeBound);
 						sendOccupyAccept(carMoveResponse.getCarName());
 						broadcast(workloadDelta);
 					} else {
@@ -125,14 +132,17 @@ public class Road extends Agent{
 					}
 					break;
 				default:
+					log.warn("Strange message got: {}", msg.getContent());
 					break;
 				}
 			}else {
+				log.debug("Waiting for new messages...");
 				block();
 			}
 		}
 
 		private void sendOccupyReject(String carName) {
+			log.debug("Rejecting car {}", carName);
 			ACLMessage reply = new ACLMessage(ACLMessage.DISCONFIRM);
 			reply.addReceiver(new AID(carName, AID.ISLOCALNAME));
 			reply.setContent(gson.toJson(new RoadOccupyPermission(bounds, false, Integer.MAX_VALUE)));
@@ -140,6 +150,7 @@ public class Road extends Agent{
 		}
 		
 		private void sendOccupyAccept(String carName) {
+			log.debug("Accepting car {} for occupation", carName);
 			ACLMessage reply = new ACLMessage(ACLMessage.CONFIRM);
 			reply.addReceiver(new AID(carName, AID.ISLOCALNAME));
 			reply.setContent(gson.toJson(new RoadOccupyPermission(bounds, true, workload)));
@@ -147,6 +158,7 @@ public class Road extends Agent{
 		}
 
 		private void broadcast(int delta) {
+			log.debug("Sending broadcast to all cars with workload delta: {}", delta);
 			ACLMessage broadcast = new ACLMessage(ACLMessage.INFORM);
 			for (String id : carIds) {
 				broadcast.addReceiver(new AID(id, AID.ISLOCALNAME));
@@ -158,6 +170,7 @@ public class Road extends Agent{
 		private Long addSecondsToNow(int seconds) {
 			return System.currentTimeMillis() + TimeUnit.SECONDS.toMillis(seconds);
 		}
+		
 	}
 
 }
