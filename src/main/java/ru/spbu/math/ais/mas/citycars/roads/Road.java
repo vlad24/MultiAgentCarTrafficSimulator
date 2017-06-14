@@ -126,7 +126,6 @@ public class Road extends Agent{
 					break;
 				}
 			}else {
-				log.debug("Waiting for new messages...");
 				block();
 			}
 		}

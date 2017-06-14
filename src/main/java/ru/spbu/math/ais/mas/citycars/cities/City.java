@@ -17,9 +17,10 @@ public class City extends Agent {
 	private Statistics carStats;
 	private int activeCarsAmount;
 
+
 	@Override
 	protected void setup() {
-		log.info("{} is ready. Got args:{}", getLocalName(), getArguments());
+		log.info("City {} is ready.", getLocalName(), getArguments());
 		carStats = new Statistics();
 		activeCarsAmount = 0;
 		addBehaviour(new StatisticsCollectionBehaviour(this));
@@ -28,10 +29,12 @@ public class City extends Agent {
 	@SuppressWarnings("serial")
 	private class StatisticsCollectionBehaviour extends Behaviour{
 		private Gson gson;
+		private boolean carsDetected;
 
 		public StatisticsCollectionBehaviour(City city) {
 			super(city);
 			gson = new Gson();
+			carsDetected = false;
 		}
 
 		@Override
@@ -41,7 +44,9 @@ public class City extends Agent {
 				CityMessageType messageType = CityMessageType.valueOf(message.getOntology());
 				switch (messageType) {
 				case CAR_REGISTER:
-					carStats.increaseCount();	
+					log.debug("Received registering message");
+					carsDetected = true;
+					carStats.increaseCount();
 					activeCarsAmount++;
 					break;
 				case CAR_STATS_REPORT:
@@ -49,8 +54,10 @@ public class City extends Agent {
 					carStats.increaseSum(request.getSpentTime());
 					carStats.updateMax(request.getSpentTime());
 					activeCarsAmount--;
+					log.debug("Got report. Current active cars:{}", activeCarsAmount);
 					break;
 				default:
+					log.warn("Strange message got: {}", message.getContent());
 					break;
 				}
 			}else {
@@ -60,21 +67,21 @@ public class City extends Agent {
 
 		@Override
 		public boolean done() {
-			return activeCarsAmount == 0;
+			return carsDetected && activeCarsAmount == 0;
 		}
 
 		@Override
 		public int onEnd() {
 			log.info("City is destroyed");
 			if (activeCarsAmount != 0){
-				log.error("City has driving cars =(");
+				log.error("City still has driving cars =(");
 				return 1;
 			}else{
-				log.info("City has finished successfully. Car stats:\n{}", carStats);
+				log.info("City agent cannot see any active cars. Driving finished successfully. Car stats:\n{}", carStats);
 				return 0;
 			}
 		}
-
+		
 	}
 
 }

@@ -16,6 +16,7 @@ import jade.wrapper.PlatformController;
 import lombok.extern.slf4j.Slf4j;
 import ru.spbu.math.ais.mas.citycars.cars.Car;
 import ru.spbu.math.ais.mas.citycars.cars.DrivingStrategy;
+import ru.spbu.math.ais.mas.citycars.cities.City;
 import ru.spbu.math.ais.mas.citycars.roads.Road;
 import ru.spbu.math.ais.mas.citycars.wrappers.Graph;
 import ru.spbu.math.ais.mas.citycars.wrappers.Pair;
@@ -49,9 +50,19 @@ public class Configurator extends Agent{
 		log.info("Configuring app with configs taken from (cars){}, (city){}", carsFilePath.toString(), roadsFilePath.toString());
 		parser = new Parser();
 		container = getContainerController();
-		setupGraph(roadsFilePath.toFile());
+		setupRoadsGraph(roadsFilePath.toFile());
+		setupCityAgent(cityName);
 		setupCars(carsFilePath.toFile());
-		setupRoads();
+		setupRoadsAgents();
+	}
+
+	private void setupCityAgent(String cityName) {
+		try {
+			AgentController cityController = container.createNewAgent(cityName, City.class.getCanonicalName(), null);
+			cityController.start();
+		} catch (ControllerException e) {
+			log.error("Error while creating city agent: {}", e);
+		}
 	}
 
 	@SuppressWarnings("unchecked")
@@ -85,7 +96,7 @@ public class Configurator extends Agent{
 		}
 	}
 	
-	private void setupRoads() {
+	private void setupRoadsAgents() {
 		log.info("Configuring roads {} with {} vertices and {} edges. Workload delta={}", 
 				cityName, cityGraph.getVerticesAmount(), cityGraph.getEdgesAmount(), workloadDelta);
 		for (Pair edge : cityGraph.getEdges()) {
@@ -103,7 +114,7 @@ public class Configurator extends Agent{
 		}
 	}
 
-	private void setupGraph(File fileWithRoads) {
+	private void setupRoadsGraph(File fileWithRoads) {
 		Map<String, Object> parseResults = parser.parseGraphFile(fileWithRoads);
 		cityName = (String) parseResults.get(CITY_NAME_KEY);
 		cityGraph  = (Graph) parseResults.get(CITY_GRAPH_KEY);

@@ -102,9 +102,11 @@ public class Car extends Agent {
 		public void onStart() {
 			super.onStart();
 			log.debug("Registering in city...");
-			ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
-			msg.addReceiver(new AID(cityName, AID.ISLOCALNAME));
-			msg.setContent(gson.toJson(new TripStartRequest(carName)));
+			ACLMessage registerMessage = new ACLMessage(ACLMessage.INFORM);
+			registerMessage.addReceiver(new AID(cityName, AID.ISLOCALNAME));
+			registerMessage.setOntology(CityMessageType.CAR_REGISTER.toString());
+			registerMessage.setContent(gson.toJson(new TripStartRequest(carName)));
+			send(registerMessage);
 		}
 
 		@SuppressWarnings("unchecked")
@@ -119,7 +121,7 @@ public class Car extends Agent {
 							cityGraph.changeEdgeLength(change.getRoad().getFirst(), change.getRoad().getSecond(), change.getDelta());
 						}
 						currentOptimalRoute = (Queue<Integer>) cityGraph.getMinDistances(source, destination).get(Graph.PATH_KEY);
-						currentOptimalRoute.remove();//remove first
+						currentOptimalRoute.remove();//remove first src
 						log.debug("Optimal route built: {}", currentOptimalRoute);
 					}
 					int nextVertex = currentOptimalRoute.element();
@@ -179,18 +181,19 @@ public class Car extends Agent {
 		@Override
 		public int onEnd() {
 			log.info("Car {} has reached its destination and spent {} sec in total.", carName, spentTime);
-			log.debug("Cleaning up!");
-			//release last road
-			ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
-			msg.addReceiver(new AID(cityName, AID.ISLOCALNAME));
-			ACLMessage outMessage = new ACLMessage(ACLMessage.REQUEST);
-			outMessage.addReceiver(new AID(Road.nameOf(currentRoad), AID.ISLOCALNAME));
-			outMessage.setContent(gson.toJson(new RoadOccupyRequest(carName, currentRoad, null)));
-			//report stats
-			msg.setContent(gson.toJson(new TripFinishReport(carName, spentTime)));
-			log.trace("Car {} has sent its report.", carName);
-			myAgent.doDelete();
-			log.debug("Car {} is shut down.", carName);
+			log.debug("Releasing last road...");
+			ACLMessage lastRoadMsg = new ACLMessage(ACLMessage.REQUEST);
+			lastRoadMsg.addReceiver(new AID(Road.nameOf(currentRoad), AID.ISLOCALNAME));
+			lastRoadMsg.setOntology(CityMessageType.ROADS_OCCUPATION.toString());
+			lastRoadMsg.setContent(gson.toJson(new RoadOccupyRequest(carName, currentRoad, null)));
+			send(lastRoadMsg);
+			log.debug("Sending stats report to city stats agent...");
+			ACLMessage statsMsg = new ACLMessage(ACLMessage.INFORM);
+			statsMsg.addReceiver(new AID(cityName, AID.ISLOCALNAME));
+			statsMsg.setOntology(CityMessageType.CAR_STATS_REPORT.toString());
+			statsMsg.setContent(gson.toJson(new TripFinishReport(carName, spentTime)));
+			send(statsMsg);
+			log.debug("Car {} has sent its report.", carName);
 			return 0;
 		}
 		
