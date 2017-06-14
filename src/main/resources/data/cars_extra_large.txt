@@ -3,7 +3,7 @@
 # BEST: SPB
 #
 
-@strategy=iterative
+@strategy=dummy
 @refresh=2
 
 #Cars:
