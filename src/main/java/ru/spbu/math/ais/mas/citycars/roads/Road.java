@@ -26,7 +26,7 @@ public class Road extends Agent{
 
 	private String cityName;
 	private Pair bounds;
-	private int workLoad;
+	private int workload;
 	private int workloadDelta;
 	private Set<String> carIds;
 
@@ -44,7 +44,7 @@ public class Road extends Agent{
 	@Override
 	protected void setup() {
 		super.setup();
-		workLoad = 0;
+		workload = 0;
 		int argPos = 0;
 		cityName      = String.valueOf(getArguments()[argPos++]);
 		bounds        = (Pair)(getArguments()[argPos++]);
@@ -58,7 +58,7 @@ public class Road extends Agent{
 	private class RoadBehaviour extends CyclicBehaviour{
 
 		private Gson gson;
-		
+
 		public RoadBehaviour() {
 			gson = new Gson();
 		}
@@ -70,17 +70,26 @@ public class Road extends Agent{
 				CityCommunicationUnit unit = gson.fromJson(msg.getContent(), CityCommunicationUnit.class); 
 				switch (unit.getSubject()) {
 				case ROADS_OCCUPATION:
-					RoadOccupyRequest roadOccRequest = gson.fromJson(msg.getContent(), RoadOccupyRequest.class); 
-					if(bounds.equals(roadOccRequest.getRoadWished()) && 
-							roadOccRequest.getRoadLeft().getSecond() == bounds.getFirst()) {
-						ACLMessage reqToAnotherRoad = new ACLMessage(ACLMessage.REQUEST);
-						reqToAnotherRoad.addReceiver(new AID(Road.nameOf(roadOccRequest.getRoadWished()), AID.ISLOCALNAME));
-						reqToAnotherRoad.setContent(gson.toJson(new CarMoveRequest(roadOccRequest.getCarName(), new Date(), bounds)));
-						send(reqToAnotherRoad);
-					} else {
-						ACLMessage reply = msg.createReply();
-						reply.setContent(gson.toJson(new RoadOccupyPermission(bounds, false, Integer.MAX_VALUE)));
-						send(reply);						
+					RoadOccupyRequest roadOccRequest = gson.fromJson(msg.getContent(), RoadOccupyRequest.class);
+					if (roadOccRequest.getRoadLeft() != null &&
+							roadOccRequest.getRoadWished() != null){
+						if(bounds.equals(roadOccRequest.getRoadWished()) && 
+								roadOccRequest.getRoadLeft().getSecond() == bounds.getFirst()) {
+							ACLMessage reqToAnotherRoad = new ACLMessage(ACLMessage.REQUEST);
+							reqToAnotherRoad.addReceiver(new AID(Road.nameOf(roadOccRequest.getRoadWished()), AID.ISLOCALNAME));
+							reqToAnotherRoad.setContent(gson.toJson(new CarMoveRequest(roadOccRequest.getCarName(), new Date(), bounds)));
+							send(reqToAnotherRoad);
+						} else {
+							ACLMessage reply = msg.createReply();
+							reply.setContent(gson.toJson(new RoadOccupyPermission(bounds, false, Integer.MAX_VALUE)));
+							send(reply);						
+						}						
+					} else if (roadOccRequest.getRoadLeft() == null){ //first standing
+						// check map
+					} else if (roadOccRequest.getRoadWished() == null){ //leaving
+						workload -= workloadDelta;
+						broadcast(-workloadDelta);
+						//TODO:delete from map
 					}
 					log.debug("wanna be occupied");
 					break;
@@ -94,8 +103,8 @@ public class Road extends Agent{
 					if (carMoveResponse.isPermitted()){
 						ACLMessage reply = new ACLMessage(ACLMessage.CONFIRM);
 						reply.addReceiver(new AID(carMoveResponse.getCarId(), AID.ISLOCALNAME));
-						workLoad += workloadDelta;
-						reply.setContent(gson.toJson(new RoadOccupyPermission(bounds, carMoveResponse.isPermitted(), workLoad)));
+						workload += workloadDelta;
+						reply.setContent(gson.toJson(new RoadOccupyPermission(bounds, carMoveResponse.isPermitted(), workload)));
 						send(reply);
 						broadcast(workloadDelta);
 					} else {

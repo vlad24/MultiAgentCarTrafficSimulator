@@ -116,7 +116,7 @@ public class Car extends Agent {
 				Pair desiredRoad = new Pair(lastReachedVertex, nextVertex);
 				ACLMessage outMessage = new ACLMessage(ACLMessage.REQUEST);
 				outMessage.addReceiver(new AID(Road.nameOf(desiredRoad), AID.ISLOCALNAME));
-				outMessage.setContent(gson.toJson(new RoadOccupyRequest(currentRoad, desiredRoad)));
+				outMessage.setContent(gson.toJson(new RoadOccupyRequest(carName, currentRoad, desiredRoad)));
 				ACLMessage reply = receive();
 				if (reply != null) {
 					CityCommunicationUnit unit = gson.fromJson(reply.getContent(), CityCommunicationUnit.class);
@@ -165,7 +165,7 @@ public class Car extends Agent {
 			msg.addReceiver(new AID(cityName, AID.ISLOCALNAME));
 			ACLMessage outMessage = new ACLMessage(ACLMessage.REQUEST);
 			outMessage.addReceiver(new AID(Road.nameOf(currentRoad), AID.ISLOCALNAME));
-			outMessage.setContent(gson.toJson(new RoadOccupyRequest(currentRoad, null)));
+			outMessage.setContent(gson.toJson(new RoadOccupyRequest(carName, currentRoad, null)));
 			//report stats
 			msg.setContent(gson.toJson(new TripFinishReport(carName, spentTime)));
 			log.trace("Car {} has sent its report.", carName);
