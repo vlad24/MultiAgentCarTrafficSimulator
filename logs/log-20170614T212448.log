@@ -164,3 +164,25 @@
 58567 [(5,7)] DEBUG r.s.m.ais.mas.citycars.roads.Road - LAST Occupy request from car AUDI got.
 58567 [Tula] DEBUG r.s.m.ais.mas.citycars.cities.City - Got report. Current active cars:1
 58567 [(5,7)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Sending broadcast to all cars with workload delta: -10
+77545 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - Road Pair(first=4, second=5) passed!
+77545 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - Reached:5
+77545 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - Sending occupy request to road Pair(first=5, second=7)
+77546 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - *** Got json:{"road":{"first":4,"second":5},"delta":10}
+77546 [(5,7)] DEBUG r.s.m.ais.mas.citycars.roads.Road - /// Got json message: {"carName":"LADA","roadLeft":{"first":4,"second":5},"roadWished":{"first":5,"second":7}}
+77546 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - Road Pair(first=4, second=5) has changed its workload. Memorized...
+77547 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - *** Got json:{"road":{"first":5,"second":7},"delta":-10}
+77547 [(5,7)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Occupy request got. Road left:Pair(first=4, second=5). Road wished: Pair(first=5, second=7)
+77547 [(5,7)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Asking road Pair(first=4, second=5) about car LADA
+77547 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - Road Pair(first=5, second=7) has changed its workload. Memorized...
+77547 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - Blocking and waiting for some message ...
+77547 [(5,7)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Move request to road Pair(first=5, second=7) sent
+77548 [(4,5)] DEBUG r.s.m.ais.mas.citycars.roads.Road - /// Got json message: {"carName":"LADA","requestTime":1497464765499,"requestedRoad":{"first":5,"second":7}}
+77548 [(4,5)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Move request got. Sombody wants to check if car LADA has left me
+77548 [(4,5)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Car has left me: true
+77549 [(5,7)] DEBUG r.s.m.ais.mas.citycars.roads.Road - /// Got json message: {"carName":"LADA","permitted":true}
+77549 [(5,7)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Move response got. We can decide if car LADA can ride here
+77549 [(5,7)] DEBUG r.s.m.ais.mas.citycars.roads.Road - All good. New workload: 11. Car leaves me not earlier than 1497464776501
+77549 [(5,7)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Accepting car LADA for occupation
+77550 [(5,7)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Sending broadcast to all cars with workload delta: 10
+77550 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - *** Got json:{"road":{"first":5,"second":7},"permitted":true,"newRoadWorkload":11}
+77551 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - Driving at new road Pair(first=5, second=7) for 11 secs
