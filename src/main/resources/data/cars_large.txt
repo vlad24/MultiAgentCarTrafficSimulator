@@ -4,7 +4,6 @@
 #
 
 @strategy=dummy
-#@refresh=2
 
 #Cars:
 AUDI	0	9
