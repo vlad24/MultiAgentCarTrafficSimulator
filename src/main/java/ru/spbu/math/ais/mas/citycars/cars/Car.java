@@ -139,7 +139,7 @@ public class Car extends Agent {
 				}
 				ACLMessage reply = receive();
 				if (reply != null) {
-					log.debug("*** Got json:{}", reply.getContent());
+					log.trace("*** Got json:{}", reply.getContent());
 					CityMessageType messageType = CityMessageType.valueOf(reply.getOntology());
 					switch (messageType) {
 					case ROADS_OCCUPATION:
