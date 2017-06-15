@@ -3,99 +3,89 @@
 # BEST: SPB
 #
 
-@strategy=dummy
+@strategy=iterative
 @refresh=2
 
 #Cars:
-AUDI	1	7
-BMW	19	23
-FORD	2	11
-HONDA	4	13
-HYUNDAI	6	18
-KIA	31	10
-LADA	32	15
-MAZDA	4	17
-MERCEDES-BENZ	27	30
-MITSUBISHI	22	0
-NISSAN	3	11
-RENAULT	1	24
-SKODA	30	19
-TOYOTA	8	25
-VOLKSWAGEN	21	30
-ACURA	17	8
-DAIHATSU	0	35
-DATSUN
-INFINITI
-ISUZU
-LEXUS
-SCION
-SUBARU
-SUZUKI
-BUICK
-CADILLAC
-CHEVROLET
-CHRYSLER
-DODGE
-FORD
-GMC
-HUMMER
-JEEP
-LINCOLN
-MERCURY
-OLDSMOBILE
-PONTIAC
-TESLA
-LADA
-GAZ
-MOSKVICH
-TAGAZ
-UAZ
-OPEL
-PORSCHE
-Daewoo
-Genesis
-Hyundai
-Kia
-SsangYong
-Alfa Romeo
-Aston Martin
-Bentley
-Bugatti
-Citroen
-DS
-Ferrari
-Fiat
-Jaguar
-Lamborghini
-Lancia
-Land Rover
-Maserati
-Maybach
-Mini
-Peugeot
-Ravon
-Renault
-Rolls-Royce
-Rover
-Saab
-SEAT
-Skoda
-Smart
-Volvo
-ZAZ
-Brilliance
-BYD
-Changan
-Chery
-DongFeng
-FAW
-Foton
-GAC
-Geely
-Great Wall
-Haima
-Haval
-JAC
-Lifan
-Luxgen
-Zotye
+Acura	1	7
+AlfaRomeo	19	23
+AstonMartin	2	11
+Audi	4	13
+Bentley	6	18
+BMW	31	10
+Brilliance	32	15
+Bugatti	4	17
+Buick	27	30
+BYD	22	0
+Cadillac	3	11
+Changan	1	24
+Chery	30	19
+Chevrolet	8	25
+Chrysler	21	30
+Citroen	17	8
+Daewoo	0	35
+Daihatsu	14	22
+Datsun	17	32
+Dodge	10	30
+DongFeng	3	26
+DS	20	32
+FAW	0	32
+Ferrari	35	27
+Fiat	27	10
+Ford	22	1
+Foton	24	28
+GAC	18	30
+Geely	32	12
+Genesis	28	11
+GMC	23	17
+GreatWall	31	34
+Haima	8	1
+Haval	6	29
+Honda	26	20
+Hummer	5	29
+Hyundai	27	9
+Infiniti	20	23
+Isuzu	28	35
+JAC	1	13
+Jaguar	31	24
+Jeep	25	5
+Kia	10	2
+Lada	1	30
+Lamborghini	18	7
+Lancia	22	34
+LandRover	26	0
+Lexus	29	21
+Lifan	25	21
+Lincoln	30	20
+Luxgen	8	28
+Maserati	30	19
+Maybach	11	3
+Mazda	14	5
+Mercedes-Benz	8	31
+Mercury	20	6
+Mini	32	19
+Mitsubishi	35	22
+Nissan	10	28
+Oldsmobile	3	11
+Opel	20	34
+Peugeot	19	32
+Pontiac	0	26
+Porsche	14	28
+Ravon	8	21
+Renault	26	9
+Rolls-Royce	15	6
+Rover	13	5
+Saab	11	32
+Scion	34	2
+SEAT	9	3
+Skoda	35	33
+Smart	35	26
+SsangYong	6	17
+Subaru	18	7
+Suzuki	19	30
+Tesla	20	34
+Toyota	20	22
+Volkswagen	4	26
+Volvo	3	29
+ZAZ	29	3
+Zotye	24	0
