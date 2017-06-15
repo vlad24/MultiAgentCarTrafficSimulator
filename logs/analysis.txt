@@ -1,0 +1,6 @@
+#spb
+dummy, count=82, sum=27478, max=980, avg=335.09756
+refresh=1,count=82, sum=23938, max=692, avg=291.92682
+refresh=2,count=82, sum=24594, max=831, avg=299.92682
+refresh=3,count=82, sum=24858, max=755, avg=303.14633
+refresh=4,count=82, sum=26061, max=882, avg=317.81708
