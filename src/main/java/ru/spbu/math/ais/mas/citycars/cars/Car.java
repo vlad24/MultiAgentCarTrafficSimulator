@@ -141,8 +141,8 @@ public class Car extends Agent {
 						}
 						log.debug("Build route from {} to {}...", lastReachedVertex, destination);
 						currentOptimalRoute = (Queue<Integer>) cityGraph.getMinDistances(lastReachedVertex, destination).get(Graph.PATH_KEY);
-						log.debug("Got : {}", currentOptimalRoute);
-						currentOptimalRoute.remove();//remove first src node
+						log.debug("Got route: {}", currentOptimalRoute);
+						currentOptimalRoute.remove(); //remove first src node
 						log.trace("Now we need  to visit: {}", currentOptimalRoute);
 					}
 					int nextVertex = currentOptimalRoute.element();
@@ -167,7 +167,7 @@ public class Car extends Agent {
 							log.debug("Driving for {} sec at new road {}", roadResponse.getNewRoadWorkload(), currentRoad);
 							TimeUnit.SECONDS.sleep(roadResponse.getNewRoadWorkload());
 							spentTime  += roadResponse.getNewRoadWorkload();
-							log.debug("Road {} passed!", currentRoad);
+							log.debug("Road {} driven!", currentRoad);
 							roadsPassed++;
 							lastReachedVertex = currentOptimalRoute.remove();
 							log.debug("Reached:{}", lastReachedVertex);
@@ -175,6 +175,7 @@ public class Car extends Agent {
 					}else if (reply.getPerformative() == ACLMessage.REJECT_PROPOSAL) {
 						RoadOccupyResponse roadResponse = gson.fromJson(reply.getContent(), RoadOccupyResponse.class);
 						log.debug("Occupation REJECT got from road {}", roadResponse.getRoad());
+						isTurning = false;
 					}else{
 						try {
 							RoadStatusChange roadChange = gson.fromJson(reply.getContent(), RoadStatusChange.class);

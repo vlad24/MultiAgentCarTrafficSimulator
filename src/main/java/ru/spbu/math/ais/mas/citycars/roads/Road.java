@@ -120,7 +120,9 @@ public class Road extends Agent{
 					CarMoveRequest carMoveRequest = gson.fromJson(message.getContent(), CarMoveRequest.class);
 					String carName = carMoveRequest.getCarName();
 					log.debug("Move request got. Somebody wants to check if car {} has left me", carName);
-					boolean permitted = carLeavingTime.containsKey(carName) && carLeavingTime.get(carName) < carMoveRequest.getRequestTime();
+					log.debug("Car {} has to leave me not earlier than {}. Can it be not on me at {}?", carName, 
+							carLeavingTime.get(carName), carMoveRequest.getRequestTime());
+					boolean permitted = carLeavingTime.containsKey(carName) && carLeavingTime.get(carName) <= carMoveRequest.getRequestTime();
 					respondHavingCarChecked(carMoveRequest, permitted);
 					break;
 				case ACLMessage.INFORM:
@@ -130,7 +132,7 @@ public class Road extends Agent{
 						workload += workloadDelta;
 						long timeBound = addSecondsToNow(workload);
 						carLeavingTime.put(carMoveResponse.getCarName(), timeBound);
-						log.debug("All good. New workload: {}. Car leaves me not earlier than {}", workload, timeBound);
+						log.debug("All good. New workload: {}. Car {} leaves me not earlier than {}", carMoveResponse.getCarName(), workload, timeBound);
 						sendOccupyAccept(carMoveResponse.getCarName());
 						broadcastWorkloadUpdate(workloadDelta);
 					} else {
@@ -155,11 +157,12 @@ public class Road extends Agent{
 		}
 
 		private void checkRequestWithAnotherRoad(RoadOccupyRequest roadOccRequest) {
-			log.debug("Asking road {} about car {}", roadOccRequest.getRoadLeft(), roadOccRequest.getCarName());
+			long now = System.currentTimeMillis();
+			log.debug("Asking road {} about car {} position at time {}", roadOccRequest.getRoadLeft(), roadOccRequest.getCarName(), now);
 			ACLMessage requestToAnotherRoad = new ACLMessage(ACLMessage.INFORM_IF);
 			requestToAnotherRoad.addReceiver(new AID(Road.nameOf(roadOccRequest.getRoadLeft()), AID.ISLOCALNAME));
-			requestToAnotherRoad.setContent(gson.toJson(new CarMoveRequest(roadOccRequest.getCarName(), System.currentTimeMillis(), bounds)));
-			log.debug("Move request to road {} sent", roadOccRequest.getRoadWished());
+			requestToAnotherRoad.setContent(gson.toJson(new CarMoveRequest(roadOccRequest.getCarName(), now, bounds)));
+			log.debug("Move request to road {} sent", roadOccRequest.getRoadLeft());
 			send(requestToAnotherRoad);
 		}
 		
