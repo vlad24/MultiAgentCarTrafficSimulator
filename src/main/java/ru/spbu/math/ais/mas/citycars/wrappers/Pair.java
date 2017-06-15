@@ -2,9 +2,7 @@ package ru.spbu.math.ais.mas.citycars.wrappers;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.ToString;
 
-@ToString
 @EqualsAndHashCode
 @Getter
 public class Pair{
@@ -15,6 +13,17 @@ public class Pair{
 		super();
 		this.first  = Math.min(first, second);
 		this.second = Math.max(first, second);
+	}
+	
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("(");
+		builder.append(first);
+		builder.append(",");
+		builder.append(second);
+		builder.append(")");
+		return builder.toString();
 	}
 	
 }

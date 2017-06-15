@@ -136,14 +136,14 @@ public class Car extends Agent {
 					if (roadsPassed % refreshCount == 0) {
 						log.info("Passed {} roads. Time to build new route...", roadsPassed);
 						for (RoadStatusChange change: this.roadChanges) {
-							log.debug("Applying changes to city graph {}", change);
+							log.trace("Applying changes to city graph {}", change);
 							cityGraph.changeEdgeLength(change.getRoad().getFirst(), change.getRoad().getSecond(), change.getDelta());
 						}
 						log.debug("Build route from {} to {}...", lastReachedVertex, destination);
 						currentOptimalRoute = (Queue<Integer>) cityGraph.getMinDistances(lastReachedVertex, destination).get(Graph.PATH_KEY);
 						log.debug("Got : {}", currentOptimalRoute);
 						currentOptimalRoute.remove();//remove first src node
-						log.debug("Now we need  to visit: {}", currentOptimalRoute);
+						log.trace("Now we need  to visit: {}", currentOptimalRoute);
 					}
 					int nextVertex = currentOptimalRoute.element();
 					wishedRoad = new Pair(lastReachedVertex, nextVertex);
@@ -164,7 +164,7 @@ public class Car extends Agent {
 						if (roadResponse.getRoad().equals(wishedRoad)) {
 							isTurning = false;
 							currentRoad = wishedRoad;
-							log.debug("Driving at new road {} for {} secs", currentRoad, roadResponse.getNewRoadWorkload());
+							log.debug("Driving for {} sec at new road {}", roadResponse.getNewRoadWorkload(), currentRoad);
 							TimeUnit.SECONDS.sleep(roadResponse.getNewRoadWorkload());
 							spentTime  += roadResponse.getNewRoadWorkload();
 							log.debug("Road {} passed!", currentRoad);
@@ -178,14 +178,14 @@ public class Car extends Agent {
 					}else{
 						try {
 							RoadStatusChange roadChange = gson.fromJson(reply.getContent(), RoadStatusChange.class);
-							log.debug("Notification about workload change of road {} got. Memorized.", roadChange.getRoad());
+							log.trace("Notification about workload change of road {} got. Memorized.", roadChange.getRoad());
 							roadChanges.add(roadChange);
 						}catch (JsonSyntaxException parseException) {
 							log.debug("Strange message got: {}. Ignoring...", reply.getContent());
 						}
 					}
 				} else {
-					log.debug("Standing at intersection...");
+					log.debug("Standing at intersection of {} and {}", currentRoad, wishedRoad);
 					block();
 				}	
 			}catch (InterruptedException crashedDuringDriving) {
