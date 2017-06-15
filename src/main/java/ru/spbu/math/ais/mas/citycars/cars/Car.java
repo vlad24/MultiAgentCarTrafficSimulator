@@ -6,18 +6,21 @@ import java.util.Queue;
 import java.util.concurrent.TimeUnit;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 
 import jade.core.AID;
 import jade.core.Agent;
+import jade.core.ServiceException;
 import jade.core.behaviours.Behaviour;
+import jade.core.messaging.TopicManagementHelper;
 import jade.lang.acl.ACLMessage;
+import jade.lang.acl.MessageTemplate;
 import lombok.extern.slf4j.Slf4j;
 import ru.spbu.math.ais.mas.citycars.Configurator;
 import ru.spbu.math.ais.mas.citycars.roads.Road;
 import ru.spbu.math.ais.mas.citycars.wrappers.Graph;
 import ru.spbu.math.ais.mas.citycars.wrappers.Pair;
-import ru.spbu.math.ais.mas.citycars.wrappers.communication.CityMessageType;
-import ru.spbu.math.ais.mas.citycars.wrappers.communication.RoadOccupyPermission;
+import ru.spbu.math.ais.mas.citycars.wrappers.communication.RoadOccupyResponse;
 import ru.spbu.math.ais.mas.citycars.wrappers.communication.RoadOccupyRequest;
 import ru.spbu.math.ais.mas.citycars.wrappers.communication.RoadStatusChange;
 import ru.spbu.math.ais.mas.citycars.wrappers.communication.TripFinishReport;
@@ -79,6 +82,7 @@ public class Car extends Agent {
 		private int refreshCount; 
 		private Gson gson;
 		private boolean isTurning;
+		private MessageTemplate messageFilter;
 
 
 		public BasicDrivingBehaviour(Car car, String cityName, Graph cityGraph, int src, int dst, int refresh) {
@@ -89,22 +93,37 @@ public class Car extends Agent {
 			this.destination = dst;
 			this.currentRoad = null;
 			this.wishedRoad = null;
-			this.lastReachedVertex = src;
+			this.lastReachedVertex = this.source;
 			this.refreshCount = refresh;
 			this.spentTime = 0;
 			this.roadsPassed = 0;
 			this.roadChanges = new LinkedList<>();
 			this.isTurning = false;
 			this.gson = new Gson();
+			try {
+				log.debug("Subscribing to topic {}", Road.BasicRoadBehaviour.ROAD_WORKLOAD_UPDATE_TOPIC);
+				TopicManagementHelper topicHelper = (TopicManagementHelper) myAgent.getHelper(TopicManagementHelper.SERVICE_NAME);
+				AID workloadUpdateTopic = topicHelper.createTopic(Road.BasicRoadBehaviour.ROAD_WORKLOAD_UPDATE_TOPIC);
+				topicHelper.register(workloadUpdateTopic);
+				this.messageFilter = MessageTemplate.or(
+						MessageTemplate.MatchTopic(workloadUpdateTopic),
+							MessageTemplate.or(
+								MessageTemplate.MatchPerformative(ACLMessage.ACCEPT_PROPOSAL),
+								MessageTemplate.MatchPerformative(ACLMessage.REJECT_PROPOSAL)
+							)
+				);
+			} catch (ServiceException e) {
+				log.error("Cannot subscribe to topic", e);
+				throw new IllegalStateException("Car has not been properly initialized. It is in inconsistent state");
+			} 
 		}
 
 		@Override
 		public void onStart() {
 			super.onStart();
 			log.debug("Registering in city...");
-			ACLMessage registerMessage = new ACLMessage(ACLMessage.INFORM);
+			ACLMessage registerMessage = new ACLMessage(ACLMessage.PROPOSE);
 			registerMessage.addReceiver(new AID(cityName, AID.ISLOCALNAME));
-			registerMessage.setOntology(CityMessageType.CAR_REGISTER.toString());
 			registerMessage.setContent(gson.toJson(new TripStartRequest(carName)));
 			send(registerMessage);
 		}
@@ -123,58 +142,57 @@ public class Car extends Agent {
 						log.debug("Build route from {} to {}...", lastReachedVertex, destination);
 						currentOptimalRoute = (Queue<Integer>) cityGraph.getMinDistances(lastReachedVertex, destination).get(Graph.PATH_KEY);
 						log.debug("Got : {}", currentOptimalRoute);
-						currentOptimalRoute.remove();//remove first src
+						currentOptimalRoute.remove();//remove first src node
 						log.debug("Now we need  to visit: {}", currentOptimalRoute);
 					}
 					int nextVertex = currentOptimalRoute.element();
 					wishedRoad = new Pair(lastReachedVertex, nextVertex);
 					log.debug("Sending occupy request to road {}", wishedRoad);
-					ACLMessage outMessage = new ACLMessage(ACLMessage.REQUEST);
+					ACLMessage outMessage = new ACLMessage(ACLMessage.PROPOSE);
 					outMessage.addReceiver(new AID(Road.nameOf(wishedRoad), AID.ISLOCALNAME));
-					outMessage.setOntology(CityMessageType.ROADS_OCCUPATION.toString());
 					String json = gson.toJson(new RoadOccupyRequest(carName, currentRoad, wishedRoad));
 					outMessage.setContent(json);
 					send(outMessage);
 					isTurning = true;
 				}
-				ACLMessage reply = receive();
+				ACLMessage reply = receive(messageFilter);
 				if (reply != null) {
-					log.debug("*** Got json:{}", reply.getContent());
-					CityMessageType messageType = CityMessageType.valueOf(reply.getOntology());
-					switch (messageType) {
-					case ROADS_OCCUPATION:
-						RoadOccupyPermission roadOccPermission = gson.fromJson(reply.getContent(), RoadOccupyPermission.class);
-						if (roadOccPermission.isPermitted() && roadOccPermission.getRoad().equals(wishedRoad)) {
+					log.trace("Got json: {}", reply.getContent());
+					if (reply.getPerformative() == ACLMessage.ACCEPT_PROPOSAL) {
+						RoadOccupyResponse roadResponse = gson.fromJson(reply.getContent(), RoadOccupyResponse.class);
+						log.debug("Occupation ACCEPT got from road {}", wishedRoad);
+						if (roadResponse.getRoad().equals(wishedRoad)) {
 							isTurning = false;
 							currentRoad = wishedRoad;
-							log.debug("Driving at new road {} for {} secs", currentRoad, roadOccPermission.getNewRoadWorkload());
-							// If the car does not sleep the next road will not let the car occupy it
-							TimeUnit.SECONDS.sleep(roadOccPermission.getNewRoadWorkload());
-							spentTime  += roadOccPermission.getNewRoadWorkload();
+							log.debug("Driving at new road {} for {} secs", currentRoad, roadResponse.getNewRoadWorkload());
+							TimeUnit.SECONDS.sleep(roadResponse.getNewRoadWorkload());
+							spentTime  += roadResponse.getNewRoadWorkload();
 							log.debug("Road {} passed!", currentRoad);
 							roadsPassed++;
 							lastReachedVertex = currentOptimalRoute.remove();
 							log.debug("Reached:{}", lastReachedVertex);
 						}
-						break;
-					case ROAD_STATUS_CHANGE_NOTIFICATION:
-						RoadStatusChange roadChange = gson.fromJson(reply.getContent(), RoadStatusChange.class);
-						log.debug("Road {} has changed its workload. Memorized...", roadChange.getRoad());
-						roadChanges.add(roadChange);
-						break;
-					default:
-						log.debug("Strange message got: {}. Ignoring...", reply.getContent());
-						break;
+					}else if (reply.getPerformative() == ACLMessage.REJECT_PROPOSAL) {
+						RoadOccupyResponse roadResponse = gson.fromJson(reply.getContent(), RoadOccupyResponse.class);
+						log.debug("Occupation REJECT got from road {}", roadResponse.getRoad());
+					}else{
+						try {
+							RoadStatusChange roadChange = gson.fromJson(reply.getContent(), RoadStatusChange.class);
+							log.debug("Notification about workload change of road {} got. Memorized.", roadChange.getRoad());
+							roadChanges.add(roadChange);
+						}catch (JsonSyntaxException parseException) {
+							log.debug("Strange message got: {}. Ignoring...", reply.getContent());
+						}
 					}
 				} else {
-					log.debug("Standing at crossroads...");
+					log.debug("Standing at intersection...");
 					block();
 				}	
 			}catch (InterruptedException crashedDuringDriving) {
 				log.error("Error while driving!", crashedDuringDriving);
 			}
 		}
-		
+
 		@Override
 		public boolean done() {
 			return lastReachedVertex == destination;
@@ -184,21 +202,19 @@ public class Car extends Agent {
 		public int onEnd() {
 			log.info("Car {} has reached its destination and spent {} sec in total.", carName, spentTime);
 			log.debug("Releasing last road...");
-			ACLMessage lastRoadMsg = new ACLMessage(ACLMessage.REQUEST);
+			ACLMessage lastRoadMsg = new ACLMessage(ACLMessage.PROPOSE);
 			lastRoadMsg.addReceiver(new AID(Road.nameOf(currentRoad), AID.ISLOCALNAME));
-			lastRoadMsg.setOntology(CityMessageType.ROADS_OCCUPATION.toString());
 			lastRoadMsg.setContent(gson.toJson(new RoadOccupyRequest(carName, currentRoad, null)));
 			send(lastRoadMsg);
 			log.debug("Sending stats report to city stats agent...");
 			ACLMessage statsMsg = new ACLMessage(ACLMessage.INFORM);
 			statsMsg.addReceiver(new AID(cityName, AID.ISLOCALNAME));
-			statsMsg.setOntology(CityMessageType.CAR_STATS_REPORT.toString());
 			statsMsg.setContent(gson.toJson(new TripFinishReport(carName, spentTime)));
 			send(statsMsg);
 			log.debug("Car {} has sent its report.", carName);
 			return 0;
 		}
-		
+
 	}
 
 

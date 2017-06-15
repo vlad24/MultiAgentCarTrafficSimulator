@@ -7,7 +7,6 @@ import jade.core.behaviours.Behaviour;
 import jade.lang.acl.ACLMessage;
 import lombok.extern.slf4j.Slf4j;
 import ru.spbu.math.ais.mas.citycars.wrappers.Statistics;
-import ru.spbu.math.ais.mas.citycars.wrappers.communication.CityMessageType;
 import ru.spbu.math.ais.mas.citycars.wrappers.communication.TripFinishReport;
 
 @Slf4j
@@ -41,20 +40,20 @@ public class City extends Agent {
 		public void action() {
 			ACLMessage message = myAgent.receive();
 			if (message != null) {
-				CityMessageType messageType = CityMessageType.valueOf(message.getOntology());
-				switch (messageType) {
-				case CAR_REGISTER:
+				switch (message.getPerformative()) {
+				case ACLMessage.PROPOSE:
 					log.debug("Received registering message");
 					carsDetected = true;
 					carStats.increaseCount();
 					activeCarsAmount++;
 					break;
-				case CAR_STATS_REPORT:
+				case ACLMessage.INFORM:
 					TripFinishReport request = gson.fromJson(message.getContent(), TripFinishReport.class);
+					log.debug("Got driving report from {}", request.getCarName());
 					carStats.increaseSum(request.getSpentTime());
 					carStats.updateMax(request.getSpentTime());
 					activeCarsAmount--;
-					log.debug("Got report. Current active cars:{}", activeCarsAmount);
+					log.debug("Current active cars:{}", activeCarsAmount);
 					break;
 				default:
 					log.warn("Strange message got: {}", message.getContent());
@@ -74,7 +73,7 @@ public class City extends Agent {
 		public int onEnd() {
 			log.info("City is destroyed");
 			if (activeCarsAmount != 0){
-				log.error("City still has driving cars =(");
+				log.error("City still has driving cars !!!");
 				return 1;
 			}else{
 				log.info("City agent cannot see any active cars. Driving finished successfully. Car stats:\n{}", carStats);

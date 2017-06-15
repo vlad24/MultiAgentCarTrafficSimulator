@@ -8,8 +8,7 @@ import ru.spbu.math.ais.mas.citycars.wrappers.Pair;
 @AllArgsConstructor
 @ToString
 @Getter
-public class RoadOccupyPermission{
+public class RoadOccupyResponse{
 	private Pair road;
-	private boolean permitted;
 	private int newRoadWorkload;
 }
