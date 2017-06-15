@@ -8,7 +8,7 @@
 	</appender>
 
 
-	<timestamp key="bySecond" datePattern="yyyyMMdd'T'HHmmss" />
+	<timestamp key="bySecond" datePattern="yyyy_MM_dd'T'HH_mm_ss" />
 	<appender name="FILE" class="ch.qos.logback.core.FileAppender">
 		<file>logs/log-${bySecond}.log</file>
 		<append>true</append>
