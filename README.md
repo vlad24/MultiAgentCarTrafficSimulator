@@ -1,5 +1,5 @@
 # Multiagent Systems Project
-University Course. Using Java Jade.
+*Using Java JADE framework*
 
 ## Task
 Given a graph of roads and cars in some city, make cars so that traffic load is minimized. More formally, if a car starts driving a road, the road's workload increases by some constant *C*. When a car leaves a road, the road's workload decreases in the opposite way. The more the workload of a road is, the longer a car is driving it.
