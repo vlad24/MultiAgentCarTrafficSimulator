@@ -9,6 +9,7 @@ There is three types of agents:
 * Road
 * Car
 * City
+* Configurator
 
 **Car** agent represents an entity that drives across the city from point *A* to point *B*.
 Currently, a car supports two strategies of driving: _DUMMY_, _ITERATIVE_.
@@ -20,6 +21,9 @@ When it drives iteratively it recomputes its route based on current traffic situ
 **City**
 Monitors the state of the city and gathers statistics about car trips.
 
+**Configurator**
+Sets up all agents
+
 ### Agent communication
 Provided with basic behaviours of roads and cars the typical communication protocol is the following: a car issues a request to a road proposing itself for driving the road. The road agent receives an occupattion proposal of a car and checks whether this proposal is first there for the car. If so, it immediately responds with *ACCEPT* message, informing car what workload it is going to go through. If not, the road checks whether the car actually can turn to this road using the fact that car proposal includes the following turn information: left road (null in case of first proposal) and road wished to be occupied (null in case of last proposal). Wished road is typically equal to the road that receives the proposal.
 The wished road asks the left road whether the proposing car is empowered to switch roads at the time of request. If left road accepts switching it decreases its workload and responds positively to asking road. Based on the response the asking road decides if it accepts the newcoming car, increases workload in such case, and responds to the car. A road broadcasts its workload changes to all interested cars, so that they can rebuild their route using actual information about traffic conditions.
@@ -30,4 +34,5 @@ Run program with:
 mvn -Pjade-main exec:java
 mvn -Pjade-agent exec:java
 ```
+Note *.properties* files. These are configurations for main and agent containers. Configuration of agent container sets Configurator agent providing all necessary input files for it. Those files are supposed to be under under *src/main/resources/data* folder. The folder already contains some sample files to experiment with.
 
