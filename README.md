@@ -1,10 +1,10 @@
 # Multiagent Systems Project
 University Course. Using Java Jade.
 
-##Task
+## Task
 Given a graph of roads and cars in some city, make cars so that traffic load is minimized.
 
-##Approach
+## Approach
 There is three types of agents: 
 * Road
 * Car
@@ -21,7 +21,7 @@ To be documented
 **City**
 Gathers statistics
 
-##Notes
+## Notes
 Run with:
 ```{sh}
 mvn -Pjade-main exec:java
