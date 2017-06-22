@@ -21,6 +21,10 @@ import ru.spbu.math.ais.mas.citycars.wrappers.communication.RoadOccupyRequest;
 import ru.spbu.math.ais.mas.citycars.wrappers.communication.RoadOccupyResponse;
 import ru.spbu.math.ais.mas.citycars.wrappers.communication.RoadStatusChange;
 
+/**
+ * @author polina
+ *
+ */
 @SuppressWarnings("serial")
 @Slf4j
 public class Road extends Agent{
@@ -29,7 +33,6 @@ public class Road extends Agent{
 	private Pair bounds;
 	private int workload;
 	private int workloadDelta;
-	
 
 	public static String nameOf(Pair edge) {
 		return new StringBuilder()
@@ -54,16 +57,20 @@ public class Road extends Agent{
 
 	}
 
+	/**
+	 * @author vlad, polina
+	 *
+	 */
 	public class BasicRoadBehaviour extends CyclicBehaviour{
 
 		public final static String ROAD_WORKLOAD_UPDATE_TOPIC = "road_workload_update";
-		
+
 		private Gson gson;
 		private Map<String, Long> carLeavingTime;
 		private AID workloadUpdateTopic;
 		private TopicManagementHelper topicHelper;
 		private MessageTemplate messageFilter;
-		
+
 		public BasicRoadBehaviour(Road road) {
 			super(road);
 			gson = new Gson();
@@ -98,7 +105,7 @@ public class Road extends Agent{
 							checkRequestWithAnotherRoad(roadOccRequest);
 						} else {
 							sendOccupyReject(roadOccRequest.getCarName());
-						}						
+						}
 					} else if (roadOccRequest.getRoadLeft() == null){ //first standing
 						log.debug("INITIAL occupy request from car {} got.", roadOccRequest.getCarName());
 						if (!carLeavingTime.containsKey(roadOccRequest.getCarName())){
@@ -120,9 +127,13 @@ public class Road extends Agent{
 					CarMoveRequest carMoveRequest = gson.fromJson(message.getContent(), CarMoveRequest.class);
 					String carName = carMoveRequest.getCarName();
 					log.debug("Move request got. Somebody wants to check if car {} has left me", carName);
-					log.debug("Car {} has to leave me not earlier than {}. Can it be not on me at {}?", carName, 
+					log.debug("Car {} has to leave me not earlier than {}. Can it be not on me at {}?", carName,
 							carLeavingTime.get(carName), carMoveRequest.getRequestTime());
 					boolean permitted = carLeavingTime.containsKey(carName) && carLeavingTime.get(carName) <= carMoveRequest.getRequestTime();
+					if (permitted) {
+						workload -= workloadDelta;
+						broadcastWorkloadUpdate(-workloadDelta);
+					}
 					respondHavingCarChecked(carMoveRequest, permitted);
 					break;
 				case ACLMessage.INFORM:
@@ -165,13 +176,13 @@ public class Road extends Agent{
 			log.debug("Move request to road {} sent", roadOccRequest.getRoadLeft());
 			send(requestToAnotherRoad);
 		}
-		
+
 		private void sendOccupyAccept(String carName) {
 			log.debug("Accepting car {} for occupation", carName);
 			ACLMessage reply = new ACLMessage(ACLMessage.ACCEPT_PROPOSAL);
 			reply.addReceiver(new AID(carName, AID.ISLOCALNAME));
 			reply.setContent(gson.toJson(new RoadOccupyResponse(bounds, workload)));
-			send(reply);		
+			send(reply);
 		}
 
 		private void sendOccupyReject(String carName) {
@@ -179,9 +190,9 @@ public class Road extends Agent{
 			ACLMessage reply = new ACLMessage(ACLMessage.REJECT_PROPOSAL);
 			reply.addReceiver(new AID(carName, AID.ISLOCALNAME));
 			reply.setContent(gson.toJson(new RoadOccupyResponse(bounds, Integer.MAX_VALUE)));
-			send(reply);		
+			send(reply);
 		}
-		
+
 
 		private void broadcastWorkloadUpdate(int delta) {
 			log.debug("Sending broadcast with workload delta: {}", delta);
@@ -190,18 +201,18 @@ public class Road extends Agent{
 			broadcast.setContent(gson.toJson(new RoadStatusChange(bounds, delta)));
 			send(broadcast);
 		}
-		
+
 		private Long addSecondsToNow(int seconds) {
 			return System.currentTimeMillis() + TimeUnit.SECONDS.toMillis(seconds);
 		}
-		
+
 		private boolean isIncident(Pair anotherRoad) {
 			return 	anotherRoad.getFirst()  == bounds.getSecond() ||
 					anotherRoad.getFirst()  == bounds.getFirst()  ||
 					anotherRoad.getSecond() == bounds.getSecond() ||
 					anotherRoad.getSecond()  == bounds.getFirst();
 		}
-		
+
 	}
 
 }

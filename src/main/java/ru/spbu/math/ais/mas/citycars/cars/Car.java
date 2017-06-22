@@ -26,6 +26,10 @@ import ru.spbu.math.ais.mas.citycars.wrappers.communication.RoadStatusChange;
 import ru.spbu.math.ais.mas.citycars.wrappers.communication.TripFinishReport;
 import ru.spbu.math.ais.mas.citycars.wrappers.communication.TripStartRequest;
 
+/**
+ * @author vlad
+ *
+ */
 @Slf4j
 @SuppressWarnings("serial")
 public class Car extends Agent {
@@ -79,7 +83,7 @@ public class Car extends Agent {
 		private int roadsPassed;
 		private Queue<RoadStatusChange> roadChanges;
 		private Queue<Integer> currentOptimalRoute;
-		private int refreshCount; 
+		private int refreshCount;
 		private Gson gson;
 		private boolean isTurning;
 		private MessageTemplate messageFilter;
@@ -115,7 +119,7 @@ public class Car extends Agent {
 			} catch (ServiceException e) {
 				log.error("Cannot subscribe to topic", e);
 				throw new IllegalStateException("Car has not been properly initialized. It is in inconsistent state");
-			} 
+			}
 		}
 
 		@Override
@@ -188,7 +192,7 @@ public class Car extends Agent {
 				} else {
 					log.debug("Standing at intersection of {} and {}", currentRoad, wishedRoad);
 					block();
-				}	
+				}
 			}catch (InterruptedException crashedDuringDriving) {
 				log.error("Error while driving!", crashedDuringDriving);
 			}
@@ -219,5 +223,5 @@ public class Car extends Agent {
 	}
 
 
-}	
+}
 

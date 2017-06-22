@@ -24,6 +24,11 @@ public class Parser {
 	private static final String INNER_SEPARATOR   = "\t";
 	private static final String PROP_SEPEARATOR   = "=";
 
+	/**
+	 * @author polina
+	 * @param file
+	 * @return
+	 */
 	public Map<String, Object> parseGraphFile(File file) {
 		Map<String, Object> result = new HashMap<String, Object>();
 		ArrayList<ArrayList<Integer>> adjMatrix = new ArrayList<ArrayList<Integer>>();
@@ -51,6 +56,11 @@ public class Parser {
 		return result;
 	}
 
+	/**
+	 * @author vlad
+	 * @param file
+	 * @return
+	 */
 	public Map<String, Object> parseCarFile(File file) {
 		Map<String, Object> result = new HashMap<String, Object>();
 		ArrayList<ArrayList<String>> carParts = new ArrayList<ArrayList<String>>();

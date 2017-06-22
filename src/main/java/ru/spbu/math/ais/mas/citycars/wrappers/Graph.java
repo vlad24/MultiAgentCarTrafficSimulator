@@ -11,32 +11,32 @@ import java.util.Queue;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * @author vlad and polina
+ * @author vlad
  * Graph implementation.
  * Graph stores all the data in adjacency matrix form. For simplicity
  */
 @SuppressWarnings("serial")
 @Slf4j
 public class Graph implements Serializable{
-	
+
 	public static final String DISTANCE_KEY = "distance_to_destination";
 	public static final String ALL_DISTANCES_KEY = "all_distances";
 	public static final String PATH_KEY = "path";
-	
+
 	private int countRoads;
 	private ArrayList<ArrayList<Integer>> adjMatrix;
-	
+
 	public Graph(ArrayList<ArrayList<Integer>> matrix) {
 		adjMatrix = matrix;
 		countRoads = adjMatrix.size();
 		log.trace("Graph has been constructed");
 	}
-	
+
 	@Override
 	public String toString() {
 		return "Graph [adjMatrix=" + adjMatrix + "]";
 	}
-	
+
 	public Map<String, Object> getMinDistances(int source, int destination){
 		boolean[] visited = new boolean[countRoads];
 		int[] ancestor = new int[countRoads];
@@ -59,9 +59,9 @@ public class Graph implements Serializable{
 					int newDistance = distances[minVertex] + getEdgeLength(minVertex, i);
 					if (distances[i] > newDistance){
 						distances[i] = newDistance;
-						ancestor[i] = minVertex;						
+						ancestor[i] = minVertex;
 					}
-				}					
+				}
 				if (!visited[i] && minDistance > distances[i]){
 					minDistance = distances[i];
 					index = i;
@@ -86,14 +86,14 @@ public class Graph implements Serializable{
 		path.addFirst(source);
 		return path;
 	}
-	
+
 	public int changeEdgeLength(int i, int j, int delta){
 		int currentWorkload = adjMatrix.get(i).get(j);
 		adjMatrix.get(i).set(j, currentWorkload + delta);
 		adjMatrix.get(j).set(i, currentWorkload + delta);
 		return adjMatrix.get(i).get(j);
 	}
-	
+
 	private Integer getEdgeLength(int i, int j) {
 		return adjMatrix.get(i).get(j);
 	}
@@ -101,7 +101,7 @@ public class Graph implements Serializable{
 	public boolean areConnected(int i, int j) {
 		return getEdgeLength(i, j) != 0;
 	}
-	
+
 	public boolean areIncident(Pair e1, Pair e2) {
 		return exists(e1) && exists(e2) && (e1.getFirst() == e2.getFirst()) || (e2.getSecond() == e1.getSecond());
 	}
@@ -109,11 +109,11 @@ public class Graph implements Serializable{
 	private boolean exists(Pair e1) {
 		return getEdgeLength(e1) != 0;
 	}
-	
+
 	public int getVerticesAmount(){
 		return adjMatrix.size();
 	}
-	
+
 	public int getEdgesAmount(){
 		return getEdges().size();
 	}
@@ -128,11 +128,11 @@ public class Graph implements Serializable{
 			}
 		}
 		return result;
-		
+
 	}
 
 	public int getEdgeLength(Pair edge) {
 		return adjMatrix.get(edge.getFirst()).get(edge.getSecond());
 	}
-	
+
 }
