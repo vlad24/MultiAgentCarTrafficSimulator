@@ -1,0 +1,10 @@
+#
+# CAN BE USED ONLY WITH: SPB, PERM, TULA
+# BEST WITH: TULA
+#
+
+@strategy=dummy
+
+#Cars:
+AUDI	1	7
+LADA	1	7

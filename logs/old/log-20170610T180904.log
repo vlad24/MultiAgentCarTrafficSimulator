@@ -1,0 +1,101 @@
+382  [configurator] INFO  r.s.math.ais.mas.roads.Configurator - Configuring app with configs taken from (cars)src/main/resources/data/cars_medium.txt, (city)src/main/resources/data/tula.txt
+389  [configurator] INFO  r.s.math.ais.mas.roads.Configurator - Configuring city Tula with 9 vertices and 14 edges. Workload delta=10
+395  [configurator] INFO  r.s.math.ais.mas.roads.Configurator - Configuring 6 cars that drive ITERATIVE with params {refresh=2}
+397  [Tula] INFO  r.spbu.math.ais.mas.roads.city.City - Tula is ready. Got args:[Graph [adjMatrix=[[0, 20, 5, 0, 0, 0, 0, 15, 0], [20, 0, 0, 10, 0, 0, 0, 0, 13], [5, 0, 0, 0, 2, 4, 0, 0, 0], [0, 10, 0, 0, 3, 0, 4, 0, 0], [0, 0, 2, 3, 0, 4, 3, 0, 0], [0, 0, 4, 0, 4, 0, 0, 1, 0], [0, 0, 0, 4, 3, 0, 0, 0, 7], [15, 0, 0, 0, 0, 1, 0, 0, 25], [0, 13, 0, 0, 0, 0, 7, 25, 0]]], 10]
+405  [audi] INFO  ru.spbu.math.ais.mas.roads.car.Car - Car audi inited.
+408  [audi] DEBUG ru.spbu.math.ais.mas.roads.car.Car - Car audi is registering in city.
+408  [lada] INFO  ru.spbu.math.ais.mas.roads.car.Car - Car lada inited.
+408  [lada] DEBUG ru.spbu.math.ais.mas.roads.car.Car - Car lada is registering in city.
+416  [volvo] INFO  ru.spbu.math.ais.mas.roads.car.Car - Car volvo inited.
+416  [volvo] DEBUG ru.spbu.math.ais.mas.roads.car.Car - Car volvo is registering in city.
+419  [dodge] INFO  ru.spbu.math.ais.mas.roads.car.Car - Car dodge inited.
+420  [dodge] DEBUG ru.spbu.math.ais.mas.roads.car.Car - Car dodge is registering in city.
+427  [skoda] INFO  ru.spbu.math.ais.mas.roads.car.Car - Car skoda inited.
+427  [skoda] DEBUG ru.spbu.math.ais.mas.roads.car.Car - Car skoda is registering in city.
+433  [mini] INFO  ru.spbu.math.ais.mas.roads.car.Car - Car mini inited.
+434  [mini] DEBUG ru.spbu.math.ais.mas.roads.car.Car - Car mini is registering in city.
+561  [mini] DEBUG ru.spbu.math.ais.mas.roads.car.Car - Car mini is building its route.
+563  [volvo] DEBUG ru.spbu.math.ais.mas.roads.car.Car - Car volvo is building its route.
+563  [lada] DEBUG ru.spbu.math.ais.mas.roads.car.Car - Car lada is building its route.
+564  [audi] DEBUG ru.spbu.math.ais.mas.roads.car.Car - Car audi is building its route.
+564  [skoda] DEBUG ru.spbu.math.ais.mas.roads.car.Car - Car skoda is building its route.
+565  [dodge] DEBUG ru.spbu.math.ais.mas.roads.car.Car - Car dodge is building its route.
+575  [volvo] DEBUG ru.spbu.math.ais.mas.roads.car.Car - Car volvo has set its new route: [4, 5, 7].
+580  [lada] DEBUG ru.spbu.math.ais.mas.roads.car.Car - Car lada has set its new route: [3, 4, 5, 7].
+584  [audi] DEBUG ru.spbu.math.ais.mas.roads.car.Car - Car audi has set its new route: [1, 3, 4, 5, 7].
+586  [skoda] DEBUG ru.spbu.math.ais.mas.roads.car.Car - Car skoda has set its new route: [1, 3, 4, 5, 7].
+589  [mini] DEBUG ru.spbu.math.ais.mas.roads.car.Car - Car mini has set its new route: [4, 5, 7].
+592  [dodge] DEBUG ru.spbu.math.ais.mas.roads.car.Car - Car dodge has set its new route: [3, 4, 5, 7].
+594  [lada] DEBUG ru.spbu.math.ais.mas.roads.car.Car - Car lada is driving at road (3, 4) for 13 sec.
+596  [volvo] DEBUG ru.spbu.math.ais.mas.roads.car.Car - Car volvo is driving at road (4, 5) for 14 sec.
+597  [audi] DEBUG ru.spbu.math.ais.mas.roads.car.Car - Car audi is driving at road (1, 3) for 20 sec.
+598  [skoda] DEBUG ru.spbu.math.ais.mas.roads.car.Car - Car skoda is driving at road (1, 3) for 30 sec.
+599  [mini] DEBUG ru.spbu.math.ais.mas.roads.car.Car - Car mini is driving at road (4, 5) for 24 sec.
+601  [dodge] DEBUG ru.spbu.math.ais.mas.roads.car.Car - Car dodge is driving at road (3, 4) for 23 sec.
+13595 [lada] DEBUG ru.spbu.math.ais.mas.roads.car.Car - Car lada has already passed 1 roads.
+13598 [lada] DEBUG ru.spbu.math.ais.mas.roads.car.Car - Car lada is driving at road (4, 5) for 34 sec.
+14596 [volvo] DEBUG ru.spbu.math.ais.mas.roads.car.Car - Car volvo has already passed 1 roads.
+14599 [volvo] DEBUG ru.spbu.math.ais.mas.roads.car.Car - Car volvo is driving at road (5, 7) for 11 sec.
+20598 [audi] DEBUG ru.spbu.math.ais.mas.roads.car.Car - Car audi has already passed 1 roads.
+20600 [audi] DEBUG ru.spbu.math.ais.mas.roads.car.Car - Car audi is driving at road (3, 4) for 23 sec.
+23601 [dodge] DEBUG ru.spbu.math.ais.mas.roads.car.Car - Car dodge has already passed 1 roads.
+23605 [dodge] DEBUG ru.spbu.math.ais.mas.roads.car.Car - Car dodge is driving at road (4, 5) for 34 sec.
+24600 [mini] DEBUG ru.spbu.math.ais.mas.roads.car.Car - Car mini has already passed 1 roads.
+24602 [mini] DEBUG ru.spbu.math.ais.mas.roads.car.Car - Car mini is driving at road (5, 7) for 21 sec.
+25599 [volvo] DEBUG ru.spbu.math.ais.mas.roads.car.Car - Car volvo has already passed 2 roads.
+25599 [volvo] INFO  ru.spbu.math.ais.mas.roads.car.Car - Car volvo has reached its destination and spent 25 sec in total
+25630 [volvo] DEBUG ru.spbu.math.ais.mas.roads.car.Car - Car volvo is shut down.
+30599 [skoda] DEBUG ru.spbu.math.ais.mas.roads.car.Car - Car skoda has already passed 1 roads.
+30601 [skoda] DEBUG ru.spbu.math.ais.mas.roads.car.Car - Car skoda is driving at road (3, 4) for 23 sec.
+43600 [audi] DEBUG ru.spbu.math.ais.mas.roads.car.Car - Car audi has already passed 2 roads.
+43600 [audi] DEBUG ru.spbu.math.ais.mas.roads.car.Car - Car audi is building its route.
+43603 [audi] DEBUG ru.spbu.math.ais.mas.roads.car.Car - Car audi has changed its previous optimal way !!!
+43604 [audi] DEBUG ru.spbu.math.ais.mas.roads.car.Car - Car audi has set its new route: [4, 2, 5, 7].
+43605 [audi] DEBUG ru.spbu.math.ais.mas.roads.car.Car - Car audi is driving at road (1, 2) for 10 sec.
+45602 [mini] DEBUG ru.spbu.math.ais.mas.roads.car.Car - Car mini has already passed 2 roads.
+45603 [mini] INFO  ru.spbu.math.ais.mas.roads.car.Car - Car mini has reached its destination and spent 45 sec in total
+45604 [mini] DEBUG ru.spbu.math.ais.mas.roads.car.Car - Car mini is shut down.
+47598 [lada] DEBUG ru.spbu.math.ais.mas.roads.car.Car - Car lada has already passed 2 roads.
+47598 [lada] DEBUG ru.spbu.math.ais.mas.roads.car.Car - Car lada is building its route.
+47601 [lada] DEBUG ru.spbu.math.ais.mas.roads.car.Car - Car lada has changed its previous optimal way !!!
+47601 [lada] DEBUG ru.spbu.math.ais.mas.roads.car.Car - Car lada has set its new route: [5, 7].
+47603 [lada] DEBUG ru.spbu.math.ais.mas.roads.car.Car - Car lada is driving at road (3, 7) for 10 sec.
+53601 [skoda] DEBUG ru.spbu.math.ais.mas.roads.car.Car - Car skoda has already passed 2 roads.
+53601 [skoda] DEBUG ru.spbu.math.ais.mas.roads.car.Car - Car skoda is building its route.
+53604 [skoda] DEBUG ru.spbu.math.ais.mas.roads.car.Car - Car skoda has changed its previous optimal way !!!
+53604 [skoda] DEBUG ru.spbu.math.ais.mas.roads.car.Car - Car skoda has set its new route: [4, 2, 5, 7].
+53606 [audi] DEBUG ru.spbu.math.ais.mas.roads.car.Car - Car audi has already passed 3 roads.
+53606 [skoda] DEBUG ru.spbu.math.ais.mas.roads.car.Car - Car skoda is driving at road (1, 2) for 20 sec.
+53607 [audi] DEBUG ru.spbu.math.ais.mas.roads.car.Car - Car audi is driving at road (2, 5) for 14 sec.
+57603 [lada] DEBUG ru.spbu.math.ais.mas.roads.car.Car - Car lada has already passed 3 roads.
+57603 [lada] INFO  ru.spbu.math.ais.mas.roads.car.Car - Car lada has reached its destination and spent 57 sec in total
+57604 [lada] DEBUG ru.spbu.math.ais.mas.roads.car.Car - Car lada is shut down.
+57605 [dodge] DEBUG ru.spbu.math.ais.mas.roads.car.Car - Car dodge has already passed 2 roads.
+57605 [dodge] DEBUG ru.spbu.math.ais.mas.roads.car.Car - Car dodge is building its route.
+57610 [dodge] DEBUG ru.spbu.math.ais.mas.roads.car.Car - Car dodge has changed its previous optimal way !!!
+57610 [dodge] DEBUG ru.spbu.math.ais.mas.roads.car.Car - Car dodge has set its new route: [5, 7].
+57613 [dodge] DEBUG ru.spbu.math.ais.mas.roads.car.Car - Car dodge is driving at road (3, 7) for 10 sec.
+67608 [audi] DEBUG ru.spbu.math.ais.mas.roads.car.Car - Car audi has already passed 4 roads.
+67608 [audi] DEBUG ru.spbu.math.ais.mas.roads.car.Car - Car audi is building its route.
+67610 [audi] DEBUG ru.spbu.math.ais.mas.roads.car.Car - Car audi has changed its previous optimal way !!!
+67610 [audi] DEBUG ru.spbu.math.ais.mas.roads.car.Car - Car audi has set its new route: [5, 7].
+67613 [audi] DEBUG ru.spbu.math.ais.mas.roads.car.Car - Car audi is driving at road (1, 7) for 10 sec.
+67613 [dodge] DEBUG ru.spbu.math.ais.mas.roads.car.Car - Car dodge has already passed 3 roads.
+67613 [dodge] INFO  ru.spbu.math.ais.mas.roads.car.Car - Car dodge has reached its destination and spent 67 sec in total
+67614 [dodge] DEBUG ru.spbu.math.ais.mas.roads.car.Car - Car dodge is shut down.
+73607 [skoda] DEBUG ru.spbu.math.ais.mas.roads.car.Car - Car skoda has already passed 3 roads.
+73608 [skoda] DEBUG ru.spbu.math.ais.mas.roads.car.Car - Car skoda is driving at road (2, 5) for 14 sec.
+77613 [audi] DEBUG ru.spbu.math.ais.mas.roads.car.Car - Car audi has already passed 5 roads.
+77613 [audi] INFO  ru.spbu.math.ais.mas.roads.car.Car - Car audi has reached its destination and spent 77 sec in total
+77614 [audi] DEBUG ru.spbu.math.ais.mas.roads.car.Car - Car audi is shut down.
+87609 [skoda] DEBUG ru.spbu.math.ais.mas.roads.car.Car - Car skoda has already passed 4 roads.
+87609 [skoda] DEBUG ru.spbu.math.ais.mas.roads.car.Car - Car skoda is building its route.
+87611 [skoda] DEBUG ru.spbu.math.ais.mas.roads.car.Car - Car skoda has changed its previous optimal way !!!
+87611 [skoda] DEBUG ru.spbu.math.ais.mas.roads.car.Car - Car skoda has set its new route: [5, 7].
+87612 [skoda] DEBUG ru.spbu.math.ais.mas.roads.car.Car - Car skoda is driving at road (1, 7) for 10 sec.
+97613 [skoda] DEBUG ru.spbu.math.ais.mas.roads.car.Car - Car skoda has already passed 5 roads.
+97613 [skoda] INFO  ru.spbu.math.ais.mas.roads.car.Car - Car skoda has reached its destination and spent 97 sec in total
+97614 [skoda] DEBUG ru.spbu.math.ais.mas.roads.car.Car - Car skoda is shut down.
+97614 [Tula] INFO  r.spbu.math.ais.mas.roads.city.City - City is destroyed
+97615 [Tula] INFO  r.spbu.math.ais.mas.roads.city.City - City has finished successfully. Car stats:
+Statistics [count=6, sum=368, max=97, avg=61.333332]

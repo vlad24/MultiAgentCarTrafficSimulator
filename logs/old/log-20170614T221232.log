@@ -1,0 +1,420 @@
+406  [configurator] INFO  r.s.m.ais.mas.citycars.Configurator - Configuring app with configs taken from (cars)src/main/resources/data/cars_medium.txt, (city)src/main/resources/data/tula.txt
+419  [Tula] INFO  r.s.m.ais.mas.citycars.cities.City - City Tula is ready.
+420  [configurator] INFO  r.s.m.ais.mas.citycars.Configurator - Configuring 4 cars that drive ITERATIVE with params {refresh=2}
+437  [AUDI] INFO  r.s.math.ais.mas.citycars.cars.Car - Inited.
+439  [LADA] INFO  r.s.math.ais.mas.citycars.cars.Car - Inited.
+443  [VOLVO] INFO  r.s.math.ais.mas.citycars.cars.Car - Inited.
+444  [configurator] INFO  r.s.m.ais.mas.citycars.Configurator - Configuring roads Tula with 9 vertices and 14 edges. Workload delta=10
+449  [DODGE] INFO  r.s.math.ais.mas.citycars.cars.Car - Inited.
+453  [(0,1)] INFO  r.s.m.ais.mas.citycars.roads.Road - Road (0,1) in Tula is created.
+455  [(0,2)] INFO  r.s.m.ais.mas.citycars.roads.Road - Road (0,2) in Tula is created.
+459  [(0,7)] INFO  r.s.m.ais.mas.citycars.roads.Road - Road (0,7) in Tula is created.
+462  [(1,3)] INFO  r.s.m.ais.mas.citycars.roads.Road - Road (1,3) in Tula is created.
+464  [(1,8)] INFO  r.s.m.ais.mas.citycars.roads.Road - Road (1,8) in Tula is created.
+468  [(2,4)] INFO  r.s.m.ais.mas.citycars.roads.Road - Road (2,4) in Tula is created.
+474  [(2,5)] INFO  r.s.m.ais.mas.citycars.roads.Road - Road (2,5) in Tula is created.
+475  [(3,4)] INFO  r.s.m.ais.mas.citycars.roads.Road - Road (3,4) in Tula is created.
+477  [(3,6)] INFO  r.s.m.ais.mas.citycars.roads.Road - Road (3,6) in Tula is created.
+479  [(4,5)] INFO  r.s.m.ais.mas.citycars.roads.Road - Road (4,5) in Tula is created.
+483  [(4,6)] INFO  r.s.m.ais.mas.citycars.roads.Road - Road (4,6) in Tula is created.
+484  [(5,7)] INFO  r.s.m.ais.mas.citycars.roads.Road - Road (5,7) in Tula is created.
+488  [(6,8)] INFO  r.s.m.ais.mas.citycars.roads.Road - Road (6,8) in Tula is created.
+489  [(7,8)] INFO  r.s.m.ais.mas.citycars.roads.Road - Road (7,8) in Tula is created.
+501  [AUDI] DEBUG r.s.math.ais.mas.citycars.cars.Car - Registering in city...
+501  [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - Registering in city...
+502  [VOLVO] DEBUG r.s.math.ais.mas.citycars.cars.Car - Registering in city...
+503  [DODGE] DEBUG r.s.math.ais.mas.citycars.cars.Car - Registering in city...
+521  [LADA] INFO  r.s.math.ais.mas.citycars.cars.Car - Passed 0 roads. Time to build new route...
+521  [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - Optimal route built: [5, 4, 3, 1]
+521  [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - Sending occupy request to road Pair(first=5, second=7)
+521  [DODGE] INFO  r.s.math.ais.mas.citycars.cars.Car - Passed 0 roads. Time to build new route...
+522  [DODGE] DEBUG r.s.math.ais.mas.citycars.cars.Car - Optimal route built: [3, 6]
+522  [DODGE] DEBUG r.s.math.ais.mas.citycars.cars.Car - Sending occupy request to road Pair(first=1, second=3)
+524  [VOLVO] INFO  r.s.math.ais.mas.citycars.cars.Car - Passed 0 roads. Time to build new route...
+524  [VOLVO] DEBUG r.s.math.ais.mas.citycars.cars.Car - Optimal route built: [3, 4, 2]
+524  [VOLVO] DEBUG r.s.math.ais.mas.citycars.cars.Car - Sending occupy request to road Pair(first=1, second=3)
+525  [Tula] DEBUG r.s.m.ais.mas.citycars.cities.City - Received registering message
+525  [AUDI] INFO  r.s.math.ais.mas.citycars.cars.Car - Passed 0 roads. Time to build new route...
+525  [AUDI] DEBUG r.s.math.ais.mas.citycars.cars.Car - Optimal route built: [2, 4, 6, 8]
+525  [AUDI] DEBUG r.s.math.ais.mas.citycars.cars.Car - Sending occupy request to road Pair(first=0, second=2)
+525  [(1,3)] DEBUG r.s.m.ais.mas.citycars.roads.Road - /// Got json message: {"carName":"DODGE","roadWished":{"first":1,"second":3}}
+526  [AUDI] DEBUG r.s.math.ais.mas.citycars.cars.Car - Standing at crossroads...
+527  [VOLVO] DEBUG r.s.math.ais.mas.citycars.cars.Car - Standing at crossroads...
+527  [(0,2)] DEBUG r.s.m.ais.mas.citycars.roads.Road - /// Got json message: {"carName":"AUDI","roadWished":{"first":0,"second":2}}
+528  [Tula] DEBUG r.s.m.ais.mas.citycars.cities.City - Received registering message
+529  [Tula] DEBUG r.s.m.ais.mas.citycars.cities.City - Received registering message
+529  [Tula] DEBUG r.s.m.ais.mas.citycars.cities.City - Received registering message
+529  [DODGE] DEBUG r.s.math.ais.mas.citycars.cars.Car - Standing at crossroads...
+530  [(0,2)] DEBUG r.s.m.ais.mas.citycars.roads.Road - FIRST Occupy request from car AUDI got.
+530  [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - Standing at crossroads...
+530  [(1,3)] DEBUG r.s.m.ais.mas.citycars.roads.Road - FIRST Occupy request from car DODGE got.
+530  [(0,2)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Accepting car AUDI for occupation
+531  [(1,3)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Accepting car DODGE for occupation
+531  [(5,7)] DEBUG r.s.m.ais.mas.citycars.roads.Road - /// Got json message: {"carName":"LADA","roadWished":{"first":5,"second":7}}
+532  [(5,7)] DEBUG r.s.m.ais.mas.citycars.roads.Road - FIRST Occupy request from car LADA got.
+532  [(5,7)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Accepting car LADA for occupation
+533  [(5,7)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Sending broadcast to all cars with workload delta: 10
+534  [(0,2)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Sending broadcast to all cars with workload delta: 10
+535  [(1,3)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Sending broadcast to all cars with workload delta: 10
+536  [VOLVO] DEBUG r.s.math.ais.mas.citycars.cars.Car - *** Got json:{"road":{"first":5,"second":7},"delta":10}
+536  [(1,3)] DEBUG r.s.m.ais.mas.citycars.roads.Road - /// Got json message: {"carName":"VOLVO","roadWished":{"first":1,"second":3}}
+538  [VOLVO] DEBUG r.s.math.ais.mas.citycars.cars.Car - Road Pair(first=5, second=7) has changed its workload. Memorized...
+537  [DODGE] DEBUG r.s.math.ais.mas.citycars.cars.Car - *** Got json:{"road":{"first":5,"second":7},"delta":10}
+538  [DODGE] DEBUG r.s.math.ais.mas.citycars.cars.Car - Road Pair(first=5, second=7) has changed its workload. Memorized...
+539  [VOLVO] DEBUG r.s.math.ais.mas.citycars.cars.Car - *** Got json:{"road":{"first":1,"second":3},"delta":10}
+539  [VOLVO] DEBUG r.s.math.ais.mas.citycars.cars.Car - Road Pair(first=1, second=3) has changed its workload. Memorized...
+539  [DODGE] DEBUG r.s.math.ais.mas.citycars.cars.Car - *** Got json:{"road":{"first":1,"second":3},"permitted":true,"newRoadWorkload":20}
+540  [DODGE] DEBUG r.s.math.ais.mas.citycars.cars.Car - Driving at new road Pair(first=1, second=3) for 20 secs
+541  [AUDI] DEBUG r.s.math.ais.mas.citycars.cars.Car - *** Got json:{"road":{"first":0,"second":2},"permitted":true,"newRoadWorkload":15}
+541  [AUDI] DEBUG r.s.math.ais.mas.citycars.cars.Car - Driving at new road Pair(first=0, second=2) for 15 secs
+538  [(1,3)] DEBUG r.s.m.ais.mas.citycars.roads.Road - FIRST Occupy request from car VOLVO got.
+541  [(1,3)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Accepting car VOLVO for occupation
+542  [(1,3)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Sending broadcast to all cars with workload delta: 10
+543  [VOLVO] DEBUG r.s.math.ais.mas.citycars.cars.Car - *** Got json:{"road":{"first":0,"second":2},"delta":10}
+544  [VOLVO] DEBUG r.s.math.ais.mas.citycars.cars.Car - Road Pair(first=0, second=2) has changed its workload. Memorized...
+544  [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - *** Got json:{"road":{"first":5,"second":7},"permitted":true,"newRoadWorkload":11}
+545  [VOLVO] DEBUG r.s.math.ais.mas.citycars.cars.Car - *** Got json:{"road":{"first":1,"second":3},"permitted":true,"newRoadWorkload":30}
+545  [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - Driving at new road Pair(first=5, second=7) for 11 secs
+545  [VOLVO] DEBUG r.s.math.ais.mas.citycars.cars.Car - Driving at new road Pair(first=1, second=3) for 30 secs
+11545 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - Road Pair(first=5, second=7) passed!
+11545 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - Reached:5
+11545 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - Sending occupy request to road Pair(first=4, second=5)
+11546 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - *** Got json:{"road":{"first":5,"second":7},"delta":10}
+11547 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - Road Pair(first=5, second=7) has changed its workload. Memorized...
+11548 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - *** Got json:{"road":{"first":0,"second":2},"delta":10}
+11548 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - Road Pair(first=0, second=2) has changed its workload. Memorized...
+11548 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - *** Got json:{"road":{"first":1,"second":3},"delta":10}
+11548 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - Road Pair(first=1, second=3) has changed its workload. Memorized...
+11549 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - *** Got json:{"road":{"first":1,"second":3},"delta":10}
+11549 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - Road Pair(first=1, second=3) has changed its workload. Memorized...
+11549 [(4,5)] DEBUG r.s.m.ais.mas.citycars.roads.Road - /// Got json message: {"carName":"LADA","roadLeft":{"first":5,"second":7},"roadWished":{"first":4,"second":5}}
+11549 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - Standing at crossroads...
+11550 [(4,5)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Occupy request got. Road left:Pair(first=5, second=7). Road wished: Pair(first=4, second=5)
+11550 [(4,5)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Asking road Pair(first=5, second=7) about car LADA
+11553 [(4,5)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Move request to road Pair(first=4, second=5) sent
+11554 [(5,7)] DEBUG r.s.m.ais.mas.citycars.roads.Road - /// Got json message: {"carName":"LADA","requestTime":1497467564076,"requestedRoad":{"first":4,"second":5}}
+11555 [(5,7)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Move request got. Sombody wants to check if car LADA has left me
+11556 [(5,7)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Car has left me: true
+11558 [(4,5)] DEBUG r.s.m.ais.mas.citycars.roads.Road - /// Got json message: {"carName":"LADA","permitted":true}
+11559 [(4,5)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Move response got. We can decide if car LADA can ride here
+11559 [(4,5)] DEBUG r.s.m.ais.mas.citycars.roads.Road - All good. New workload: 14. Car leaves me not earlier than 1497467578083
+11559 [(4,5)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Accepting car LADA for occupation
+11560 [(4,5)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Sending broadcast to all cars with workload delta: 10
+11566 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - *** Got json:{"road":{"first":4,"second":5},"permitted":true,"newRoadWorkload":14}
+11566 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - Driving at new road Pair(first=4, second=5) for 14 secs
+15542 [AUDI] DEBUG r.s.math.ais.mas.citycars.cars.Car - Road Pair(first=0, second=2) passed!
+15542 [AUDI] DEBUG r.s.math.ais.mas.citycars.cars.Car - Reached:2
+15542 [AUDI] DEBUG r.s.math.ais.mas.citycars.cars.Car - Sending occupy request to road Pair(first=2, second=4)
+15543 [AUDI] DEBUG r.s.math.ais.mas.citycars.cars.Car - *** Got json:{"road":{"first":5,"second":7},"delta":10}
+15544 [AUDI] DEBUG r.s.math.ais.mas.citycars.cars.Car - Road Pair(first=5, second=7) has changed its workload. Memorized...
+15544 [AUDI] DEBUG r.s.math.ais.mas.citycars.cars.Car - *** Got json:{"road":{"first":1,"second":3},"delta":10}
+15544 [AUDI] DEBUG r.s.math.ais.mas.citycars.cars.Car - Road Pair(first=1, second=3) has changed its workload. Memorized...
+15544 [AUDI] DEBUG r.s.math.ais.mas.citycars.cars.Car - *** Got json:{"road":{"first":0,"second":2},"delta":10}
+15544 [(2,4)] DEBUG r.s.m.ais.mas.citycars.roads.Road - /// Got json message: {"carName":"AUDI","roadLeft":{"first":0,"second":2},"roadWished":{"first":2,"second":4}}
+15544 [AUDI] DEBUG r.s.math.ais.mas.citycars.cars.Car - Road Pair(first=0, second=2) has changed its workload. Memorized...
+15544 [AUDI] DEBUG r.s.math.ais.mas.citycars.cars.Car - *** Got json:{"road":{"first":1,"second":3},"delta":10}
+15545 [AUDI] DEBUG r.s.math.ais.mas.citycars.cars.Car - Road Pair(first=1, second=3) has changed its workload. Memorized...
+15545 [AUDI] DEBUG r.s.math.ais.mas.citycars.cars.Car - *** Got json:{"road":{"first":4,"second":5},"delta":10}
+15545 [AUDI] DEBUG r.s.math.ais.mas.citycars.cars.Car - Road Pair(first=4, second=5) has changed its workload. Memorized...
+15545 [AUDI] DEBUG r.s.math.ais.mas.citycars.cars.Car - Standing at crossroads...
+15545 [(2,4)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Occupy request got. Road left:Pair(first=0, second=2). Road wished: Pair(first=2, second=4)
+15545 [(2,4)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Asking road Pair(first=0, second=2) about car AUDI
+15546 [(2,4)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Move request to road Pair(first=2, second=4) sent
+15547 [(0,2)] DEBUG r.s.m.ais.mas.citycars.roads.Road - /// Got json message: {"carName":"AUDI","requestTime":1497467568070,"requestedRoad":{"first":2,"second":4}}
+15548 [(0,2)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Move request got. Sombody wants to check if car AUDI has left me
+15548 [(0,2)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Car has left me: true
+15549 [(2,4)] DEBUG r.s.m.ais.mas.citycars.roads.Road - /// Got json message: {"carName":"AUDI","permitted":true}
+15550 [(2,4)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Move response got. We can decide if car AUDI can ride here
+15550 [(2,4)] DEBUG r.s.m.ais.mas.citycars.roads.Road - All good. New workload: 12. Car leaves me not earlier than 1497467580074
+15550 [(2,4)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Accepting car AUDI for occupation
+15551 [(2,4)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Sending broadcast to all cars with workload delta: 10
+15551 [AUDI] DEBUG r.s.math.ais.mas.citycars.cars.Car - *** Got json:{"road":{"first":2,"second":4},"permitted":true,"newRoadWorkload":12}
+15552 [AUDI] DEBUG r.s.math.ais.mas.citycars.cars.Car - Driving at new road Pair(first=2, second=4) for 12 secs
+20540 [DODGE] DEBUG r.s.math.ais.mas.citycars.cars.Car - Road Pair(first=1, second=3) passed!
+20541 [DODGE] DEBUG r.s.math.ais.mas.citycars.cars.Car - Reached:3
+20541 [DODGE] DEBUG r.s.math.ais.mas.citycars.cars.Car - Sending occupy request to road Pair(first=3, second=6)
+20542 [DODGE] DEBUG r.s.math.ais.mas.citycars.cars.Car - *** Got json:{"road":{"first":1,"second":3},"delta":10}
+20543 [DODGE] DEBUG r.s.math.ais.mas.citycars.cars.Car - Road Pair(first=1, second=3) has changed its workload. Memorized...
+20543 [DODGE] DEBUG r.s.math.ais.mas.citycars.cars.Car - *** Got json:{"road":{"first":0,"second":2},"delta":10}
+20543 [DODGE] DEBUG r.s.math.ais.mas.citycars.cars.Car - Road Pair(first=0, second=2) has changed its workload. Memorized...
+20543 [DODGE] DEBUG r.s.math.ais.mas.citycars.cars.Car - *** Got json:{"road":{"first":1,"second":3},"delta":10}
+20543 [(3,6)] DEBUG r.s.m.ais.mas.citycars.roads.Road - /// Got json message: {"carName":"DODGE","roadLeft":{"first":1,"second":3},"roadWished":{"first":3,"second":6}}
+20543 [DODGE] DEBUG r.s.math.ais.mas.citycars.cars.Car - Road Pair(first=1, second=3) has changed its workload. Memorized...
+20544 [DODGE] DEBUG r.s.math.ais.mas.citycars.cars.Car - *** Got json:{"road":{"first":4,"second":5},"delta":10}
+20544 [DODGE] DEBUG r.s.math.ais.mas.citycars.cars.Car - Road Pair(first=4, second=5) has changed its workload. Memorized...
+20544 [DODGE] DEBUG r.s.math.ais.mas.citycars.cars.Car - *** Got json:{"road":{"first":2,"second":4},"delta":10}
+20544 [DODGE] DEBUG r.s.math.ais.mas.citycars.cars.Car - Road Pair(first=2, second=4) has changed its workload. Memorized...
+20544 [DODGE] DEBUG r.s.math.ais.mas.citycars.cars.Car - Standing at crossroads...
+20544 [(3,6)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Occupy request got. Road left:Pair(first=1, second=3). Road wished: Pair(first=3, second=6)
+20545 [(3,6)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Asking road Pair(first=1, second=3) about car DODGE
+20545 [(3,6)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Move request to road Pair(first=3, second=6) sent
+20546 [(1,3)] DEBUG r.s.m.ais.mas.citycars.roads.Road - /// Got json message: {"carName":"DODGE","requestTime":1497467573069,"requestedRoad":{"first":3,"second":6}}
+20547 [(1,3)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Move request got. Sombody wants to check if car DODGE has left me
+20547 [(1,3)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Car has left me: true
+20548 [(3,6)] DEBUG r.s.m.ais.mas.citycars.roads.Road - /// Got json message: {"carName":"DODGE","permitted":true}
+20549 [(3,6)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Move response got. We can decide if car DODGE can ride here
+20549 [(3,6)] DEBUG r.s.m.ais.mas.citycars.roads.Road - All good. New workload: 14. Car leaves me not earlier than 1497467587073
+20549 [(3,6)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Accepting car DODGE for occupation
+20550 [(3,6)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Sending broadcast to all cars with workload delta: 10
+20550 [DODGE] DEBUG r.s.math.ais.mas.citycars.cars.Car - *** Got json:{"road":{"first":3,"second":6},"permitted":true,"newRoadWorkload":14}
+20550 [DODGE] DEBUG r.s.math.ais.mas.citycars.cars.Car - Driving at new road Pair(first=3, second=6) for 14 secs
+25566 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - Road Pair(first=4, second=5) passed!
+25566 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - Reached:4
+25566 [LADA] INFO  r.s.math.ais.mas.citycars.cars.Car - Passed 2 roads. Time to build new route...
+25567 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - Applying changes to city graph RoadStatusChange(road=Pair(first=5, second=7), delta=10)
+25567 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - Applying changes to city graph RoadStatusChange(road=Pair(first=0, second=2), delta=10)
+25567 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - Applying changes to city graph RoadStatusChange(road=Pair(first=1, second=3), delta=10)
+25567 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - Applying changes to city graph RoadStatusChange(road=Pair(first=1, second=3), delta=10)
+25567 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - Optimal route built: [6, 8, 1]
+25567 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - Sending occupy request to road Pair(first=4, second=6)
+25568 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - *** Got json:{"road":{"first":4,"second":5},"delta":10}
+25569 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - Road Pair(first=4, second=5) has changed its workload. Memorized...
+25569 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - *** Got json:{"road":{"first":2,"second":4},"delta":10}
+25569 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - Road Pair(first=2, second=4) has changed its workload. Memorized...
+25569 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - *** Got json:{"road":{"first":3,"second":6},"delta":10}
+25570 [(4,6)] DEBUG r.s.m.ais.mas.citycars.roads.Road - /// Got json message: {"carName":"LADA","roadLeft":{"first":4,"second":5},"roadWished":{"first":4,"second":6}}
+25570 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - Road Pair(first=3, second=6) has changed its workload. Memorized...
+25570 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - Standing at crossroads...
+25571 [(4,6)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Occupy request got. Road left:Pair(first=4, second=5). Road wished: Pair(first=4, second=6)
+25571 [(4,6)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Asking road Pair(first=4, second=5) about car LADA
+25572 [(4,6)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Move request to road Pair(first=4, second=6) sent
+25573 [(4,5)] DEBUG r.s.m.ais.mas.citycars.roads.Road - /// Got json message: {"carName":"LADA","requestTime":1497467578095,"requestedRoad":{"first":4,"second":6}}
+25573 [(4,5)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Move request got. Sombody wants to check if car LADA has left me
+25573 [(4,5)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Car has left me: true
+25574 [(4,6)] DEBUG r.s.m.ais.mas.citycars.roads.Road - /// Got json message: {"carName":"LADA","permitted":true}
+25574 [(4,6)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Move response got. We can decide if car LADA can ride here
+25574 [(4,6)] DEBUG r.s.m.ais.mas.citycars.roads.Road - All good. New workload: 13. Car leaves me not earlier than 1497467591098
+25574 [(4,6)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Accepting car LADA for occupation
+25575 [(4,6)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Sending broadcast to all cars with workload delta: 10
+25577 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - *** Got json:{"road":{"first":4,"second":6},"permitted":true,"newRoadWorkload":13}
+25578 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - Driving at new road Pair(first=4, second=6) for 13 secs
+27552 [AUDI] DEBUG r.s.math.ais.mas.citycars.cars.Car - Road Pair(first=2, second=4) passed!
+27552 [AUDI] DEBUG r.s.math.ais.mas.citycars.cars.Car - Reached:4
+27552 [AUDI] INFO  r.s.math.ais.mas.citycars.cars.Car - Passed 2 roads. Time to build new route...
+27552 [AUDI] DEBUG r.s.math.ais.mas.citycars.cars.Car - Applying changes to city graph RoadStatusChange(road=Pair(first=5, second=7), delta=10)
+27552 [AUDI] DEBUG r.s.math.ais.mas.citycars.cars.Car - Applying changes to city graph RoadStatusChange(road=Pair(first=1, second=3), delta=10)
+27552 [AUDI] DEBUG r.s.math.ais.mas.citycars.cars.Car - Applying changes to city graph RoadStatusChange(road=Pair(first=0, second=2), delta=10)
+27552 [AUDI] DEBUG r.s.math.ais.mas.citycars.cars.Car - Applying changes to city graph RoadStatusChange(road=Pair(first=1, second=3), delta=10)
+27552 [AUDI] DEBUG r.s.math.ais.mas.citycars.cars.Car - Applying changes to city graph RoadStatusChange(road=Pair(first=4, second=5), delta=10)
+27553 [AUDI] DEBUG r.s.math.ais.mas.citycars.cars.Car - Optimal route built: [6, 8]
+27553 [AUDI] DEBUG r.s.math.ais.mas.citycars.cars.Car - Sending occupy request to road Pair(first=4, second=6)
+27554 [AUDI] DEBUG r.s.math.ais.mas.citycars.cars.Car - *** Got json:{"road":{"first":2,"second":4},"delta":10}
+27554 [AUDI] DEBUG r.s.math.ais.mas.citycars.cars.Car - Road Pair(first=2, second=4) has changed its workload. Memorized...
+27554 [(4,6)] DEBUG r.s.m.ais.mas.citycars.roads.Road - /// Got json message: {"carName":"AUDI","roadLeft":{"first":2,"second":4},"roadWished":{"first":4,"second":6}}
+27554 [(4,6)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Occupy request got. Road left:Pair(first=2, second=4). Road wished: Pair(first=4, second=6)
+27554 [(4,6)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Asking road Pair(first=2, second=4) about car AUDI
+27555 [(4,6)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Move request to road Pair(first=4, second=6) sent
+27555 [AUDI] DEBUG r.s.math.ais.mas.citycars.cars.Car - *** Got json:{"road":{"first":3,"second":6},"delta":10}
+27556 [AUDI] DEBUG r.s.math.ais.mas.citycars.cars.Car - Road Pair(first=3, second=6) has changed its workload. Memorized...
+27556 [(2,4)] DEBUG r.s.m.ais.mas.citycars.roads.Road - /// Got json message: {"carName":"AUDI","requestTime":1497467580079,"requestedRoad":{"first":4,"second":6}}
+27556 [AUDI] DEBUG r.s.math.ais.mas.citycars.cars.Car - *** Got json:{"road":{"first":4,"second":6},"delta":10}
+27556 [AUDI] DEBUG r.s.math.ais.mas.citycars.cars.Car - Road Pair(first=4, second=6) has changed its workload. Memorized...
+27556 [(2,4)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Move request got. Sombody wants to check if car AUDI has left me
+27556 [(2,4)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Car has left me: true
+27556 [AUDI] DEBUG r.s.math.ais.mas.citycars.cars.Car - Standing at crossroads...
+27557 [(4,6)] DEBUG r.s.m.ais.mas.citycars.roads.Road - /// Got json message: {"carName":"AUDI","permitted":true}
+27557 [(4,6)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Move response got. We can decide if car AUDI can ride here
+27557 [(4,6)] DEBUG r.s.m.ais.mas.citycars.roads.Road - All good. New workload: 23. Car leaves me not earlier than 1497467603081
+27557 [(4,6)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Accepting car AUDI for occupation
+27558 [(4,6)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Sending broadcast to all cars with workload delta: 10
+27560 [AUDI] DEBUG r.s.math.ais.mas.citycars.cars.Car - *** Got json:{"road":{"first":4,"second":6},"permitted":true,"newRoadWorkload":23}
+27560 [AUDI] DEBUG r.s.math.ais.mas.citycars.cars.Car - Driving at new road Pair(first=4, second=6) for 23 secs
+30545 [VOLVO] DEBUG r.s.math.ais.mas.citycars.cars.Car - Road Pair(first=1, second=3) passed!
+30545 [VOLVO] DEBUG r.s.math.ais.mas.citycars.cars.Car - Reached:3
+30545 [VOLVO] DEBUG r.s.math.ais.mas.citycars.cars.Car - Sending occupy request to road Pair(first=3, second=4)
+30546 [VOLVO] DEBUG r.s.math.ais.mas.citycars.cars.Car - *** Got json:{"road":{"first":1,"second":3},"delta":10}
+30547 [VOLVO] DEBUG r.s.math.ais.mas.citycars.cars.Car - Road Pair(first=1, second=3) has changed its workload. Memorized...
+30547 [VOLVO] DEBUG r.s.math.ais.mas.citycars.cars.Car - *** Got json:{"road":{"first":4,"second":5},"delta":10}
+30547 [VOLVO] DEBUG r.s.math.ais.mas.citycars.cars.Car - Road Pair(first=4, second=5) has changed its workload. Memorized...
+30547 [VOLVO] DEBUG r.s.math.ais.mas.citycars.cars.Car - *** Got json:{"road":{"first":2,"second":4},"delta":10}
+30548 [(3,4)] DEBUG r.s.m.ais.mas.citycars.roads.Road - /// Got json message: {"carName":"VOLVO","roadLeft":{"first":1,"second":3},"roadWished":{"first":3,"second":4}}
+30548 [VOLVO] DEBUG r.s.math.ais.mas.citycars.cars.Car - Road Pair(first=2, second=4) has changed its workload. Memorized...
+30548 [VOLVO] DEBUG r.s.math.ais.mas.citycars.cars.Car - *** Got json:{"road":{"first":3,"second":6},"delta":10}
+30548 [VOLVO] DEBUG r.s.math.ais.mas.citycars.cars.Car - Road Pair(first=3, second=6) has changed its workload. Memorized...
+30548 [VOLVO] DEBUG r.s.math.ais.mas.citycars.cars.Car - *** Got json:{"road":{"first":4,"second":6},"delta":10}
+30549 [(3,4)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Occupy request got. Road left:Pair(first=1, second=3). Road wished: Pair(first=3, second=4)
+30549 [VOLVO] DEBUG r.s.math.ais.mas.citycars.cars.Car - Road Pair(first=4, second=6) has changed its workload. Memorized...
+30549 [(3,4)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Asking road Pair(first=1, second=3) about car VOLVO
+30549 [VOLVO] DEBUG r.s.math.ais.mas.citycars.cars.Car - *** Got json:{"road":{"first":4,"second":6},"delta":10}
+30549 [VOLVO] DEBUG r.s.math.ais.mas.citycars.cars.Car - Road Pair(first=4, second=6) has changed its workload. Memorized...
+30549 [VOLVO] DEBUG r.s.math.ais.mas.citycars.cars.Car - Standing at crossroads...
+30549 [(3,4)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Move request to road Pair(first=3, second=4) sent
+30550 [(1,3)] DEBUG r.s.m.ais.mas.citycars.roads.Road - /// Got json message: {"carName":"VOLVO","requestTime":1497467583073,"requestedRoad":{"first":3,"second":4}}
+30551 [(1,3)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Move request got. Sombody wants to check if car VOLVO has left me
+30551 [(1,3)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Car has left me: true
+30552 [(3,4)] DEBUG r.s.m.ais.mas.citycars.roads.Road - /// Got json message: {"carName":"VOLVO","permitted":true}
+30552 [(3,4)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Move response got. We can decide if car VOLVO can ride here
+30552 [(3,4)] DEBUG r.s.m.ais.mas.citycars.roads.Road - All good. New workload: 13. Car leaves me not earlier than 1497467596076
+30552 [(3,4)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Accepting car VOLVO for occupation
+30553 [(3,4)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Sending broadcast to all cars with workload delta: 10
+30554 [VOLVO] DEBUG r.s.math.ais.mas.citycars.cars.Car - *** Got json:{"road":{"first":3,"second":4},"permitted":true,"newRoadWorkload":13}
+30554 [VOLVO] DEBUG r.s.math.ais.mas.citycars.cars.Car - Driving at new road Pair(first=3, second=4) for 13 secs
+34551 [DODGE] DEBUG r.s.math.ais.mas.citycars.cars.Car - Road Pair(first=3, second=6) passed!
+34551 [DODGE] DEBUG r.s.math.ais.mas.citycars.cars.Car - Reached:6
+34551 [DODGE] INFO  r.s.math.ais.mas.citycars.cars.Car - Car DODGE has reached its destination and spent 34 sec in total.
+34551 [DODGE] DEBUG r.s.math.ais.mas.citycars.cars.Car - Releasing last road...
+34552 [DODGE] DEBUG r.s.math.ais.mas.citycars.cars.Car - Sending stats report to city stats agent...
+34552 [(3,6)] DEBUG r.s.m.ais.mas.citycars.roads.Road - /// Got json message: {"carName":"DODGE","roadLeft":{"first":3,"second":6}}
+34553 [(3,6)] DEBUG r.s.m.ais.mas.citycars.roads.Road - LAST Occupy request from car DODGE got.
+34553 [(3,6)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Sending broadcast to all cars with workload delta: -10
+34555 [DODGE] DEBUG r.s.math.ais.mas.citycars.cars.Car - Car DODGE has sent its report.
+34556 [Tula] DEBUG r.s.m.ais.mas.citycars.cities.City - Got report. Current active cars:3
+38578 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - Road Pair(first=4, second=6) passed!
+38578 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - Reached:6
+38579 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - Sending occupy request to road Pair(first=6, second=8)
+38579 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - *** Got json:{"road":{"first":4,"second":6},"delta":10}
+38580 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - Road Pair(first=4, second=6) has changed its workload. Memorized...
+38580 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - *** Got json:{"road":{"first":4,"second":6},"delta":10}
+38581 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - Road Pair(first=4, second=6) has changed its workload. Memorized...
+38581 [(6,8)] DEBUG r.s.m.ais.mas.citycars.roads.Road - /// Got json message: {"carName":"LADA","roadLeft":{"first":4,"second":6},"roadWished":{"first":6,"second":8}}
+38581 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - *** Got json:{"road":{"first":3,"second":4},"delta":10}
+38581 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - Road Pair(first=3, second=4) has changed its workload. Memorized...
+38581 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - *** Got json:{"road":{"first":3,"second":6},"delta":-10}
+38581 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - Road Pair(first=3, second=6) has changed its workload. Memorized...
+38581 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - Standing at crossroads...
+38582 [(6,8)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Occupy request got. Road left:Pair(first=4, second=6). Road wished: Pair(first=6, second=8)
+38582 [(6,8)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Asking road Pair(first=4, second=6) about car LADA
+38582 [(6,8)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Move request to road Pair(first=6, second=8) sent
+38583 [(4,6)] DEBUG r.s.m.ais.mas.citycars.roads.Road - /// Got json message: {"carName":"LADA","requestTime":1497467591106,"requestedRoad":{"first":6,"second":8}}
+38583 [(4,6)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Move request got. Sombody wants to check if car LADA has left me
+38584 [(4,6)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Car has left me: true
+38586 [(6,8)] DEBUG r.s.m.ais.mas.citycars.roads.Road - /// Got json message: {"carName":"LADA","permitted":true}
+38587 [(6,8)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Move response got. We can decide if car LADA can ride here
+38587 [(6,8)] DEBUG r.s.m.ais.mas.citycars.roads.Road - All good. New workload: 17. Car leaves me not earlier than 1497467608111
+38587 [(6,8)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Accepting car LADA for occupation
+38589 [(6,8)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Sending broadcast to all cars with workload delta: 10
+38591 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - *** Got json:{"road":{"first":6,"second":8},"permitted":true,"newRoadWorkload":17}
+38591 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - Driving at new road Pair(first=6, second=8) for 17 secs
+43554 [VOLVO] DEBUG r.s.math.ais.mas.citycars.cars.Car - Road Pair(first=3, second=4) passed!
+43555 [VOLVO] DEBUG r.s.math.ais.mas.citycars.cars.Car - Reached:4
+43555 [VOLVO] INFO  r.s.math.ais.mas.citycars.cars.Car - Passed 2 roads. Time to build new route...
+43555 [VOLVO] DEBUG r.s.math.ais.mas.citycars.cars.Car - Applying changes to city graph RoadStatusChange(road=Pair(first=5, second=7), delta=10)
+43555 [VOLVO] DEBUG r.s.math.ais.mas.citycars.cars.Car - Applying changes to city graph RoadStatusChange(road=Pair(first=1, second=3), delta=10)
+43555 [VOLVO] DEBUG r.s.math.ais.mas.citycars.cars.Car - Applying changes to city graph RoadStatusChange(road=Pair(first=0, second=2), delta=10)
+43555 [VOLVO] DEBUG r.s.math.ais.mas.citycars.cars.Car - Applying changes to city graph RoadStatusChange(road=Pair(first=1, second=3), delta=10)
+43555 [VOLVO] DEBUG r.s.math.ais.mas.citycars.cars.Car - Applying changes to city graph RoadStatusChange(road=Pair(first=4, second=5), delta=10)
+43555 [VOLVO] DEBUG r.s.math.ais.mas.citycars.cars.Car - Applying changes to city graph RoadStatusChange(road=Pair(first=2, second=4), delta=10)
+43555 [VOLVO] DEBUG r.s.math.ais.mas.citycars.cars.Car - Applying changes to city graph RoadStatusChange(road=Pair(first=3, second=6), delta=10)
+43555 [VOLVO] DEBUG r.s.math.ais.mas.citycars.cars.Car - Applying changes to city graph RoadStatusChange(road=Pair(first=4, second=6), delta=10)
+43555 [VOLVO] DEBUG r.s.math.ais.mas.citycars.cars.Car - Applying changes to city graph RoadStatusChange(road=Pair(first=4, second=6), delta=10)
+43555 [VOLVO] DEBUG r.s.math.ais.mas.citycars.cars.Car - Optimal route built: [2]
+43556 [VOLVO] DEBUG r.s.math.ais.mas.citycars.cars.Car - Sending occupy request to road Pair(first=2, second=4)
+43557 [VOLVO] DEBUG r.s.math.ais.mas.citycars.cars.Car - *** Got json:{"road":{"first":3,"second":4},"delta":10}
+43557 [VOLVO] DEBUG r.s.math.ais.mas.citycars.cars.Car - Road Pair(first=3, second=4) has changed its workload. Memorized...
+43557 [(2,4)] DEBUG r.s.m.ais.mas.citycars.roads.Road - /// Got json message: {"carName":"VOLVO","roadLeft":{"first":3,"second":4},"roadWished":{"first":2,"second":4}}
+43557 [VOLVO] DEBUG r.s.math.ais.mas.citycars.cars.Car - *** Got json:{"road":{"first":3,"second":6},"delta":-10}
+43558 [VOLVO] DEBUG r.s.math.ais.mas.citycars.cars.Car - Road Pair(first=3, second=6) has changed its workload. Memorized...
+43558 [(2,4)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Occupy request got. Road left:Pair(first=3, second=4). Road wished: Pair(first=2, second=4)
+43558 [VOLVO] DEBUG r.s.math.ais.mas.citycars.cars.Car - *** Got json:{"road":{"first":6,"second":8},"delta":10}
+43558 [(2,4)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Asking road Pair(first=3, second=4) about car VOLVO
+43558 [VOLVO] DEBUG r.s.math.ais.mas.citycars.cars.Car - Road Pair(first=6, second=8) has changed its workload. Memorized...
+43558 [VOLVO] DEBUG r.s.math.ais.mas.citycars.cars.Car - Standing at crossroads...
+43558 [(2,4)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Move request to road Pair(first=2, second=4) sent
+43559 [(3,4)] DEBUG r.s.m.ais.mas.citycars.roads.Road - /// Got json message: {"carName":"VOLVO","requestTime":1497467596082,"requestedRoad":{"first":2,"second":4}}
+43559 [(3,4)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Move request got. Sombody wants to check if car VOLVO has left me
+43559 [(3,4)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Car has left me: true
+43560 [(2,4)] DEBUG r.s.m.ais.mas.citycars.roads.Road - /// Got json message: {"carName":"VOLVO","permitted":true}
+43560 [(2,4)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Move response got. We can decide if car VOLVO can ride here
+43560 [(2,4)] DEBUG r.s.m.ais.mas.citycars.roads.Road - All good. New workload: 22. Car leaves me not earlier than 1497467618084
+43560 [(2,4)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Accepting car VOLVO for occupation
+43561 [(2,4)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Sending broadcast to all cars with workload delta: 10
+43561 [VOLVO] DEBUG r.s.math.ais.mas.citycars.cars.Car - *** Got json:{"road":{"first":2,"second":4},"permitted":true,"newRoadWorkload":22}
+43561 [VOLVO] DEBUG r.s.math.ais.mas.citycars.cars.Car - Driving at new road Pair(first=2, second=4) for 22 secs
+50560 [AUDI] DEBUG r.s.math.ais.mas.citycars.cars.Car - Road Pair(first=4, second=6) passed!
+50561 [AUDI] DEBUG r.s.math.ais.mas.citycars.cars.Car - Reached:6
+50561 [AUDI] DEBUG r.s.math.ais.mas.citycars.cars.Car - Sending occupy request to road Pair(first=6, second=8)
+50561 [AUDI] DEBUG r.s.math.ais.mas.citycars.cars.Car - *** Got json:{"road":{"first":4,"second":6},"delta":10}
+50562 [AUDI] DEBUG r.s.math.ais.mas.citycars.cars.Car - Road Pair(first=4, second=6) has changed its workload. Memorized...
+50562 [AUDI] DEBUG r.s.math.ais.mas.citycars.cars.Car - *** Got json:{"road":{"first":3,"second":4},"delta":10}
+50562 [(6,8)] DEBUG r.s.m.ais.mas.citycars.roads.Road - /// Got json message: {"carName":"AUDI","roadLeft":{"first":4,"second":6},"roadWished":{"first":6,"second":8}}
+50562 [AUDI] DEBUG r.s.math.ais.mas.citycars.cars.Car - Road Pair(first=3, second=4) has changed its workload. Memorized...
+50562 [(6,8)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Occupy request got. Road left:Pair(first=4, second=6). Road wished: Pair(first=6, second=8)
+50562 [AUDI] DEBUG r.s.math.ais.mas.citycars.cars.Car - *** Got json:{"road":{"first":3,"second":6},"delta":-10}
+50562 [(6,8)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Asking road Pair(first=4, second=6) about car AUDI
+50563 [AUDI] DEBUG r.s.math.ais.mas.citycars.cars.Car - Road Pair(first=3, second=6) has changed its workload. Memorized...
+50563 [(6,8)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Move request to road Pair(first=6, second=8) sent
+50563 [AUDI] DEBUG r.s.math.ais.mas.citycars.cars.Car - *** Got json:{"road":{"first":6,"second":8},"delta":10}
+50563 [AUDI] DEBUG r.s.math.ais.mas.citycars.cars.Car - Road Pair(first=6, second=8) has changed its workload. Memorized...
+50563 [AUDI] DEBUG r.s.math.ais.mas.citycars.cars.Car - *** Got json:{"road":{"first":2,"second":4},"delta":10}
+50563 [AUDI] DEBUG r.s.math.ais.mas.citycars.cars.Car - Road Pair(first=2, second=4) has changed its workload. Memorized...
+50563 [(4,6)] DEBUG r.s.m.ais.mas.citycars.roads.Road - /// Got json message: {"carName":"AUDI","requestTime":1497467603087,"requestedRoad":{"first":6,"second":8}}
+50563 [AUDI] DEBUG r.s.math.ais.mas.citycars.cars.Car - Standing at crossroads...
+50564 [(4,6)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Move request got. Sombody wants to check if car AUDI has left me
+50564 [(4,6)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Car has left me: true
+50565 [(6,8)] DEBUG r.s.m.ais.mas.citycars.roads.Road - /// Got json message: {"carName":"AUDI","permitted":true}
+50565 [(6,8)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Move response got. We can decide if car AUDI can ride here
+50565 [(6,8)] DEBUG r.s.m.ais.mas.citycars.roads.Road - All good. New workload: 27. Car leaves me not earlier than 1497467630089
+50565 [(6,8)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Accepting car AUDI for occupation
+50565 [(6,8)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Sending broadcast to all cars with workload delta: 10
+50566 [AUDI] DEBUG r.s.math.ais.mas.citycars.cars.Car - *** Got json:{"road":{"first":6,"second":8},"permitted":true,"newRoadWorkload":27}
+50566 [AUDI] DEBUG r.s.math.ais.mas.citycars.cars.Car - Driving at new road Pair(first=6, second=8) for 27 secs
+55593 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - Road Pair(first=6, second=8) passed!
+55593 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - Reached:8
+55593 [LADA] INFO  r.s.math.ais.mas.citycars.cars.Car - Passed 4 roads. Time to build new route...
+55593 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - Applying changes to city graph RoadStatusChange(road=Pair(first=5, second=7), delta=10)
+55593 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - Applying changes to city graph RoadStatusChange(road=Pair(first=0, second=2), delta=10)
+55593 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - Applying changes to city graph RoadStatusChange(road=Pair(first=1, second=3), delta=10)
+55593 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - Applying changes to city graph RoadStatusChange(road=Pair(first=1, second=3), delta=10)
+55593 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - Applying changes to city graph RoadStatusChange(road=Pair(first=4, second=5), delta=10)
+55594 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - Applying changes to city graph RoadStatusChange(road=Pair(first=2, second=4), delta=10)
+55594 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - Applying changes to city graph RoadStatusChange(road=Pair(first=3, second=6), delta=10)
+55594 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - Applying changes to city graph RoadStatusChange(road=Pair(first=4, second=6), delta=10)
+55594 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - Applying changes to city graph RoadStatusChange(road=Pair(first=4, second=6), delta=10)
+55594 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - Applying changes to city graph RoadStatusChange(road=Pair(first=3, second=4), delta=10)
+55594 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - Applying changes to city graph RoadStatusChange(road=Pair(first=3, second=6), delta=-10)
+55594 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - Optimal route built: [1]
+55594 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - Sending occupy request to road Pair(first=1, second=8)
+55595 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - *** Got json:{"road":{"first":6,"second":8},"delta":10}
+55595 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - Road Pair(first=6, second=8) has changed its workload. Memorized...
+55595 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - *** Got json:{"road":{"first":2,"second":4},"delta":10}
+55595 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - Road Pair(first=2, second=4) has changed its workload. Memorized...
+55595 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - *** Got json:{"road":{"first":6,"second":8},"delta":10}
+55596 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - Road Pair(first=6, second=8) has changed its workload. Memorized...
+55596 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - Standing at crossroads...
+55597 [(1,8)] DEBUG r.s.m.ais.mas.citycars.roads.Road - /// Got json message: {"carName":"LADA","roadLeft":{"first":6,"second":8},"roadWished":{"first":1,"second":8}}
+55598 [(1,8)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Occupy request got. Road left:Pair(first=6, second=8). Road wished: Pair(first=1, second=8)
+55598 [(1,8)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Asking road Pair(first=6, second=8) about car LADA
+55599 [(1,8)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Move request to road Pair(first=1, second=8) sent
+55600 [(6,8)] DEBUG r.s.m.ais.mas.citycars.roads.Road - /// Got json message: {"carName":"LADA","requestTime":1497467608122,"requestedRoad":{"first":1,"second":8}}
+55600 [(6,8)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Move request got. Sombody wants to check if car LADA has left me
+55600 [(6,8)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Car has left me: true
+55600 [(1,8)] DEBUG r.s.m.ais.mas.citycars.roads.Road - /// Got json message: {"carName":"LADA","permitted":true}
+55601 [(1,8)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Move response got. We can decide if car LADA can ride here
+55601 [(1,8)] DEBUG r.s.m.ais.mas.citycars.roads.Road - All good. New workload: 23. Car leaves me not earlier than 1497467631125
+55601 [(1,8)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Accepting car LADA for occupation
+55604 [(1,8)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Sending broadcast to all cars with workload delta: 10
+55605 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - *** Got json:{"road":{"first":1,"second":8},"permitted":true,"newRoadWorkload":23}
+55605 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - Driving at new road Pair(first=1, second=8) for 23 secs
+65561 [VOLVO] DEBUG r.s.math.ais.mas.citycars.cars.Car - Road Pair(first=2, second=4) passed!
+65562 [VOLVO] DEBUG r.s.math.ais.mas.citycars.cars.Car - Reached:2
+65562 [VOLVO] INFO  r.s.math.ais.mas.citycars.cars.Car - Car VOLVO has reached its destination and spent 65 sec in total.
+65562 [VOLVO] DEBUG r.s.math.ais.mas.citycars.cars.Car - Releasing last road...
+65562 [VOLVO] DEBUG r.s.math.ais.mas.citycars.cars.Car - Sending stats report to city stats agent...
+65563 [(2,4)] DEBUG r.s.m.ais.mas.citycars.roads.Road - /// Got json message: {"carName":"VOLVO","roadLeft":{"first":2,"second":4}}
+65563 [(2,4)] DEBUG r.s.m.ais.mas.citycars.roads.Road - LAST Occupy request from car VOLVO got.
+65563 [(2,4)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Sending broadcast to all cars with workload delta: -10
+65563 [VOLVO] DEBUG r.s.math.ais.mas.citycars.cars.Car - Car VOLVO has sent its report.
+65564 [Tula] DEBUG r.s.m.ais.mas.citycars.cities.City - Got report. Current active cars:2
+77566 [AUDI] DEBUG r.s.math.ais.mas.citycars.cars.Car - Road Pair(first=6, second=8) passed!
+77567 [AUDI] DEBUG r.s.math.ais.mas.citycars.cars.Car - Reached:8
+77567 [AUDI] INFO  r.s.math.ais.mas.citycars.cars.Car - Car AUDI has reached its destination and spent 77 sec in total.
+77567 [AUDI] DEBUG r.s.math.ais.mas.citycars.cars.Car - Releasing last road...
+77567 [AUDI] DEBUG r.s.math.ais.mas.citycars.cars.Car - Sending stats report to city stats agent...
+77568 [(6,8)] DEBUG r.s.m.ais.mas.citycars.roads.Road - /// Got json message: {"carName":"AUDI","roadLeft":{"first":6,"second":8}}
+77568 [(6,8)] DEBUG r.s.m.ais.mas.citycars.roads.Road - LAST Occupy request from car AUDI got.
+77568 [(6,8)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Sending broadcast to all cars with workload delta: -10
+77568 [AUDI] DEBUG r.s.math.ais.mas.citycars.cars.Car - Car AUDI has sent its report.
+77568 [Tula] DEBUG r.s.m.ais.mas.citycars.cities.City - Got report. Current active cars:1
+78606 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - Road Pair(first=1, second=8) passed!
+78606 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - Reached:1
+78606 [LADA] INFO  r.s.math.ais.mas.citycars.cars.Car - Car LADA has reached its destination and spent 78 sec in total.
+78607 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - Releasing last road...
+78607 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - Sending stats report to city stats agent...
+78608 [(1,8)] DEBUG r.s.m.ais.mas.citycars.roads.Road - /// Got json message: {"carName":"LADA","roadLeft":{"first":1,"second":8}}
+78608 [(1,8)] DEBUG r.s.m.ais.mas.citycars.roads.Road - LAST Occupy request from car LADA got.
+78608 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - Car LADA has sent its report.
+78608 [(1,8)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Sending broadcast to all cars with workload delta: -10
+78612 [Tula] DEBUG r.s.m.ais.mas.citycars.cities.City - Got report. Current active cars:0
+78612 [Tula] INFO  r.s.m.ais.mas.citycars.cities.City - City is destroyed
+78613 [Tula] INFO  r.s.m.ais.mas.citycars.cities.City - City agent cannot see any active cars. Driving finished successfully. Car stats:
+Statistics [count=4, sum=254, max=78, avg=63.5]

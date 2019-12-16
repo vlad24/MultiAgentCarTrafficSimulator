@@ -1,0 +1,181 @@
+435  [CONFIGURATOR] INFO  r.s.m.ais.mas.citycars.Configurator - Configuring app with configs 
+ for cars : src/main/resources/data/cars_small.txt 
+ for city: src/main/resources/data/tula.txt
+442  [CONFIGURATOR] INFO  r.s.m.ais.mas.citycars.Configurator - Configuring roads Tula with 9 vertices and 14 edges. Workload delta=10
+450  [(0,1)] INFO  r.s.m.ais.mas.citycars.roads.Road - Road (0,1) in Tula is created.
+455  [(0,2)] INFO  r.s.m.ais.mas.citycars.roads.Road - Road (0,2) in Tula is created.
+463  [(0,7)] INFO  r.s.m.ais.mas.citycars.roads.Road - Road (0,7) in Tula is created.
+474  [(1,3)] INFO  r.s.m.ais.mas.citycars.roads.Road - Road (1,3) in Tula is created.
+477  [(1,8)] INFO  r.s.m.ais.mas.citycars.roads.Road - Road (1,8) in Tula is created.
+479  [(2,4)] INFO  r.s.m.ais.mas.citycars.roads.Road - Road (2,4) in Tula is created.
+480  [(2,5)] INFO  r.s.m.ais.mas.citycars.roads.Road - Road (2,5) in Tula is created.
+481  [(3,4)] INFO  r.s.m.ais.mas.citycars.roads.Road - Road (3,4) in Tula is created.
+485  [(3,6)] INFO  r.s.m.ais.mas.citycars.roads.Road - Road (3,6) in Tula is created.
+487  [(4,5)] INFO  r.s.m.ais.mas.citycars.roads.Road - Road (4,5) in Tula is created.
+490  [(4,6)] INFO  r.s.m.ais.mas.citycars.roads.Road - Road (4,6) in Tula is created.
+493  [(5,7)] INFO  r.s.m.ais.mas.citycars.roads.Road - Road (5,7) in Tula is created.
+494  [(6,8)] INFO  r.s.m.ais.mas.citycars.roads.Road - Road (6,8) in Tula is created.
+497  [(7,8)] INFO  r.s.m.ais.mas.citycars.roads.Road - Road (7,8) in Tula is created.
+505  [CONFIGURATOR] DEBUG r.s.m.ais.mas.citycars.Configurator - Parsed car file:{carItems=[[AUDI, 1, 7], [LADA, 1, 7]], strategy=dummy}
+506  [CONFIGURATOR] INFO  r.s.m.ais.mas.citycars.Configurator - Configuring 2 cars that drive DUMMY with params {}
+509  [Tula] INFO  r.s.m.ais.mas.citycars.cities.City - City Tula is ready.
+518  [AUDI] INFO  r.s.math.ais.mas.citycars.cars.Car - Inited.
+522  [LADA] INFO  r.s.math.ais.mas.citycars.cars.Car - Inited.
+543  [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - Subscribing to topic road_workload_update
+543  [AUDI] DEBUG r.s.math.ais.mas.citycars.cars.Car - Subscribing to topic road_workload_update
+548  [AUDI] DEBUG r.s.math.ais.mas.citycars.cars.Car - Registering in city...
+548  [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - Registering in city...
+574  [AUDI] INFO  r.s.math.ais.mas.citycars.cars.Car - Passed 0 roads. Time to build new route...
+574  [AUDI] DEBUG r.s.math.ais.mas.citycars.cars.Car - Build route from 1 to 7...
+574  [AUDI] DEBUG r.s.math.ais.mas.citycars.cars.Car - Got route: [1, 3, 4, 5, 7]
+574  [AUDI] DEBUG r.s.math.ais.mas.citycars.cars.Car - Sending occupy request to road (1,3)
+576  [LADA] INFO  r.s.math.ais.mas.citycars.cars.Car - Passed 0 roads. Time to build new route...
+577  [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - Build route from 1 to 7...
+577  [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - Got route: [1, 3, 4, 5, 7]
+577  [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - Sending occupy request to road (1,3)
+578  [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - Standing at intersection of null and (1,3)
+579  [AUDI] DEBUG r.s.math.ais.mas.citycars.cars.Car - Standing at intersection of null and (1,3)
+581  [Tula] DEBUG r.s.m.ais.mas.citycars.cities.City - Received registering message
+583  [Tula] DEBUG r.s.m.ais.mas.citycars.cities.City - Received registering message
+588  [(1,3)] DEBUG r.s.m.ais.mas.citycars.roads.Road - INITIAL occupy request from car LADA got.
+588  [(1,3)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Accepting car LADA for occupation
+590  [(1,3)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Sending broadcast with workload delta: 10
+592  [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - Occupation ACCEPT got from road (1,3)
+593  [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - Driving for 20 sec at new road (1,3)
+595  [AUDI] DEBUG r.s.math.ais.mas.citycars.cars.Car - Standing at intersection of null and (1,3)
+596  [(1,3)] DEBUG r.s.m.ais.mas.citycars.roads.Road - INITIAL occupy request from car AUDI got.
+596  [(1,3)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Accepting car AUDI for occupation
+597  [(1,3)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Sending broadcast with workload delta: 10
+601  [AUDI] DEBUG r.s.math.ais.mas.citycars.cars.Car - Occupation ACCEPT got from road (1,3)
+605  [AUDI] DEBUG r.s.math.ais.mas.citycars.cars.Car - Driving for 30 sec at new road (1,3)
+20593 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - Road (1,3) driven!
+20593 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - Reached:3
+20593 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - Sending occupy request to road (3,4)
+20596 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - Standing at intersection of (1,3) and (3,4)
+20597 [(3,4)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Occupy request got. Road left:(1,3). Road wished: (3,4)
+20597 [(3,4)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Asking road (1,3) about car LADA position at time 1498155069885
+20599 [(3,4)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Move request to road (1,3) sent
+20602 [(1,3)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Move request got. Somebody wants to check if car LADA has left me
+20602 [(1,3)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Car LADA has to leave me not earlier than 1498155069876. Can it be not on me at 1498155069885?
+20602 [(1,3)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Sending broadcast with workload delta: -10
+20603 [(1,3)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Car has left me: true
+20604 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - Standing at intersection of (1,3) and (3,4)
+20606 [(3,4)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Move response got. We can decide if car LADA can ride here
+20607 [(3,4)] DEBUG r.s.m.ais.mas.citycars.roads.Road - All good. New workload: LADA. Car 13 leaves me not earlier than 1498155082895
+20607 [(3,4)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Accepting car LADA for occupation
+20607 [(3,4)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Sending broadcast with workload delta: 10
+20608 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - Occupation ACCEPT got from road (3,4)
+20608 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - Driving for 13 sec at new road (3,4)
+30606 [AUDI] DEBUG r.s.math.ais.mas.citycars.cars.Car - Road (1,3) driven!
+30606 [AUDI] DEBUG r.s.math.ais.mas.citycars.cars.Car - Reached:3
+30606 [AUDI] DEBUG r.s.math.ais.mas.citycars.cars.Car - Sending occupy request to road (3,4)
+30608 [(3,4)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Occupy request got. Road left:(1,3). Road wished: (3,4)
+30608 [(3,4)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Asking road (1,3) about car AUDI position at time 1498155079896
+30608 [(3,4)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Move request to road (1,3) sent
+30609 [AUDI] DEBUG r.s.math.ais.mas.citycars.cars.Car - Standing at intersection of (1,3) and (3,4)
+30609 [(1,3)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Move request got. Somebody wants to check if car AUDI has left me
+30610 [(1,3)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Car AUDI has to leave me not earlier than 1498155079884. Can it be not on me at 1498155079896?
+30610 [(1,3)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Sending broadcast with workload delta: -10
+30611 [(1,3)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Car has left me: true
+30612 [(3,4)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Move response got. We can decide if car AUDI can ride here
+30612 [AUDI] DEBUG r.s.math.ais.mas.citycars.cars.Car - Standing at intersection of (1,3) and (3,4)
+30612 [(3,4)] DEBUG r.s.m.ais.mas.citycars.roads.Road - All good. New workload: AUDI. Car 23 leaves me not earlier than 1498155102900
+30612 [(3,4)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Accepting car AUDI for occupation
+30613 [(3,4)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Sending broadcast with workload delta: 10
+30613 [AUDI] DEBUG r.s.math.ais.mas.citycars.cars.Car - Occupation ACCEPT got from road (3,4)
+30613 [AUDI] DEBUG r.s.math.ais.mas.citycars.cars.Car - Driving for 23 sec at new road (3,4)
+33608 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - Road (3,4) driven!
+33609 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - Reached:4
+33609 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - Sending occupy request to road (4,5)
+33611 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - Standing at intersection of (3,4) and (4,5)
+33612 [(4,5)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Occupy request got. Road left:(3,4). Road wished: (4,5)
+33612 [(4,5)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Asking road (3,4) about car LADA position at time 1498155082900
+33613 [(4,5)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Move request to road (3,4) sent
+33614 [(3,4)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Move request got. Somebody wants to check if car LADA has left me
+33614 [(3,4)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Car LADA has to leave me not earlier than 1498155082895. Can it be not on me at 1498155082900?
+33615 [(3,4)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Sending broadcast with workload delta: -10
+33615 [(3,4)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Car has left me: true
+33617 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - Standing at intersection of (3,4) and (4,5)
+33617 [(4,5)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Move response got. We can decide if car LADA can ride here
+33618 [(4,5)] DEBUG r.s.m.ais.mas.citycars.roads.Road - All good. New workload: LADA. Car 14 leaves me not earlier than 1498155096905
+33618 [(4,5)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Accepting car LADA for occupation
+33618 [(4,5)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Sending broadcast with workload delta: 10
+33619 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - Occupation ACCEPT got from road (4,5)
+33619 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - Driving for 14 sec at new road (4,5)
+47619 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - Road (4,5) driven!
+47620 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - Reached:5
+47620 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - Sending occupy request to road (5,7)
+47621 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - Standing at intersection of (4,5) and (5,7)
+47623 [(5,7)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Occupy request got. Road left:(4,5). Road wished: (5,7)
+47623 [(5,7)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Asking road (4,5) about car LADA position at time 1498155096911
+47624 [(5,7)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Move request to road (4,5) sent
+47625 [(4,5)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Move request got. Somebody wants to check if car LADA has left me
+47625 [(4,5)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Car LADA has to leave me not earlier than 1498155096905. Can it be not on me at 1498155096911?
+47625 [(4,5)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Sending broadcast with workload delta: -10
+47626 [(4,5)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Car has left me: true
+47628 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - Standing at intersection of (4,5) and (5,7)
+47628 [(5,7)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Move response got. We can decide if car LADA can ride here
+47628 [(5,7)] DEBUG r.s.m.ais.mas.citycars.roads.Road - All good. New workload: LADA. Car 11 leaves me not earlier than 1498155107916
+47628 [(5,7)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Accepting car LADA for occupation
+47629 [(5,7)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Sending broadcast with workload delta: 10
+47632 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - Occupation ACCEPT got from road (5,7)
+47632 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - Driving for 11 sec at new road (5,7)
+53614 [AUDI] DEBUG r.s.math.ais.mas.citycars.cars.Car - Road (3,4) driven!
+53614 [AUDI] DEBUG r.s.math.ais.mas.citycars.cars.Car - Reached:4
+53614 [AUDI] DEBUG r.s.math.ais.mas.citycars.cars.Car - Sending occupy request to road (4,5)
+53616 [(4,5)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Occupy request got. Road left:(3,4). Road wished: (4,5)
+53616 [(4,5)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Asking road (3,4) about car AUDI position at time 1498155102904
+53616 [AUDI] DEBUG r.s.math.ais.mas.citycars.cars.Car - Standing at intersection of (3,4) and (4,5)
+53616 [(4,5)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Move request to road (3,4) sent
+53617 [(3,4)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Move request got. Somebody wants to check if car AUDI has left me
+53618 [(3,4)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Car AUDI has to leave me not earlier than 1498155102900. Can it be not on me at 1498155102904?
+53618 [(3,4)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Sending broadcast with workload delta: -10
+53619 [(3,4)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Car has left me: true
+53619 [AUDI] DEBUG r.s.math.ais.mas.citycars.cars.Car - Standing at intersection of (3,4) and (4,5)
+53620 [(4,5)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Move response got. We can decide if car AUDI can ride here
+53620 [(4,5)] DEBUG r.s.m.ais.mas.citycars.roads.Road - All good. New workload: AUDI. Car 14 leaves me not earlier than 1498155116908
+53620 [(4,5)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Accepting car AUDI for occupation
+53620 [(4,5)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Sending broadcast with workload delta: 10
+53621 [AUDI] DEBUG r.s.math.ais.mas.citycars.cars.Car - Occupation ACCEPT got from road (4,5)
+53622 [AUDI] DEBUG r.s.math.ais.mas.citycars.cars.Car - Driving for 14 sec at new road (4,5)
+58633 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - Road (5,7) driven!
+58633 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - Reached:7
+58633 [LADA] INFO  r.s.math.ais.mas.citycars.cars.Car - Car LADA has reached its destination and spent 58 sec in total.
+58633 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - Releasing last road...
+58634 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - Sending stats report to city stats agent...
+58635 [(5,7)] DEBUG r.s.m.ais.mas.citycars.roads.Road - LEAVE occupy request from car LADA got.
+58635 [(5,7)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Sending broadcast with workload delta: -10
+58636 [LADA] DEBUG r.s.math.ais.mas.citycars.cars.Car - Car LADA has sent its report.
+58638 [Tula] DEBUG r.s.m.ais.mas.citycars.cities.City - Got driving report from LADA
+58638 [Tula] DEBUG r.s.m.ais.mas.citycars.cities.City - Current active cars:1
+67622 [AUDI] DEBUG r.s.math.ais.mas.citycars.cars.Car - Road (4,5) driven!
+67622 [AUDI] DEBUG r.s.math.ais.mas.citycars.cars.Car - Reached:5
+67622 [AUDI] DEBUG r.s.math.ais.mas.citycars.cars.Car - Sending occupy request to road (5,7)
+67624 [AUDI] DEBUG r.s.math.ais.mas.citycars.cars.Car - Standing at intersection of (4,5) and (5,7)
+67624 [(5,7)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Occupy request got. Road left:(4,5). Road wished: (5,7)
+67624 [(5,7)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Asking road (4,5) about car AUDI position at time 1498155116912
+67624 [(5,7)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Move request to road (4,5) sent
+67626 [(4,5)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Move request got. Somebody wants to check if car AUDI has left me
+67626 [(4,5)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Car AUDI has to leave me not earlier than 1498155116908. Can it be not on me at 1498155116912?
+67626 [(4,5)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Sending broadcast with workload delta: -10
+67627 [(4,5)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Car has left me: true
+67627 [AUDI] DEBUG r.s.math.ais.mas.citycars.cars.Car - Standing at intersection of (4,5) and (5,7)
+67628 [(5,7)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Move response got. We can decide if car AUDI can ride here
+67628 [(5,7)] DEBUG r.s.m.ais.mas.citycars.roads.Road - All good. New workload: AUDI. Car 11 leaves me not earlier than 1498155127916
+67629 [(5,7)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Accepting car AUDI for occupation
+67629 [(5,7)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Sending broadcast with workload delta: 10
+67630 [AUDI] DEBUG r.s.math.ais.mas.citycars.cars.Car - Occupation ACCEPT got from road (5,7)
+67630 [AUDI] DEBUG r.s.math.ais.mas.citycars.cars.Car - Driving for 11 sec at new road (5,7)
+78630 [AUDI] DEBUG r.s.math.ais.mas.citycars.cars.Car - Road (5,7) driven!
+78630 [AUDI] DEBUG r.s.math.ais.mas.citycars.cars.Car - Reached:7
+78631 [AUDI] INFO  r.s.math.ais.mas.citycars.cars.Car - Car AUDI has reached its destination and spent 78 sec in total.
+78631 [AUDI] DEBUG r.s.math.ais.mas.citycars.cars.Car - Releasing last road...
+78632 [AUDI] DEBUG r.s.math.ais.mas.citycars.cars.Car - Sending stats report to city stats agent...
+78633 [(5,7)] DEBUG r.s.m.ais.mas.citycars.roads.Road - LEAVE occupy request from car AUDI got.
+78633 [(5,7)] DEBUG r.s.m.ais.mas.citycars.roads.Road - Sending broadcast with workload delta: -10
+78633 [AUDI] DEBUG r.s.math.ais.mas.citycars.cars.Car - Car AUDI has sent its report.
+78635 [Tula] DEBUG r.s.m.ais.mas.citycars.cities.City - Got driving report from AUDI
+78635 [Tula] DEBUG r.s.m.ais.mas.citycars.cities.City - Current active cars:0
+78635 [Tula] INFO  r.s.m.ais.mas.citycars.cities.City - City is destroyed
+78636 [Tula] INFO  r.s.m.ais.mas.citycars.cities.City - City agent cannot see any active cars. Driving finished successfully. Car stats:
+Statistics [count=2, sum=136, max=78, avg=68.0]
